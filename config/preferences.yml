@@ -1,0 +1,24 @@
+# Directories path where a team can be loaded
+teamsSourcesFolders:
+#   <teamName>: path/to/directory/separated/by/slashes
+    Engineer: "teams/engineer"
+#    PythonLevel0: "teams/level0"
+    Time To Explode: "teams/timetoexplode"
+    FSM: "teams/fsm"
+
+# Number of agents of each type to deploy at game start
+NbAgentsAtStart:
+    WarBase: 1
+    WarExplorer: 5
+    WarRocketLauncher: 5
+    WarKamikaze: 0
+    WarEngineer: 0
+    WarTurret: 0
+    Wall: 0
+
+# Food appearance rate = ticks amount separating each food appearance
+FoodAppearanceRate : 150
+
+# Default logger level
+# Available levels are : SEVERE, WARNING, INFO, CONFIG, FINE, FINER and FINEST
+DefaultLoggerLevel: WARNING

@@ -1,0 +1,103 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>edu</groupId>
+	<artifactId>warbot</artifactId>
+	<version>3.2.1-BETA</version>
+	<packaging>jar</packaging>
+	
+	<name>warbot</name>
+	<url>http://www.madkit.net/warbot/</url>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Warbot scriptable -->
+		<javax.javaee-version>7.0</javax.javaee-version>
+		<jython-version>2.5.4-rc1</jython-version>
+
+        <!-- Warbot classique -->
+		<com.badlogicgames.gdx-version>1.5.4</com.badlogicgames.gdx-version>
+		<jdom2-version>2.0.5</jdom2-version>
+        <org.javassist-version>3.19.0-GA</org.javassist-version>
+        <org.yaml.snakeyaml-version>1.15</org.yaml.snakeyaml-version>
+	</properties>
+
+	<dependencies>
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-scripting</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.retrotranslator</groupId>
+            <artifactId>retrotranslator-runtime</artifactId>
+            <version>1.2.9</version>
+        </dependency>
+
+        <dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx</artifactId>
+			<version>${com.badlogicgames.gdx-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-platform</artifactId>
+			<version>${com.badlogicgames.gdx-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-backend-lwjgl</artifactId>
+			<version>${com.badlogicgames.gdx-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>edu</groupId>
+			<artifactId>TurtleKit</artifactId>
+            <version>3.0.0.4c</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>${jdom2-version}</version>
+		</dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>${org.javassist-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${org.yaml.snakeyaml-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
