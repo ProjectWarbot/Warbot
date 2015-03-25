@@ -71,7 +71,7 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 
 	public void initConfigurationTeamPython(){
 		if(!initTemplateTeam) {
-			String defaultSourceFile = "teams/python/";
+			String defaultSourceFile = "team/python/";
 
 			File WarBase = getFileTeamPython(defaultSourceFile, FileTeamPython.WarBase);
 			File WarEngineer = getFileTeamPython(defaultSourceFile, FileTeamPython.WarEngineer);
@@ -95,13 +95,14 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 	private File getFileConfigPython(String pathPython, FileConfigPython nameFilePython) {
 		File file = null;
 		try {
-			URL path = WarExplorerBrainController.class.getClassLoader().getResource(pathPython+nameFilePython);
+			URL path = getClass().getClassLoader().getResource(pathPython+nameFilePython);
 			//System.out.println(path);
 			if(path == null)
 				throw new NotFoundConfigurationFilePythonException(nameFilePython.getNameFile());
 			file =  new File(path.getFile());
 		}catch (NotFoundConfigurationFilePythonException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Config file " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		return file;
@@ -110,13 +111,14 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 	private File getFileTeamPython(String pathPython, FileTeamPython nameFilePython) {
 		File file = null;
 		try {
-			URL path = WarExplorerBrainController.class.getClassLoader().getResource(pathPython+nameFilePython);
-			//System.out.println(path);
+			URL path = getClass().getClassLoader().getResource(pathPython+nameFilePython);
+			System.out.println(pathPython+nameFilePython);
 			if(path == null)
 				throw new NotFoundConfigurationFilePythonException(nameFilePython.getNameFile());
 			file =  new File(path.getFile());
 		}catch (NotFoundConfigurationFilePythonException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Team file " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		return file;
