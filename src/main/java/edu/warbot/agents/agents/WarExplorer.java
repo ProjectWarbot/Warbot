@@ -34,4 +34,9 @@ public class WarExplorer extends MovableWarAgent {
 //		brain.setAgentAdapter(new WarExplorerBrain(this));
 	}
 
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarExplorer;
+	}
+
 }

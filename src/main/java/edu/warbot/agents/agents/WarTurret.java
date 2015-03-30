@@ -85,4 +85,8 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActionsM
 		return _reloading;
 	}
 
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarTurret;
+	}
 }

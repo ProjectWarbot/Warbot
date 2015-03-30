@@ -73,6 +73,7 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 		if(!initTemplateTeam) {
 			String defaultSourceFile = "team/python/";
 
+
 			File WarBase = getFileTeamPython(defaultSourceFile, FileTeamPython.WarBase);
 			File WarEngineer = getFileTeamPython(defaultSourceFile, FileTeamPython.WarEngineer);
 			File WarExplorer = getFileTeamPython(defaultSourceFile, FileTeamPython.WarExplorer);

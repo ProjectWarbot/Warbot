@@ -115,4 +115,8 @@ public class WarEngineer extends MovableWarAgent implements CreatorActionsMethod
         return idNextBuildingToRepair;
     }
 
+    public WarAgentType getType()
+    {
+        return WarAgentType.WarEngineer;
+    }
 }

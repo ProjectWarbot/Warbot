@@ -19,4 +19,9 @@ public class WarFood extends WarResource {
 	public WarFood(Team team) {
 		super(WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarFood), team);
 	}
+
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarFood;
+	}
 }

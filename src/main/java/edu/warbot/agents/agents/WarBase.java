@@ -39,4 +39,9 @@ public class WarBase extends CreatorWarAgent {
 			return true;
 		return false;
 	}
+
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarBase;
+	}
 }

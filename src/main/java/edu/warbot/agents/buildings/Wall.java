@@ -22,4 +22,8 @@ public class Wall extends WarBuilding {
 		super(team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.Wall), COST, MAX_HEALTH);
 	}
 
+    public WarAgentType getType()
+    {
+        return WarAgentType.Wall;
+    }
 }

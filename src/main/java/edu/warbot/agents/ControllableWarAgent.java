@@ -61,7 +61,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 		randomHeading();
         _brain.activate();
     }
-	
+
 	@Override
 	protected void doBeforeEachTick() {
 		super.doBeforeEachTick();

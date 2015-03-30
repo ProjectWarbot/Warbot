@@ -61,5 +61,8 @@ public class WarKamikaze extends MovableWarAgent implements AgressiveActionsMeth
 		return false;
 	}
 
-	
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarKamikaze;
+	}
 }

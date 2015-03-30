@@ -87,4 +87,9 @@ public class WarRocketLauncher extends MovableWarAgent implements AgressiveActio
 	public boolean isReloading() {
 		return _reloading;
 	}
+
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarRocketLauncher;
+	}
 }
