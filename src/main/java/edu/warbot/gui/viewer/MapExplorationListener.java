@@ -19,6 +19,8 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
 	public MapExplorationListener(AbstractWarViewer viewer) {
 		this.viewer = viewer;
         this.onlyRightClick = false;
+
+
 	}
 
 	@Override

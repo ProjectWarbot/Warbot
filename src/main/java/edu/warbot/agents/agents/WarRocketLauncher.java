@@ -45,6 +45,13 @@ public class WarRocketLauncher extends MovableWarAgent implements AgressiveActio
 		_tickLeftBeforeReloaded = TICKS_TO_RELOAD;
 		_reloaded = false;
 		_reloading = true;
+
+		System.out.println("Rock w : " + getHitbox().getWidth());
+		System.out.println("Rock h : " + getHitbox().getHeight());
+
+		System.out.println("Rock P D : " + getDistanceOfView());
+		System.out.println("Rock P A : " + getAngleOfView());
+
 	}
 
 	@Override

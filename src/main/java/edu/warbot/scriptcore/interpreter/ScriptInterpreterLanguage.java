@@ -1,6 +1,6 @@
 package edu.warbot.scriptcore.interpreter;
 
-public enum ScriptInterpreterLangage {
+public enum ScriptInterpreterLanguage {
 	PYTHON,
 	JAVASCRIPT,
 	RUBY

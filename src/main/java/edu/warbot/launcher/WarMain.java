@@ -1,6 +1,5 @@
 package edu.warbot.launcher;
 
-import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
@@ -12,11 +11,9 @@ import edu.warbot.scriptcore.ScriptedTeam;
 import edu.warbot.scriptcore.exceptions.DangerousFunctionPythonException;
 import edu.warbot.scriptcore.exceptions.NotFoundScriptLanguageException;
 import edu.warbot.scriptcore.exceptions.UnrecognizedScriptLanguageException;
-import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreterFactory;
-import edu.warbot.scriptcore.interpreter.ScriptInterpreterLangage;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
 import edu.warbot.scriptcore.script.Script;
-import edu.warbot.scriptcore.team.ScriptableWarEngineer;
 import edu.warbot.tools.WarIOTools;
 import javassist.*;
 
@@ -496,8 +493,8 @@ public class WarMain implements WarGameListener {
             NotFoundScriptLanguageException, UnrecognizedScriptLanguageException, IOException, ClassNotFoundException, DangerousFunctionPythonException
     {
         ScriptedTeam team = new ScriptedTeam(teamConfigReader.getTeamName());
-        team.initListeFunction();
-        ScriptInterpreterLangage language = teamConfigReader.getScriptLanguage();
+        team.initListFunctions();
+        ScriptInterpreterLanguage language = teamConfigReader.getScriptLanguage();
         team.setInterpreter(ScriptInterpreterFactory.getInstance(language).createScriptInterpreter());
         final Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
 
@@ -526,7 +523,7 @@ public class WarMain implements WarGameListener {
             });
             if (tab.length == 1) {
                 InputStream input = new FileInputStream(tab[0]);
-                Script sc = team.checkDangerousFunction(input, WarAgentType.valueOf(agentName));
+                Script sc = Script.checkDangerousFunctions(team, input, WarAgentType.valueOf(agentName));
                 team.getInterpreter().addSCript(sc, WarAgentType.valueOf(agentName));
                 input.close();
             }

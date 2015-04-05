@@ -97,4 +97,12 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
 
     @Override
     public void onGameStarted() {}
+
+    public WarGame getGame() {
+        return game;
+    }
+
+    public void setGame(WarGame game) {
+        this.game = game;
+    }
 }

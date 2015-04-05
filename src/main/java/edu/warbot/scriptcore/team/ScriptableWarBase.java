@@ -18,6 +18,8 @@ public abstract class ScriptableWarBase extends WarBaseBrain implements Scriptab
 	
 	@Override
 	public String action() {
+
+
 		return getScriptAgent().action();
 	}	
 	
