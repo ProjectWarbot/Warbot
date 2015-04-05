@@ -28,13 +28,6 @@ public class WarBase extends CreatorWarAgent {
 	
 	public WarBase(Team team, WarBaseBrain brain) {
 		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarBase), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
-
-		System.out.println("Base w : " + getHitbox().getWidth());
-		System.out.println("Base h : " + getHitbox().getHeight());
-
-		System.out.println("Base P D : " + getDistanceOfView());
-		System.out.println("Base P A : " + getAngleOfView());
-
 		//brain.setAgentAdapter(new WarBaseBrain(this));
 	}
 
