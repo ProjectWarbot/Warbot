@@ -20,9 +20,6 @@ public class Wall extends WarBuilding {
 
 	public Wall(Team team) {
 		super(team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.Wall), COST, MAX_HEALTH);
-
-        System.out.println("Wall w : " + getHitbox().getWidth());
-        System.out.println("Wall h : " + getHitbox().getHeight());
 	}
 
     public WarAgentType getType()
