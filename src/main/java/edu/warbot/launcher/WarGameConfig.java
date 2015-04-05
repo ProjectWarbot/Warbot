@@ -13,10 +13,7 @@ import javax.swing.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,9 +44,28 @@ public class WarGameConfig {
             Yaml yaml = new Yaml();
             config = (Map<String, Object>) yaml.load(input);
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Le fichier de configuration de Warbot est introuvable.", "Fichier manquant", JOptionPane.ERROR_MESSAGE);
-            // TODO Générer un fichier de configuration par défaut
+            InputStream input= UserPreferences.class.getClassLoader().getResourceAsStream(gameConfigFilePath.replaceAll
+                    (File.separator,"/"));
 
+            if(input!=null)
+            {
+                //Fichier de configuration par défaut dans le jar
+                Yaml yaml = new Yaml();
+                config = (Map<String, Object>) yaml.load(input);
+                try {
+                    input.close();
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null,
+                        "Le fichier de configuration de Warbot est introuvable dans le jar.",
+                        "Fichier manquant",
+                        JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
         }
 	}
 

@@ -4,6 +4,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import javax.swing.*;
 import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -22,12 +23,9 @@ public class UserPreferences {
             settings = (Map<String, Object>) yaml.load(input);
             input.close();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Le fichier des préférences de l'utilisateur est introuvable.",
-                    "Fichier manquant",
-                    JOptionPane.ERROR_MESSAGE);
-            InputStream input= UserPreferences.class.getResourceAsStream(userSettingsFilePath.replaceAll
+            InputStream input= UserPreferences.class.getClassLoader().getResourceAsStream(userSettingsFilePath.replaceAll
                     (File.separator,"/"));
+
             if(input!=null)
             {
                 //Fichier de configuration par défaut dans le jar
@@ -42,9 +40,10 @@ public class UserPreferences {
             else
             {
                 JOptionPane.showMessageDialog(null,
-                        "Le fichier des préférences de l'utilisateur est introuvable.",
+                        "Le fichier des préférences de l'utilisateur est introuvable dans le jar.",
                         "Fichier manquant",
                         JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
             }
 
         }

@@ -298,7 +298,7 @@ public class WarMain implements WarGameListener {
                         else
                             teamsLoaded.put(currentTeam.getName(), currentTeam);
                     }else { // Si le fichier de configuration n'a pas été trouvé
-                    //TODO FAIRE UNE FOUILLE RECURSIVE ?
+                        //TODO FAIRE UNE FOUILLE RECURSIVE ?
                         System.err.println("Le fichier de configuration est introuvable dans le dossier " + currentFile.getCanonicalPath());
                     }
                 }
@@ -489,15 +489,14 @@ public class WarMain implements WarGameListener {
         return teamsLoaded;
     }
 
+
     public Team instanciedScriptedTeam(final TeamConfigReader teamConfigReader, File teamDirectory) throws
-            NotFoundScriptLanguageException, UnrecognizedScriptLanguageException, IOException, ClassNotFoundException, DangerousFunctionPythonException
-    {
+            NotFoundScriptLanguageException, UnrecognizedScriptLanguageException, IOException, ClassNotFoundException, DangerousFunctionPythonException {
         ScriptedTeam team = new ScriptedTeam(teamConfigReader.getTeamName());
         team.initListFunctions();
         ScriptInterpreterLanguage language = teamConfigReader.getScriptLanguage();
         team.setInterpreter(ScriptInterpreterFactory.getInstance(language).createScriptInterpreter());
         final Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
-
 
         if (teamConfigReader.getBrainControllersClassesNameOfEachAgentType().containsKey("WarTools")) {
             File warTool[] = teamDirectory.listFiles(new FilenameFilter() {
@@ -506,12 +505,6 @@ public class WarMain implements WarGameListener {
                     return name.equals(teamConfigReader.getBrainControllersClassesNameOfEachAgentType().get("WarTools"));
                 }
             });
-            if (warTool.length == 1) {
-                InputStream is = new FileInputStream(warTool[0]);
-                Script script = team.getInterpreter().createScript(is);
-                team.getInterpreter().giveScriptToolsAgent(script, "WarTools");
-                is.close();
-            }
         }
 
         for (final String agentName : brainControllersClassesName.keySet()) {
@@ -521,6 +514,8 @@ public class WarMain implements WarGameListener {
                     return name.equals(brainControllersClassesName.get(agentName)) && !agentName.equals("WarTools");
                 }
             });
+
+
             if (tab.length == 1) {
                 InputStream input = new FileInputStream(tab[0]);
                 Script sc = Script.checkDangerousFunctions(team, input, WarAgentType.valueOf(agentName));
@@ -528,10 +523,8 @@ public class WarMain implements WarGameListener {
                 input.close();
             }
         }
-
-
-
         return team;
+
     }
 
     private Team loadTeamFromSources(Map<String, String> teamsSourcesFolders, TeamConfigReader teamConfigReader) throws ClassNotFoundException, IOException, NotFoundException, CannotCompileException {
