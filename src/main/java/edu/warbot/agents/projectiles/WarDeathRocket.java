@@ -29,4 +29,9 @@ public class WarDeathRocket extends WarProjectile {
 	public WarDeathRocket(Team team, WarAgent sender) {
 		super(ACTION_MOVE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarDeathRocket), sender, SPEED, EXPLOSION_RADIUS, DAMAGE, AUTONOMY);
 	}
+
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarDeathRocket;
+	}
 }

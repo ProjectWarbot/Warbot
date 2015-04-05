@@ -1,6 +1,7 @@
 package edu.warbot.agents;
 
 import edu.warbot.agents.actions.MovableActionsMethods;
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.capacities.CommonCapacities;
 import edu.warbot.brains.capacities.Movable;
@@ -240,5 +241,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), a.getX(), a.getY())
                 - getHitboxMaxRadius() - a.getHitboxMaxRadius();
     }
+
+	public abstract WarAgentType getType();
 
 }

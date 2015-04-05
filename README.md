@@ -1,5 +1,4 @@
-﻿# Warbot
-
+# Warbot
 
 ## Branche de développement de la librairie Warbot
 

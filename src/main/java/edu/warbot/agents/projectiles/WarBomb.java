@@ -28,5 +28,10 @@ public class WarBomb extends WarProjectile {
 	public WarBomb(Team team, WarAgent sender) {
 		super(ACTION_MOVE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarBomb), sender, SPEED, EXPLOSION_RADIUS, DAMAGE, AUTONOMY);
 	}
+
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarBomb;
+	}
 		
 }

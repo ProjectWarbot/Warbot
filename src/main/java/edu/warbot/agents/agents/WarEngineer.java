@@ -47,6 +47,12 @@ public class WarEngineer extends MovableWarAgent implements CreatorActionsMethod
 
         nextAgentToCreate = WarAgentType.WarTurret;
         nextBuildingToBuild = WarAgentType.Wall;
+
+        System.out.println("Engi w : " + getHitbox().getWidth());
+        System.out.println("Engi h : " + getHitbox().getHeight());
+
+        System.out.println("Engi P D : " + getDistanceOfView());
+        System.out.println("Engi P A : " + getAngleOfView());
 	}
 
 	@Override
@@ -115,4 +121,8 @@ public class WarEngineer extends MovableWarAgent implements CreatorActionsMethod
         return idNextBuildingToRepair;
     }
 
+    public WarAgentType getType()
+    {
+        return WarAgentType.WarEngineer;
+    }
 }

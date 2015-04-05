@@ -42,6 +42,14 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActionsM
 		_tickLeftBeforeReloaded = TICKS_TO_RELOAD;
 		_reloaded = false;
 		_reloading = true;
+
+
+
+		System.out.println("Tur w : " + getHitbox().getWidth());
+		System.out.println("Tur h : " + getHitbox().getHeight());
+
+		System.out.println("Tur P D : " + getDistanceOfView());
+		System.out.println("Tur P A : " + getAngleOfView());
 	}
 	
 	@Override
@@ -85,4 +93,8 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActionsM
 		return _reloading;
 	}
 
+	public WarAgentType getType()
+	{
+		return WarAgentType.WarTurret;
+	}
 }

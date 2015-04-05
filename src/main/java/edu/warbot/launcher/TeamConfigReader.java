@@ -3,8 +3,7 @@ package edu.warbot.launcher;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
 import edu.warbot.scriptcore.exceptions.NotFoundScriptLanguageException;
 import edu.warbot.scriptcore.exceptions.UnrecognizedScriptLanguageException;
-import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
-import edu.warbot.scriptcore.interpreter.ScriptInterpreterLangage;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -139,7 +138,7 @@ public class TeamConfigReader {
      * @throws NotFoundScriptLanguageException si le champs ScriptImplementation n'existe pas ou sa valeur
      * @throws UnrecognizedScriptLanguageException si le langage saisie n'est pas encore accessible dans la liste des scripts accessibles
      */
-    public ScriptInterpreterLangage getScriptLanguage() throws NotFoundScriptLanguageException, UnrecognizedScriptLanguageException {
+    public ScriptInterpreterLanguage getScriptLanguage() throws NotFoundScriptLanguageException, UnrecognizedScriptLanguageException {
         String name = getTeamName();
         if (config.containsKey("ScriptImplementation"))
         {
@@ -147,7 +146,7 @@ public class TeamConfigReader {
             if(language==null)
                 throw new NotFoundScriptLanguageException(getTeamName());
 
-            ScriptInterpreterLangage languageEnum = ScriptInterpreterLangage.valueOf(language.toUpperCase());
+            ScriptInterpreterLanguage languageEnum = ScriptInterpreterLanguage.valueOf(language.toUpperCase());
             if(languageEnum==null)
                 throw new UnrecognizedScriptLanguageException(language,name);
             return languageEnum;
