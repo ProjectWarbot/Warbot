@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -12,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
 
@@ -21,18 +18,14 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarBuilding;
 import edu.warbot.agents.WarProjectile;
-import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.brains.WarBaseBrain;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.brains.implementations.WarBrainImplementation;
 import edu.warbot.game.Team;
-import edu.warbot.scriptcore.exceptions.DangerousFunctionPythonException;
+import edu.warbot.launcher.WarScheduler;
 import edu.warbot.scriptcore.exceptions.NotFoundConfigurationFilePythonException;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
-import edu.warbot.scriptcore.interpreter.ScriptInterpreterLangage;
-import edu.warbot.scriptcore.script.Script;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 import edu.warbot.scriptcore.team.Scriptable;
 import javassist.*;
@@ -63,7 +56,7 @@ public class ScriptedTeam extends Team {
                 buildings, ScriptedTeam.brainControllers, nbUnitsLeft, dyingAgents);
     }
 
-    public void initListeFunction() {
+    public void initListFunctions() {
         if(!initFunction) {
 
             String defaultSourceFile = "scripts/function/";
@@ -93,27 +86,7 @@ public class ScriptedTeam extends Team {
         }
     }
 
-    public Script checkDangerousFunction(InputStream input, WarAgentType agent) throws IOException, DangerousFunctionPythonException{
 
-        Script sc = getInterpreter().createScript(input);
-        String lg = "";
-        ScriptInterpreterLangage lang = sc.getLangage();
-
-        if(lang.equals(ScriptInterpreterLangage.PYTHON))
-            lg = "def";
-        else if (lang.equals(ScriptInterpreterLangage.JAVASCRIPT))
-            lg = "var";
-        else if (lang.equals(ScriptInterpreterLangage.RUBY))
-            lg = "def";
-
-        for (String s : functions) {
-            Pattern p = Pattern.compile(".*(" + lg + ")\\s+(" + s + ")");
-            Matcher m = p.matcher(sc.getCodeAgent().toString());
-            if(m.find())
-                throw new DangerousFunctionPythonException(s, agent.toString());
-        }
-        return sc;
-    }
 
     private static Class<? extends WarBrain> createNewWarBrainImplementationClass(String brainClassName) throws NotFoundException, CannotCompileException, IOException {
        ClassPool classPool = ClassPool.getDefault();
@@ -194,12 +167,9 @@ public class ScriptedTeam extends Team {
 
     }
 
+    public static List<String> getFunctions() {
+        return functions;
+    }
 
-
-
-
-	
-	
-	
 
 }

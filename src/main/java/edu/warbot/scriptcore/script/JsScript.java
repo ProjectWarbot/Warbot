@@ -1,12 +1,12 @@
 package edu.warbot.scriptcore.script;
 
-import edu.warbot.scriptcore.interpreter.ScriptInterpreterLangage;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
 
 public class JsScript extends Script{
 
 	
 	public JsScript(StringBuilder file) {
-		super(ScriptInterpreterLangage.JAVASCRIPT);
+		super(ScriptInterpreterLanguage.JAVASCRIPT);
 		setCodeAgent(file);
 	}
 }
