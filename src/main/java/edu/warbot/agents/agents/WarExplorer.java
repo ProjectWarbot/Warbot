@@ -32,12 +32,6 @@ public class WarExplorer extends MovableWarAgent {
 		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarExplorer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
 //		brain.setAgentAdapter(new WarExplorerBrain(this));
-
-		System.out.println("Explo w : " + getHitbox().getWidth());
-		System.out.println("Explo h : " + getHitbox().getHeight());
-
-		System.out.println("Explo P D : " + getDistanceOfView());
-		System.out.println("Explo P A : " + getAngleOfView());
 	}
 
 	public WarAgentType getType()

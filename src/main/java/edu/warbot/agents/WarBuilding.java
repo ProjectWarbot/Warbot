@@ -11,8 +11,6 @@ public abstract class WarBuilding extends AliveWarAgent {
     public WarBuilding(Team team, Hitbox hitbox, int cost, int maxHealth) {
 		super(ACTION_IDLE, team, hitbox, cost, maxHealth);
         init(getRepairsAmountWithCost(cost));
-        System.out.println("Building w : " + getHitbox().getWidth());
-        System.out.println("Building h : " + getHitbox().getHeight());
 	}
 
 	@Override

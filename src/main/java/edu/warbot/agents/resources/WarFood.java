@@ -18,12 +18,6 @@ public class WarFood extends WarResource {
 
 	public WarFood(Team team) {
 		super(WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarFood), team);
-
-		System.out.println("Food w : " + getHitbox().getWidth());
-		System.out.println("Food h : " + getHitbox().getHeight());
-
-		System.out.println("Food x : " + getPosition());
-		System.out.println("Food y : " + getPosition().getY());
 	}
 
 	public WarAgentType getType()
