@@ -1,5 +1,6 @@
 package edu.warbot.game;
 
+import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.agents.*;
 import edu.warbot.agents.agents.WarBase;

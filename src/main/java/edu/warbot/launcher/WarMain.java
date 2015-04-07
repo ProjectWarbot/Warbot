@@ -1,5 +1,8 @@
 package edu.warbot.launcher;
 
+import edu.warbot.FSM.WarFSMBrain;
+import edu.warbot.FSMEditor.FSMModelRebuilder;
+import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
@@ -538,15 +541,15 @@ public class WarMain implements WarGameListener {
 
         Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
         if(teamConfigReader.isFSMTeam()) {
-//            File fileFSMConfig = new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getFSMConfigurationFileName());
-//
-//        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
-//        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
-//        	currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
-//
-//            for (String agentName : brainControllersClassesName.keySet()) {
-//                currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrain.class);
-//            }
+            File fileFSMConfig = new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getFSMConfigurationFileName());
+
+        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
+        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+        	currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
+
+            for (String agentName : brainControllersClassesName.keySet()) {
+                currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrain.class);
+            }
         }
         else {
             ClassPool defaultClassPool = ClassPool.getDefault();
