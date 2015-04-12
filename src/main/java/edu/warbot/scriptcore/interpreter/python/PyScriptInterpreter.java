@@ -25,11 +25,11 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 	protected Map<WarAgentType, Script> scripts = new HashMap<WarAgentType, Script>();
 
 	private static boolean initConfigurationFile = false;
-	private static Map<String, File>  pyScriptsFirst = new HashMap<String, File>();
-	private static Map<String, File> pyScriptsSecond = new HashMap<String, File>();
+	private static Map<String, InputStream>  pyScriptsFirst = new HashMap<String, InputStream>();
+	private static Map<String, InputStream> pyScriptsSecond = new HashMap<String, InputStream>();
 
 	private static boolean initTemplateTeam = false;
-	private static Map<String, File> team = new HashMap<String, File>();
+	private static Map<String, InputStream> team = new HashMap<String, InputStream>();
 
 	public PyScriptInterpreter() {
 	}
@@ -42,15 +42,15 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 		if(!initConfigurationFile) {
 			String defaultSourceFile = "scripts/python/";
 
-			File pyWarTools = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarTools);
-			File pyWarAgent = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarAgent);
+			InputStream pyWarTools = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarTools);
+			InputStream pyWarAgent = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarAgent);
 
-			File pyWarBase = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarBase);
-			File pyWarEngineer = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarEngineer);
-			File pyWarExplorer = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarExplorer);
-			File pyWarKamikaze = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarKamikaze);
-			File pyWarRocketLauncher = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarRocketLauncher);
-			File pyWarTurret = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarTurret);
+			InputStream pyWarBase = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarBase);
+			InputStream pyWarEngineer = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarEngineer);
+			InputStream pyWarExplorer = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarExplorer);
+			InputStream pyWarKamikaze = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarKamikaze);
+			InputStream pyWarRocketLauncher = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarRocketLauncher);
+			InputStream pyWarTurret = getFileConfigPython(defaultSourceFile, FileConfigPython.PyWarTurret);
 
 			pyScriptsFirst.put(FileConfigPython.PyWarAgent.getNameFile(), pyWarAgent);
 			pyScriptsFirst.put(FileConfigPython.PyWarTools.getNameFile(), pyWarTools);
@@ -74,13 +74,12 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 			String defaultSourceFile = "team/python/";
 
 
-			File WarBase = getFileTeamPython(defaultSourceFile, FileTeamPython.WarBase);
-			File WarEngineer = getFileTeamPython(defaultSourceFile, FileTeamPython.WarEngineer);
-			File WarExplorer = getFileTeamPython(defaultSourceFile, FileTeamPython.WarExplorer);
-			File WarKamikaze = getFileTeamPython(defaultSourceFile, FileTeamPython.WarKamikaze);
-			File WarRocketLauncher = getFileTeamPython(defaultSourceFile, FileTeamPython.WarRocketLauncher);
-			File WarTurret = getFileTeamPython(defaultSourceFile, FileTeamPython.WarTurret);
-
+			InputStream WarBase = getFileTeamPython(defaultSourceFile, FileTeamPython.WarBase);
+			InputStream WarEngineer = getFileTeamPython(defaultSourceFile, FileTeamPython.WarEngineer);
+			InputStream WarExplorer = getFileTeamPython(defaultSourceFile, FileTeamPython.WarExplorer);
+			InputStream WarKamikaze = getFileTeamPython(defaultSourceFile, FileTeamPython.WarKamikaze);
+			InputStream WarRocketLauncher = getFileTeamPython(defaultSourceFile, FileTeamPython.WarRocketLauncher);
+			InputStream WarTurret = getFileTeamPython(defaultSourceFile, FileTeamPython.WarTurret);
 
 			team.put(FileTeamPython.WarBase.getNameFile(),WarBase);
 			team.put(FileTeamPython.WarEngineer.getNameFile(),WarEngineer);
@@ -93,44 +92,46 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 		}
 	}
 
-	private File getFileConfigPython(String pathPython, FileConfigPython nameFilePython) {
-		File file = null;
+	private InputStream getFileConfigPython(String pathPython, FileConfigPython nameFilePython) {
+		InputStream path = null;
 		try {
-			URL path = getClass().getClassLoader().getResource(pathPython+nameFilePython);
-			//System.out.println(path);
+			//URL path = getClass().getClassLoader().getResource(pathPython+nameFilePython);
+			path = getClass().getClassLoader().getResourceAsStream(pathPython+nameFilePython);
+
 			if(path == null)
 				throw new NotFoundConfigurationFilePythonException(nameFilePython.getNameFile());
-			file =  new File(path.getFile());
+
 		}catch (NotFoundConfigurationFilePythonException e) {
 			System.out.println("Config file " + e.getMessage());
 			e.printStackTrace();
 		}
 
-		return file;
+		return path;
 	}
 
-	private File getFileTeamPython(String pathPython, FileTeamPython nameFilePython) {
-		File file = null;
+	private InputStream getFileTeamPython(String pathPython, FileTeamPython nameFilePython) {
+		InputStream path = null;
 		try {
-			URL path = getClass().getClassLoader().getResource(pathPython+nameFilePython);
-			System.out.println(pathPython+nameFilePython);
+			//path = getClass().getClassLoader().getResource(pathPython+nameFilePython);
+			path = getClass().getClassLoader().getResourceAsStream(pathPython+nameFilePython);
+
 			if(path == null)
 				throw new NotFoundConfigurationFilePythonException(nameFilePython.getNameFile());
-			file =  new File(path.getFile());
+
 		}catch (NotFoundConfigurationFilePythonException e) {
 			System.out.println("Team file " + e.getMessage());
 			e.printStackTrace();
 		}
 
-		return file;
+		return path;
 	}
 
 
-	private void instanciedPyScript(Map<String, File> map){
+	private void instanciedPyScript(Map<String, InputStream> map){
 		try {
-			Iterator<Entry<String, File>> entries = map.entrySet().iterator();
+			Iterator<Entry<String, InputStream>> entries = map.entrySet().iterator();
 			while (entries.hasNext()) {
-				Entry<String, File> thisEntry = entries.next();
+				Entry<String, InputStream> thisEntry = entries.next();
 				Script s = createScript(thisEntry.getValue());
 				if(thisEntry.getKey().equals(FileConfigPython.PyWarTools.getNameFile()))
 					giveScriptToolsAgent(s, thisEntry.getKey());
@@ -138,6 +139,8 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 					giveScriptAgent(s, thisEntry.getKey());
 			}
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -172,17 +175,19 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
 	public Script getTemplateAgent(WarAgentType agent) {
 		//System.out.println(team.size());
 
-		Iterator<Entry<String, File>> entries = team.entrySet().iterator();
+		Iterator<Entry<String, InputStream>> entries = team.entrySet().iterator();
 
 		try {
 			while (entries.hasNext()) {
-				Entry<String, File> thisEntry = entries.next();
+				Entry<String, InputStream> thisEntry = entries.next();
 				//System.out.println(thisEntry.getKey());
 				if(thisEntry.getKey().equals(agent.toString()))
 					return createScript(thisEntry.getValue());
 
 			}
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
