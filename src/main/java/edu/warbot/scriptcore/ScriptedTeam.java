@@ -21,6 +21,7 @@ import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
+import edu.warbot.brains.implementations.AgentBrainImplementer;
 import edu.warbot.brains.implementations.WarBrainImplementation;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarScheduler;
@@ -29,6 +30,7 @@ import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 import edu.warbot.scriptcore.team.Scriptable;
 import javassist.*;
+import teams.engineer.WarExplorerBrainController;
 
 public class ScriptedTeam extends Team {
 
@@ -89,7 +91,19 @@ public class ScriptedTeam extends Team {
 
 
     private static Class<? extends WarBrain> createNewWarBrainImplementationClass(String brainClassName) throws NotFoundException, CannotCompileException, IOException {
-       ClassPool classPool = ClassPool.getDefault();
+        ClassPool classPool = ClassPool.getDefault();
+        try
+        {
+            WarExplorerBrainController.class.getClassLoader().loadClass(WarBrainImplementation.class.getCanonicalName());
+            WarExplorerBrainController.class.getClassLoader().loadClass(AgentBrainImplementer.class.getCanonicalName());
+            WarExplorerBrainController.class.getClassLoader().loadClass(WarBrain.class.getCanonicalName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        ClassClassPath ccpath = new ClassClassPath(WarBrainImplementation.class);
+        classPool.insertClassPath(ccpath);
+        ccpath = new ClassClassPath(AgentBrainImplementer.class);
+        classPool.insertClassPath(ccpath);
         CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
         if(! brainImplementationClass.isFrozen()) {
             brainImplementationClass.setName(brainClassName + "BrainImplementation");
@@ -115,6 +129,8 @@ public class ScriptedTeam extends Team {
             return null;
         }
     }
+
+
     static
     {
         brainControllers = new HashMap<String,Class<? extends WarBrain>>();
