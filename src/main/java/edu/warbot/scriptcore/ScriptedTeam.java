@@ -7,6 +7,7 @@ import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
+import edu.warbot.brains.implementations.AgentBrainImplementer;
 import edu.warbot.brains.implementations.WarBrainImplementation;
 import edu.warbot.game.Team;
 import edu.warbot.scriptcore.exceptions.NotFoundConfigurationException;
@@ -14,6 +15,7 @@ import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 import edu.warbot.scriptcore.team.Scriptable;
 import javassist.*;
+import teams.engineer.WarExplorerBrainController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -86,33 +88,6 @@ public class ScriptedTeam extends Team {
         }
     }
 
-    private Class<? extends WarBrain> createNewWarBrainImplementationClass(String brainClassName) throws NotFoundException, CannotCompileException, IOException {
-        ClassPool classPool = ClassPool.getDefault();
-        CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
-        if (!brainImplementationClass.isFrozen()) {
-            brainImplementationClass.setName(brainClassName + "BrainImplementation");
-            brainImplementationClass.setModifiers(Modifier.PUBLIC);
-
-            CtClass brainClass = classPool.get(brainClassName);
-            String capacitiesPackageName = Agressive.class.getPackage().getName();
-            for (CtClass brainInterface : brainClass.getSuperclass().getInterfaces()) {
-                if (brainInterface.getPackageName().equals(capacitiesPackageName)) {
-                    CtClass brainInterfaceImplementation = classPool.get(WarBrainImplementation.class.getPackage().getName() + ".War" + brainInterface.getSimpleName() + "BrainImplementation");
-                    for (CtMethod interfaceImplementationMethod : brainInterface.getDeclaredMethods()) {
-                        brainImplementationClass.addMethod(new CtMethod(
-                                brainInterfaceImplementation.getDeclaredMethod(interfaceImplementationMethod.getName(), interfaceImplementationMethod.getParameterTypes()),
-                                brainImplementationClass, null));
-                    }
-                }
-            }
-
-            brainImplementationClass.setSuperclass(brainClass);
-
-            return (Class<? extends WarBrain>) brainImplementationClass.toClass().asSubclass(WarBrain.class);
-        } else {
-            return null;
-        }
-    }
 
     public ScriptInterpreter getInterpreter() {
         return interpreter;
