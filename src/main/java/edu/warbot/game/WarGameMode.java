@@ -1,13 +1,15 @@
 package edu.warbot.game;
 
-import edu.warbot.game.mode.*;
+import edu.warbot.game.mode.AbstractGameMode;
+import edu.warbot.game.mode.DuelGameMode;
+import edu.warbot.game.mode.ResourcesRunGameMode;
+import edu.warbot.game.mode.TimerGameMode;
 
 public enum WarGameMode {
-	Duel(DuelGameMode.class),
-	ResourcesRun(ResourcesRunGameMode.class),
+    Duel(DuelGameMode.class),
+    ResourcesRun(ResourcesRunGameMode.class),
     TimerRun(TimerGameMode.class),
-    NumberAgentGameMode(edu.warbot.game.mode.NumberAgentGameMode.class)
-    ;
+    NumberAgentGameMode(edu.warbot.game.mode.NumberAgentGameMode.class);
 
     private Class<? extends AbstractGameMode> gameModeClass;
 

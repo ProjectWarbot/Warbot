@@ -1,6 +1,22 @@
 package edu.warbot.scriptcore;
 
-import java.awt.Color;
+import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.agents.WarAgent;
+import edu.warbot.agents.WarBuilding;
+import edu.warbot.agents.WarProjectile;
+import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Agressive;
+import edu.warbot.brains.implementations.WarBrainImplementation;
+import edu.warbot.game.Team;
+import edu.warbot.scriptcore.exceptions.NotFoundConfigurationException;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
+import edu.warbot.scriptcore.scriptagent.ScriptAgent;
+import edu.warbot.scriptcore.team.Scriptable;
+import javassist.*;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,33 +28,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.swing.ImageIcon;
-
-import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.agents.WarAgent;
-import edu.warbot.agents.WarBuilding;
-import edu.warbot.agents.WarProjectile;
-import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.capacities.Agressive;
-import edu.warbot.brains.implementations.WarBrainImplementation;
-import edu.warbot.game.Team;
-import edu.warbot.launcher.WarScheduler;
-import edu.warbot.scriptcore.exceptions.NotFoundConfigurationFilePythonException;
-import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
-import edu.warbot.scriptcore.scriptagent.ScriptAgent;
-import edu.warbot.scriptcore.team.Scriptable;
-import javassist.*;
-
 public class ScriptedTeam extends Team {
-
-    protected static HashMap<String, Class<? extends WarBrain>> brainControllers;
-    protected ScriptInterpreter interpreter;
 
     private static boolean initFunction = false;
     private static List<String> functions = new ArrayList<String>();
+    protected ScriptInterpreter interpreter;
 
-    public ScriptedTeam(String name) {
+    public ScriptedTeam(String name, HashMap<String, Class<? extends WarBrain>> brainControllers) {
 
         super(name);
         for (String agentName : brainControllers.keySet())
@@ -51,13 +47,18 @@ public class ScriptedTeam extends Team {
                         ArrayList<WarProjectile> projectiles,
                         ArrayList<WarBuilding> buildings,
                         HashMap<WarAgentType, Integer> nbUnitsLeft,
+                        HashMap<String, Class<? extends WarBrain>> brainControllers,
                         ArrayList<WarAgent> dyingAgents) {
         super(nom, color, logo, description, controllableAgents, projectiles,
-                buildings, ScriptedTeam.brainControllers, nbUnitsLeft, dyingAgents);
+                buildings, brainControllers, nbUnitsLeft, dyingAgents);
     }
 
-    public void initListFunctions() {
-        if(!initFunction) {
+    public static List<String> getFunctions() {
+        return functions;
+    }
+
+    public void initFunctionList() {
+        if (!initFunction) {
 
             String defaultSourceFile = "scripts/function/";
             String defaultNameFile = "function.txt";
@@ -65,19 +66,18 @@ public class ScriptedTeam extends Team {
             File file = null;
 
             try {
-                URL path = getClass().getClassLoader().getResource(defaultSourceFile+defaultNameFile);
-                if(path == null)
-                    throw new NotFoundConfigurationFilePythonException(defaultNameFile);
-                file =  new File(path.getFile());
+                URL path = getClass().getClassLoader().getResource(defaultSourceFile + defaultNameFile);
+                if (path == null)
+                    throw new NotFoundConfigurationException(defaultNameFile);
+                file = new File(path.getFile());
 
                 Scanner scanner = new Scanner(file);
-                while(scanner.hasNext())
-                {
+                while (scanner.hasNext()) {
                     functions.add(scanner.nextLine());
                 }
                 scanner.close();
-            }catch (NotFoundConfigurationFilePythonException e) {
-                System.out.println(e.getMessage());
+            } catch (NotFoundConfigurationException e) {
+                System.err.println(e.getMessage());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -86,12 +86,10 @@ public class ScriptedTeam extends Team {
         }
     }
 
-
-
-    private static Class<? extends WarBrain> createNewWarBrainImplementationClass(String brainClassName) throws NotFoundException, CannotCompileException, IOException {
-       ClassPool classPool = ClassPool.getDefault();
+    private Class<? extends WarBrain> createNewWarBrainImplementationClass(String brainClassName) throws NotFoundException, CannotCompileException, IOException {
+        ClassPool classPool = ClassPool.getDefault();
         CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
-        if(! brainImplementationClass.isFrozen()) {
+        if (!brainImplementationClass.isFrozen()) {
             brainImplementationClass.setName(brainClassName + "BrainImplementation");
             brainImplementationClass.setModifiers(Modifier.PUBLIC);
 
@@ -115,49 +113,35 @@ public class ScriptedTeam extends Team {
             return null;
         }
     }
-    static
-    {
-        brainControllers = new HashMap<String,Class<? extends WarBrain>>();
-        try {
-            brainControllers.put("WarBase",createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarBase"));
-            brainControllers.put("WarExplorer",createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarExplorer"));
-            brainControllers.put("WarEngineer",createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarEngineer"));
-            brainControllers.put("WarRocketLauncher",createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarRocketLauncher"));
-            brainControllers.put("WarKamikaze",createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarKamikaze"));
-            brainControllers.put("WarTurret",createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarTurret"));
-        }catch(NotFoundException| CannotCompileException| IOException e)
-        {
-            e.printStackTrace();
-        }
+
+    public ScriptInterpreter getInterpreter() {
+        return interpreter;
     }
 
-	public ScriptInterpreter getInterpreter() {
-		return interpreter;
-	}
+    public void setInterpreter(ScriptInterpreter interpreter) {
+        this.interpreter = interpreter;
+    }
 
-	public void setInterpreter(ScriptInterpreter interpreter) {
-		this.interpreter = interpreter;
-	}
-	
-	public ControllableWarAgent instantiateNewControllableWarAgent(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
-		
-		ControllableWarAgent a = super.instantiateNewControllableWarAgent(agentName);
-		ScriptAgent sa = getInterpreter().giveScriptAgent(WarAgentType.valueOf(agentName));
-		( (Scriptable) a.getBrain()).setScriptAgent(sa);
-		sa.link(a.getBrain());
-		return a;
-	}
+    public ControllableWarAgent instantiateNewControllableWarAgent(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+
+        ControllableWarAgent a = super.instantiateNewControllableWarAgent(agentName);
+        ScriptAgent sa = getInterpreter().giveScriptAgent(WarAgentType.valueOf(agentName));
+        ((Scriptable) a.getBrain()).setScriptAgent(sa);
+        sa.link(a.getBrain());
+        return a;
+    }
 
     @Override
-    public Team duplicate (String name) {
+    public Team duplicate(String name) {
         ScriptedTeam scteam = new ScriptedTeam(name,
-                ((this.getColor()==null)?null:(new Color(this.getColor().getRGB()))),
+                ((this.getColor() == null) ? null : (new Color(this.getColor().getRGB()))),
                 this.getImage(),
                 this.getDescription(),
                 new ArrayList<>(this.getControllableAgents()),
                 new ArrayList<>(this.getProjectiles()),
                 new ArrayList<>(this.getBuildings()),
                 new HashMap<>(this.getAllNbUnitsLeft()),
+                new HashMap<>(this.getAllBrainControllers()),
                 new ArrayList<>(this.getDyingAgents())
         );
 
@@ -165,10 +149,6 @@ public class ScriptedTeam extends Team {
 
         return scteam;
 
-    }
-
-    public static List<String> getFunctions() {
-        return functions;
     }
 
 

@@ -11,46 +11,46 @@ import edu.warbot.brains.brains.WarBaseBrain;
  */
 public class WarActionCreateUnit extends WarAction<WarBaseBrain> {
 
-	int minLife;
-	WarAgentType agentType;
-	int nbToCreate;
-	int nbCreate;
-	
-	public WarActionCreateUnit(WarBaseBrain brain, WarAgentType agentType, int nb, int minLife) {
-		super(brain);
-		this.agentType = agentType;
-		this.nbToCreate = nb;
-		this.minLife = minLife;
-	}
+    int minLife;
+    WarAgentType agentType;
+    int nbToCreate;
+    int nbCreate;
 
-	public String executeAction(){
-		
-		if(nbCreate == nbToCreate){
-			getAgent().setDebugString("ActionCreateUnit : all unit created");
-			return MovableWarAgent.ACTION_IDLE;
-		}
-		
-		if(!getAgent().isBagEmpty() && getAgent().getHealth() < this.minLife){
-			getAgent().setDebugString("ActionCreateUnit : eat to restor life");
-			return WarBase.ACTION_EAT;
-		}
-		
-		if(getAgent().getHealth() >= minLife){
-			getAgent().setNextAgentToCreate(agentType);
-			nbCreate++;
-			getAgent().setDebugString("ActionCreateUnit : create " + this.agentType);
-			return WarBase.ACTION_CREATE;
-		}
-		
-		return WarBase.ACTION_IDLE;
-		
-	}
+    public WarActionCreateUnit(WarBaseBrain brain, WarAgentType agentType, int nb, int minLife) {
+        super(brain);
+        this.agentType = agentType;
+        this.nbToCreate = nb;
+        this.minLife = minLife;
+    }
 
-	@Override
-	public void actionWillBegin() {
-		super.actionWillBegin();
-		getAgent().setDebugString(getClass().getSimpleName() + " " + agentType.toString());
-		this.nbCreate = 0;
-	}
-	
+    public String executeAction() {
+
+        if (nbCreate == nbToCreate) {
+            getAgent().setDebugString("ActionCreateUnit : all unit created");
+            return MovableWarAgent.ACTION_IDLE;
+        }
+
+        if (!getAgent().isBagEmpty() && getAgent().getHealth() < this.minLife) {
+            getAgent().setDebugString("ActionCreateUnit : eat to restor life");
+            return WarBase.ACTION_EAT;
+        }
+
+        if (getAgent().getHealth() >= minLife) {
+            getAgent().setNextAgentToCreate(agentType);
+            nbCreate++;
+            getAgent().setDebugString("ActionCreateUnit : create " + this.agentType);
+            return WarBase.ACTION_CREATE;
+        }
+
+        return WarBase.ACTION_IDLE;
+
+    }
+
+    @Override
+    public void actionWillBegin() {
+        super.actionWillBegin();
+        getAgent().setDebugString(getClass().getSimpleName() + " " + agentType.toString());
+        this.nbCreate = 0;
+    }
+
 }

@@ -1,18 +1,14 @@
 package edu.warbot.game.mode.endCondition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.TeamListener;
 import edu.warbot.game.WarGame;
 
-public class NumberAgentEndCondition extends AbstractEndCondition implements TeamListener{
+import java.util.ArrayList;
+import java.util.List;
+
+public class NumberAgentEndCondition extends AbstractEndCondition implements TeamListener {
 
     private List<WarNumberAgent> agents;
 
@@ -61,12 +57,11 @@ public class NumberAgentEndCondition extends AbstractEndCondition implements Tea
 
     @Override
     public void onAgentAdded(WarAgent newAgent) {
-        for(WarCollectionNumberAgentByTeam collection : collectionAgentByTeam) {
-            if(newAgent.getTeam().equals(collection.getTeam())){
-                if(collection.isInCollectionOfAgent(newAgent)) {
+        for (WarCollectionNumberAgentByTeam collection : collectionAgentByTeam) {
+            if (newAgent.getTeam().equals(collection.getTeam())) {
+                if (collection.isInCollectionOfAgent(newAgent)) {
                     collection.incrementNumberOfAgent(newAgent);
-                }
-                else {
+                } else {
                     collection.addNewAgent(newAgent);
                 }
             }
@@ -75,9 +70,9 @@ public class NumberAgentEndCondition extends AbstractEndCondition implements Tea
 
     @Override
     public void onAgentRemoved(WarAgent removedAgent) {
-        for(WarCollectionNumberAgentByTeam collection : collectionAgentByTeam) {
-            if(removedAgent.getTeam().equals(collection.getTeam())){
-                if(collection.isInCollectionOfAgent(removedAgent)) {
+        for (WarCollectionNumberAgentByTeam collection : collectionAgentByTeam) {
+            if (removedAgent.getTeam().equals(collection.getTeam())) {
+                if (collection.isInCollectionOfAgent(removedAgent)) {
                     collection.decrementNumberOfAgent(removedAgent);
                 }
             }

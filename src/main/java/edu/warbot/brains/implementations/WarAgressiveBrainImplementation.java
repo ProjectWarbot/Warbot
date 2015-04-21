@@ -1,9 +1,7 @@
 package edu.warbot.brains.implementations;
 
 import edu.warbot.agents.actions.constants.AgressiveActions;
-import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.capacities.Agressive;
-import edu.warbot.brains.capacities.Creator;
 
 public class WarAgressiveBrainImplementation extends WarBrainImplementation implements AgressiveActions, Agressive {
 

@@ -13,17 +13,17 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class WarToolBar extends JToolBar implements ActionListener {
 
-	private JButton btnEndGame;
-	private JToggleButton btnDisplayInfos;
-	private JToggleButton btnDisplayPercepts;
-	private JToggleButton btnDisplayHealthBars;
-	private JToggleButton btnDisplayDebugMessages;
+    private JButton btnEndGame;
+    private JToggleButton btnDisplayInfos;
+    private JToggleButton btnDisplayPercepts;
+    private JToggleButton btnDisplayHealthBars;
+    private JToggleButton btnDisplayDebugMessages;
 
     private AbstractWarViewer viewer;
 
-	public WarToolBar(AbstractWarViewer viewer) {
-		super();
-		this.viewer = viewer;
+    public WarToolBar(AbstractWarViewer viewer) {
+        super();
+        this.viewer = viewer;
         setFloatable(false);
 
         btnEndGame = new JButton();
@@ -70,27 +70,27 @@ public class WarToolBar extends JToolBar implements ActionListener {
         btnDisplayDebugMessages.setToolTipText("Affiche les messages de debug des agents");
         btnDisplayDebugMessages.addActionListener(this);
         add(btnDisplayDebugMessages);
-	}
+    }
 
-	public boolean isShowInfos() {
-		return btnDisplayInfos.isSelected();
-	}
+    public boolean isShowInfos() {
+        return btnDisplayInfos.isSelected();
+    }
 
-	public boolean isShowPercepts() {
-		return btnDisplayPercepts.isSelected();
-	}
+    public boolean isShowPercepts() {
+        return btnDisplayPercepts.isSelected();
+    }
 
-	public boolean isShowHealthBars() {
-		return btnDisplayHealthBars.isSelected();
-	}
+    public boolean isShowHealthBars() {
+        return btnDisplayHealthBars.isSelected();
+    }
 
-	public boolean isShowDebugMessages() {
-		return btnDisplayDebugMessages.isSelected();
-	}
+    public boolean isShowDebugMessages() {
+        return btnDisplayDebugMessages.isSelected();
+    }
 
-	public AbstractWarViewer getViewer() {
-		return viewer;
-	}
+    public AbstractWarViewer getViewer() {
+        return viewer;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

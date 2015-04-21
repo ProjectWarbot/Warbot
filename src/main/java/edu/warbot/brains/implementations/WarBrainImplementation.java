@@ -5,7 +5,6 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.capacities.Controllable;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
 import madkit.kernel.AbstractAgent;
@@ -78,13 +77,13 @@ public class WarBrainImplementation extends WarBrain implements AgentBrainImplem
     }
 
     @Override
-    public void setViewDirection(double viewDirection) {
-        agent.setViewDirection(viewDirection);
+    public double getViewDirection() {
+        return agent.getViewDirection();
     }
 
     @Override
-    public double getViewDirection() {
-        return agent.getViewDirection();
+    public void setViewDirection(double viewDirection) {
+        agent.setViewDirection(viewDirection);
     }
 
     @Override

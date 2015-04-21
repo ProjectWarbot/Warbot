@@ -5,24 +5,24 @@ import edu.warbot.brains.brains.WarRocketLauncherBrain;
 
 public abstract class WarRocketLauncherBrainController extends WarRocketLauncherBrain {
 
-	WarFSM<WarRocketLauncherBrain> fsm;
+    WarFSM<WarRocketLauncherBrain> fsm;
 
-	public WarRocketLauncherBrainController() {
-		super();
-	}
+    public WarRocketLauncherBrainController() {
+        super();
+    }
 
-	@Override
-	public void activate() {
-		initialisation();
-	}
+    @Override
+    public void activate() {
+        initialisation();
+    }
 
-	@Override
-	public String action() {
-		return fsm.executeFSM();
-	}
+    @Override
+    public String action() {
+        return fsm.executeFSM();
+    }
 
-	private void initialisation() {
-		fsm = new WarFSM<WarRocketLauncherBrain>();
+    private void initialisation() {
+        fsm = new WarFSM<WarRocketLauncherBrain>();
 
 //		/*** Refelxes ***/
 //		WarCondition<WarRocketLauncherAdapter> condReflex = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getAgent(), WarAgentType.WarBase, true, ">", 0);
@@ -66,6 +66,6 @@ public abstract class WarRocketLauncherBrainController extends WarRocketLauncher
 //		fsm.setFirstEtat(etatPatrouille);
 //
 //		fsm.initFSM();
-	}
+    }
 
 }

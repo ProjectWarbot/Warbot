@@ -4,28 +4,28 @@ import edu.warbot.brains.brains.WarKamikazeBrain;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 
 public abstract class ScriptableWarKamikaze extends WarKamikazeBrain implements Scriptable {
-	
-	private ScriptAgent script;
-	
-	public ScriptableWarKamikaze() {
-		super();
-	}
 
-	@Override
-	public void activate() {
+    private ScriptAgent script;
 
-	}
-	
-	@Override
-	public String action() {		
-		return getScriptAgent().action();
-	}	
-	
-	public void setScriptAgent(ScriptAgent script) {
-		this.script = script;
-	}
+    public ScriptableWarKamikaze() {
+        super();
+    }
 
-	public ScriptAgent getScriptAgent() {
-		return script;
-	}
+    @Override
+    public void activate() {
+
+    }
+
+    @Override
+    public String action() {
+        return getScriptAgent().action();
+    }
+
+    public ScriptAgent getScriptAgent() {
+        return script;
+    }
+
+    public void setScriptAgent(ScriptAgent script) {
+        this.script = script;
+    }
 }

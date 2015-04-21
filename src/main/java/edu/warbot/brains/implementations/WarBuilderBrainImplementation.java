@@ -2,19 +2,18 @@ package edu.warbot.brains.implementations;
 
 import edu.warbot.agents.actions.constants.BuilderActions;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.brains.capacities.Builder;
 
 public class WarBuilderBrainImplementation extends WarBrainImplementation implements BuilderActions, Builder {
 
     @Override
-    public void setNextBuildingToBuild(WarAgentType nextBuildingToBuild) {
-        ((Builder) this.agent).setNextBuildingToBuild(nextBuildingToBuild);
+    public WarAgentType getNextBuildingToBuild() {
+        return ((Builder) this.agent).getNextBuildingToBuild();
     }
 
     @Override
-    public WarAgentType getNextBuildingToBuild() {
-        return ((Builder) this.agent).getNextBuildingToBuild();
+    public void setNextBuildingToBuild(WarAgentType nextBuildingToBuild) {
+        ((Builder) this.agent).setNextBuildingToBuild(nextBuildingToBuild);
     }
 
     @Override
@@ -23,12 +22,12 @@ public class WarBuilderBrainImplementation extends WarBrainImplementation implem
     }
 
     @Override
-    public void setIdNextBuildingToRepair(int idNextBuildingToRepair) {
-        ((Builder) this.agent).setIdNextBuildingToRepair(idNextBuildingToRepair);
+    public int getIdNextBuildingToRepair() {
+        return ((Builder) this.agent).getIdNextBuildingToRepair();
     }
 
     @Override
-    public int getIdNextBuildingToRepair() {
-        return ((Builder) this.agent).getIdNextBuildingToRepair();
+    public void setIdNextBuildingToRepair(int idNextBuildingToRepair) {
+        ((Builder) this.agent).setIdNextBuildingToRepair(idNextBuildingToRepair);
     }
 }

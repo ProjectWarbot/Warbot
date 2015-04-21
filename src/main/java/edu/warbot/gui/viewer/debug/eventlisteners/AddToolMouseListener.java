@@ -17,34 +17,34 @@ import java.awt.event.MouseMotionListener;
 
 public class AddToolMouseListener implements MouseListener, MouseMotionListener {
 
-	private DebugModePanel _debugToolBar;
-	private DebugToolsPnl _toolsPnl;
+    private DebugModePanel _debugToolBar;
+    private DebugToolsPnl _toolsPnl;
 
     private WarAgent currentCreatedAgent;
-	
-	private WarGame game;
 
-	public AddToolMouseListener(DebugModePanel debugToolBar, DebugToolsPnl toolsPnl) {
-		_debugToolBar = debugToolBar;
-		_toolsPnl = toolsPnl;
+    private WarGame game;
 
-		game = _debugToolBar.getViewer().getGame();
-	}
+    public AddToolMouseListener(DebugModePanel debugToolBar, DebugToolsPnl toolsPnl) {
+        _debugToolBar = debugToolBar;
+        _toolsPnl = toolsPnl;
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
+        game = _debugToolBar.getViewer().getGame();
+    }
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-	@Override
-	public void mousePressed(MouseEvent e) {
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             _debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
             if (_toolsPnl.getSelectedWarAgentTypeToCreate() != null) {
@@ -81,15 +81,15 @@ public class AddToolMouseListener implements MouseListener, MouseMotionListener 
                 JOptionPane.showMessageDialog(_debugToolBar, "Veuillez sélectionner un type d'agent.", "Création d'un agent impossible", JOptionPane.ERROR_MESSAGE);
             }
         }
-	}
+    }
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
+    @Override
+    public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             currentCreatedAgent = null;
             _debugToolBar.getViewer().setMapExplorationEventsEnabled(true);
         }
-	}
+    }
 
     @Override
     public void mouseDragged(MouseEvent e) {

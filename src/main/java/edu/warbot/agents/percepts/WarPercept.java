@@ -6,9 +6,9 @@ public class WarPercept {
 
     private ControllableWarAgent observer;
 
-	public WarPercept(ControllableWarAgent observer) {
+    public WarPercept(ControllableWarAgent observer) {
         this.observer = observer;
-	}
+    }
 
     protected ControllableWarAgent getObserver() {
         return observer;

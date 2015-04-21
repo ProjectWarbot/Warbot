@@ -73,7 +73,7 @@ public class WarDefaultViewer extends AbstractWarViewer {
         boolean isCurrentAgentTheSelectedOne = false;
         boolean haveOneColorChanged = false;
 
-        for(WarAgent agent : team.getAllAgents()) {
+        for (WarAgent agent : team.getAllAgents()) {
 
             // Si les couleurs ont été modifiées, on restaure les couleurs
             if (haveOneColorChanged) {
@@ -101,14 +101,14 @@ public class WarDefaultViewer extends AbstractWarViewer {
             }
 
             if (agent instanceof ControllableWarAgent) {
-                if(getWarToolBar().isShowPercepts()) {
+                if (getWarToolBar().isShowPercepts()) {
                     paintPerceptionArea(g2d, (ControllableWarAgent) agent, perceptsColor);
-                    if(isCurrentAgentTheSelectedOne)
+                    if (isCurrentAgentTheSelectedOne)
                         paintSeenWalls(g2d, (ControllableWarAgent) agent, Color.GREEN);
                 }
                 if (getWarToolBar().isShowDebugMessages() || isCurrentAgentTheSelectedOne)
                     paintDebugMessage(g2d, (ControllableWarAgent) agent);
-                if(isCurrentAgentTheSelectedOne && ((ControllableWarAgent) agent).getDebugShape() != null)
+                if (isCurrentAgentTheSelectedOne && ((ControllableWarAgent) agent).getDebugShape() != null)
                     paintDebugShape(g2d, ((ControllableWarAgent) agent).getDebugShape());
             }
 
@@ -140,7 +140,7 @@ public class WarDefaultViewer extends AbstractWarViewer {
         // Affichage des agents mourants
         for (WarAgent a : team.getDyingAgents()) {
             if (a instanceof WarProjectile)
-                explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile)a).getExplosionRadius() - Team.MAX_DYING_STEP + a.getDyingStep())));
+                explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile) a).getExplosionRadius() - Team.MAX_DYING_STEP + a.getDyingStep())));
             else
                 explosions.add(createExplosionShape(a.getPosition(), (int) ((a.getDyingStep() + a.getHitboxMinRadius()) * 2)));
         }
@@ -183,7 +183,7 @@ public class WarDefaultViewer extends AbstractWarViewer {
     }
 
     private void paintDebugMessage(Graphics g, ControllableWarAgent agent) {
-        if(agent.getDebugString() != ""){
+        if (agent.getDebugString() != "") {
             String msg = agent.getDebugString();
             Color fontColor = agent.getDebugStringColor();
 
@@ -235,7 +235,7 @@ public class WarDefaultViewer extends AbstractWarViewer {
         g.setColor(color);
         Stroke previousStroke = g.getStroke();
         g.setStroke(new BasicStroke(3));
-        for(WallPercept wallPercept : agent.getWallPercepts())
+        for (WallPercept wallPercept : agent.getWallPercepts())
             g.draw(GeometryTools.resize(wallPercept.getSeenWall(), cellSize));
         g.setStroke(previousStroke);
     }
@@ -253,7 +253,7 @@ public class WarDefaultViewer extends AbstractWarViewer {
     }
 
     private void paintExplosionShape(Graphics2D g2d, WarStar s) {
-        if(s.getRadiusOuterCircle() > 0) { // Erreur de source inconnue qui arrivait souvent
+        if (s.getRadiusOuterCircle() > 0) { // Erreur de source inconnue qui arrivait souvent
             RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getCenter().getX(), s.getCenter().getY()),
                     (float) s.getRadiusOuterCircle(),
                     new float[]{0.0f, 0.8f},

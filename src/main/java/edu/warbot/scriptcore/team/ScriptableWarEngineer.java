@@ -4,29 +4,29 @@ import edu.warbot.brains.brains.WarEngineerBrain;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 
 public abstract class ScriptableWarEngineer extends WarEngineerBrain implements Scriptable {
-	
-	private ScriptAgent script;
-	
-	public ScriptableWarEngineer() {
-		super();
 
-	}
+    private ScriptAgent script;
 
-	@Override
-	public void activate() {
-		
-	}
-	
-	@Override
-	public String action() {		
-		return getScriptAgent().action();
-	}	
-	
-	public void setScriptAgent(ScriptAgent script) {
-		this.script = script;
-	}
+    public ScriptableWarEngineer() {
+        super();
 
-	public ScriptAgent getScriptAgent() {
-		return script;
-	}
+    }
+
+    @Override
+    public void activate() {
+
+    }
+
+    @Override
+    public String action() {
+        return getScriptAgent().action();
+    }
+
+    public ScriptAgent getScriptAgent() {
+        return script;
+    }
+
+    public void setScriptAgent(ScriptAgent script) {
+        this.script = script;
+    }
 }

@@ -8,33 +8,33 @@ import edu.warbot.brains.WarBrain;
  */
 public class WarActionIdle<BrainType extends WarBrain> extends WarAction<BrainType> {
 
-	private int nombreTikMax;
-	private int currentNombreTik = 0;
-	
-	public WarActionIdle(BrainType brain, int nombrePas) {
-		super(brain);
-		this.nombreTikMax = nombrePas;
-	}
-	
-	public String executeAction(){
-		currentNombreTik++;
+    private int nombreTikMax;
+    private int currentNombreTik = 0;
 
-		if(currentNombreTik > nombreTikMax){
-			getAgent().setDebugString(this.getClass().getSimpleName() + " IDLE (finish)");
-			return MovableWarAgent.ACTION_IDLE;
-			
-		}else{
-			getAgent().setDebugString(this.getClass().getSimpleName() + " IDLE");
-			return MovableWarAgent.ACTION_IDLE;
-		}
-		
-		
-	}
+    public WarActionIdle(BrainType brain, int nombrePas) {
+        super(brain);
+        this.nombreTikMax = nombrePas;
+    }
 
-	@Override
-	public void actionWillBegin() {
-		super.actionWillBegin();
-		currentNombreTik = 0;
-	}
+    public String executeAction() {
+        currentNombreTik++;
+
+        if (currentNombreTik > nombreTikMax) {
+            getAgent().setDebugString(this.getClass().getSimpleName() + " IDLE (finish)");
+            return MovableWarAgent.ACTION_IDLE;
+
+        } else {
+            getAgent().setDebugString(this.getClass().getSimpleName() + " IDLE");
+            return MovableWarAgent.ACTION_IDLE;
+        }
+
+
+    }
+
+    @Override
+    public void actionWillBegin() {
+        super.actionWillBegin();
+        currentNombreTik = 0;
+    }
 
 }

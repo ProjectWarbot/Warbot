@@ -24,7 +24,7 @@ public class ResourcesRunEndCondition extends AbstractEndCondition {
                     currentTeamResources += agent.getNbElementsInBag();
                 }
             }
-            if(currentTeamResources >= resourcesNeededToWin) {
+            if (currentTeamResources >= resourcesNeededToWin) {
                 this.winner = t;
             }
         }
@@ -32,9 +32,9 @@ public class ResourcesRunEndCondition extends AbstractEndCondition {
 
     @Override
     public boolean isGameEnded() {
-        if(winner != null) {
+        if (winner != null) {
             for (Team t : getGame().getPlayerTeams()) {
-                if(! t.equals(winner)) {
+                if (!t.equals(winner)) {
                     getGame().setTeamAsLost(t);
                 }
             }

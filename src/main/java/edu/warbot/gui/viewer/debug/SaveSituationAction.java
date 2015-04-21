@@ -94,7 +94,7 @@ public class SaveSituationAction extends AbstractAction {
                 currentTeam.appendChild(WarXmlWriter.createTextElement(doc,
                         "Name", t.getName()));
                 for (WarAgent a : t.getAllAgents()) {
-                    if (! (a instanceof WarProjectile)) {
+                    if (!(a instanceof WarProjectile)) {
                         Element currentAgent = doc.createElement("WarAgent");
 
                         currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
@@ -110,10 +110,10 @@ public class SaveSituationAction extends AbstractAction {
                             currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
                                     "Health", String.valueOf(((AliveWarAgent) a).getHealth())));
                             if (a instanceof ControllableWarAgent) {
-                            currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
-                                    "ViewDirection", String.valueOf(((ControllableWarAgent) a).getViewDirection())));
-                            currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
-                                    "NbElementsInBag", String.valueOf(((ControllableWarAgent) a).getNbElementsInBag())));
+                                currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
+                                        "ViewDirection", String.valueOf(((ControllableWarAgent) a).getViewDirection())));
+                                currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
+                                        "NbElementsInBag", String.valueOf(((ControllableWarAgent) a).getNbElementsInBag())));
                             }
                         } else if (a instanceof WarProjectile) {
                             currentAgent.appendChild(WarXmlWriter.createTextElement(doc,

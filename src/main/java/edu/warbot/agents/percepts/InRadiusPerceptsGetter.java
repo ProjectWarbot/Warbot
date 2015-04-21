@@ -8,10 +8,10 @@ import java.awt.*;
 
 public class InRadiusPerceptsGetter extends PerceptsGetter {
 
-	public InRadiusPerceptsGetter(ControllableWarAgent agent, WarGame game) {
-		super(agent, game);
-	}
-	
+    public InRadiusPerceptsGetter(ControllableWarAgent agent, WarGame game) {
+        super(agent, game);
+    }
+
     @Override
     public Shape getPerceptionAreaShape() {
         return new WarCircle(getAgent().getX(), getAgent().getY(), getAgent().getDistanceOfView());

@@ -10,17 +10,15 @@ import java.util.ArrayList;
 
 public abstract class AbstractWarMap {
 
+    public static final float TEAM_POSITION_RADIUS = 100;
+    public static final float FOOD_POSITION_RADIUS = 50;
     private static final double MAP_ACCESSIBLE_AREA_PADDING = 5.;
     private static final double BORDER_THICKNESS = 5.;
-
-	public static final float TEAM_POSITION_RADIUS = 100;
-    public static final float FOOD_POSITION_RADIUS = 50;
-
-    private String name;
     protected Area mapAccessibleArea;
     protected Area mapForbidArea;
-	private ArrayList<ArrayList<WarCircle>> _teamsPositions;
-	private ArrayList<WarCircle> _foodPositions;
+    private String name;
+    private ArrayList<ArrayList<WarCircle>> _teamsPositions;
+    private ArrayList<WarCircle> _foodPositions;
     private double mapWidth;
     private double mapHeight;
 
@@ -28,44 +26,45 @@ public abstract class AbstractWarMap {
         this.name = name;
         _teamsPositions = new ArrayList<>();
         _foodPositions = new ArrayList<>();
-        mapAccessibleArea = new Area(new Rectangle2D.Double(-MAP_ACCESSIBLE_AREA_PADDING, -MAP_ACCESSIBLE_AREA_PADDING, mapWidth + (MAP_ACCESSIBLE_AREA_PADDING*2.), mapHeight + (MAP_ACCESSIBLE_AREA_PADDING*2.)));
+        mapAccessibleArea = new Area(new Rectangle2D.Double(-MAP_ACCESSIBLE_AREA_PADDING, -MAP_ACCESSIBLE_AREA_PADDING, mapWidth + (MAP_ACCESSIBLE_AREA_PADDING * 2.), mapHeight + (MAP_ACCESSIBLE_AREA_PADDING * 2.)));
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
     }
 
     public ArrayList<ArrayList<WarCircle>> getTeamsPositions() {
-		return new ArrayList<>(_teamsPositions);
-	}
-	
-	/**
-	 * Add all possible positions for one same team.
-	 * @param coords Coordinates of possible positions for this team
-	 */
-	public void addTeamPositions(CoordCartesian ... coords) {
-		ArrayList<WarCircle> positions = new ArrayList<WarCircle>();
-		for(CoordCartesian coord : coords)
-			positions.add(new WarCircle(((Double)coord.getX()).floatValue(), ((Double)coord.getY()).floatValue(), TEAM_POSITION_RADIUS));
-		_teamsPositions.add(positions);
-	}
-	
-	public ArrayList<WarCircle> getFoodPositions() {
-		return new ArrayList<>(_foodPositions);
-	}
-	
-	public void addFoodPosition(double x, double y) {
-		_foodPositions.add(new WarCircle(x, y, FOOD_POSITION_RADIUS));
-	}
-	
-	public int getMaxPlayers() {
-		if (_teamsPositions.size() > 0)
-			return _teamsPositions.get(0).size() * _teamsPositions.size();
-		else
-			return 0;
-	}
-	
-	public int getMaxTeams() {
-		return _teamsPositions.size();
-	}
+        return new ArrayList<>(_teamsPositions);
+    }
+
+    /**
+     * Add all possible positions for one same team.
+     *
+     * @param coords Coordinates of possible positions for this team
+     */
+    public void addTeamPositions(CoordCartesian... coords) {
+        ArrayList<WarCircle> positions = new ArrayList<WarCircle>();
+        for (CoordCartesian coord : coords)
+            positions.add(new WarCircle(((Double) coord.getX()).floatValue(), ((Double) coord.getY()).floatValue(), TEAM_POSITION_RADIUS));
+        _teamsPositions.add(positions);
+    }
+
+    public ArrayList<WarCircle> getFoodPositions() {
+        return new ArrayList<>(_foodPositions);
+    }
+
+    public void addFoodPosition(double x, double y) {
+        _foodPositions.add(new WarCircle(x, y, FOOD_POSITION_RADIUS));
+    }
+
+    public int getMaxPlayers() {
+        if (_teamsPositions.size() > 0)
+            return _teamsPositions.get(0).size() * _teamsPositions.size();
+        else
+            return 0;
+    }
+
+    public int getMaxTeams() {
+        return _teamsPositions.size();
+    }
 
     public String getName() {
         return name;
@@ -76,18 +75,18 @@ public abstract class AbstractWarMap {
     }
 
     public Area getMapForbidArea() {
-        if(mapForbidArea == null)
+        if (mapForbidArea == null)
             updateForbidArea();
         return new Area(mapForbidArea);
     }
 
-	public double getWidth() {
-		return mapWidth;
-	}
-	
-	public double getHeight() {
-		return mapHeight;
-	}
+    public double getWidth() {
+        return mapWidth;
+    }
+
+    public double getHeight() {
+        return mapHeight;
+    }
 
     public double getCenterX() {
         return mapWidth / 2.;

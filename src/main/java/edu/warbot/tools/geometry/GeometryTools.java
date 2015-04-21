@@ -12,7 +12,7 @@ public class GeometryTools {
         transformedShape.append(shape, false);
         AffineTransform t = new AffineTransform();
         Rectangle2D shapeBounds = shape.getBounds2D();
-        t.setToRotation(Math.toRadians(angle), shapeBounds.getWidth()/2., shapeBounds.getHeight()/2.);
+        t.setToRotation(Math.toRadians(angle), shapeBounds.getWidth() / 2., shapeBounds.getHeight() / 2.);
         transformedShape.transform(t);
         t = new AffineTransform();
         t.setToTranslation(newX, newY);
