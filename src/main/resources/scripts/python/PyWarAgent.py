@@ -851,6 +851,9 @@ def isRocketLauncher(percept):
 def isTurret(percept):
 	return percept.getType().equals(WarAgentType.WarTurret);
 
+def isFood(percept):
+	return percept.getType().equals(WarAgentType.WarFood);
+
 def isAlly(percept):
 	return not isEnemy(percept);
 
@@ -859,3 +862,11 @@ def shootTarget():
 		return fire()
 	else :
 		return reloadWeapon()
+
+def pickableFood(percept):
+	if(isFood(percept)):
+		return percept.getDistance() < getMaxDistanceTakeFood();
+	return False;
+
+def isNotBagFull():
+	return not WA.isBagFull();

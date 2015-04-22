@@ -91,3 +91,5 @@ isRocketLauncher
 isTurret
 isAlly
 shootTarget
+pickableFood
+isNotBagFull
