@@ -24,9 +24,9 @@ public class ForestWarMap extends AbstractWarMap {
         availableTrees = new WarStar[TREE_MAX_ARMS - TREE_MIN_ARMS + 1];
         int tabIndex = 0;
         CoordCartesian initialPosition = new CoordCartesian(0, 0);
-        for(int nbArms = TREE_MIN_ARMS; nbArms <= TREE_MAX_ARMS; nbArms++) {
+        for (int nbArms = TREE_MIN_ARMS; nbArms <= TREE_MAX_ARMS; nbArms++) {
             availableTrees[tabIndex] = new WarStar(nbArms, initialPosition, TREE_OUTER_RADIUS, TREE_INNER_RADIUS);
-            tabIndex ++;
+            tabIndex++;
         }
     }
 

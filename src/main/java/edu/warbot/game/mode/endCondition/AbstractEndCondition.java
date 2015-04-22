@@ -11,6 +11,7 @@ public abstract class AbstractEndCondition {
     }
 
     public abstract void doAfterEachTick();
+
     public abstract boolean isGameEnded();
 
     protected WarGame getGame() {

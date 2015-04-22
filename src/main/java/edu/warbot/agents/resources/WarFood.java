@@ -9,19 +9,18 @@ import java.util.Map;
 
 public class WarFood extends WarResource {
 
-	public static final int HEALTH_GIVEN;
+    public static final int HEALTH_GIVEN;
 
-	static {
-		Map<String, Object> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarFood);
-		HEALTH_GIVEN = (int) data.get(WarGameConfig.RESOURCE_WARFOOD_CONFIG_HEALTH_GIVEN);
-	}
+    static {
+        Map<String, Object> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarFood);
+        HEALTH_GIVEN = (int) data.get(WarGameConfig.RESOURCE_WARFOOD_CONFIG_HEALTH_GIVEN);
+    }
 
-	public WarFood(Team team) {
-		super(WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarFood), team);
-	}
+    public WarFood(Team team) {
+        super(WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarFood), team);
+    }
 
-	public WarAgentType getType()
-	{
-		return WarAgentType.WarFood;
-	}
+    public WarAgentType getType() {
+        return WarAgentType.WarFood;
+    }
 }

@@ -20,20 +20,20 @@ import java.util.Map;
 
 public class WarGameConfig {
 
-	public static final String AGENT_CONFIG_ANGLE_OF_VIEW = "AngleOfView";
-	public static final String AGENT_CONFIG_DISTANCE_OF_VIEW = "DistanceOfView";
-	public static final String AGENT_CONFIG_COST = "Cost";
-	public static final String AGENT_CONFIG_MAX_HEALTH = "MaxHealth";
-	public static final String AGENT_CONFIG_BAG_SIZE = "BagSize";
-	public static final String AGENT_CONFIG_SPEED = "Speed";
-	public static final String AGENT_CONFIG_TICKS_TO_RELOAD = "TicksToReload";
+    public static final String AGENT_CONFIG_ANGLE_OF_VIEW = "AngleOfView";
+    public static final String AGENT_CONFIG_DISTANCE_OF_VIEW = "DistanceOfView";
+    public static final String AGENT_CONFIG_COST = "Cost";
+    public static final String AGENT_CONFIG_MAX_HEALTH = "MaxHealth";
+    public static final String AGENT_CONFIG_BAG_SIZE = "BagSize";
+    public static final String AGENT_CONFIG_SPEED = "Speed";
+    public static final String AGENT_CONFIG_TICKS_TO_RELOAD = "TicksToReload";
     public static final String AGENT_CONFIG_MAX_REPAIRS_PER_TICK = "MaxRepairsPerTick";
-	
-	public static final String PROJECTILE_CONFIG_EXPLOSION_RADIUS = "ExplosionRadius";
-	public static final String PROJECTILE_CONFIG_DAMAGE = "Damage";
-	public static final String PROJECTILE_CONFIG_AUTONOMY = "Autonomy";
-	
-	public static final String RESOURCE_WARFOOD_CONFIG_HEALTH_GIVEN = "HealthGived";
+
+    public static final String PROJECTILE_CONFIG_EXPLOSION_RADIUS = "ExplosionRadius";
+    public static final String PROJECTILE_CONFIG_DAMAGE = "Damage";
+    public static final String PROJECTILE_CONFIG_AUTONOMY = "Autonomy";
+
+    public static final String RESOURCE_WARFOOD_CONFIG_HEALTH_GIVEN = "HealthGived";
 
     static private String gameConfigFilePath = "config" + File.separatorChar + "warbot_settings.yml";
     static private Map<String, Object> config = null;
@@ -44,11 +44,10 @@ public class WarGameConfig {
             Yaml yaml = new Yaml();
             config = (Map<String, Object>) yaml.load(input);
         } catch (FileNotFoundException e) {
-            InputStream input= UserPreferences.class.getClassLoader().getResourceAsStream(gameConfigFilePath.replaceAll
-                    (File.separator,"/"));
+            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream(gameConfigFilePath.replaceAll
+                    (File.separator, "/"));
 
-            if(input!=null)
-            {
+            if (input != null) {
                 //Fichier de configuration par défaut dans le jar
                 Yaml yaml = new Yaml();
                 config = (Map<String, Object>) yaml.load(input);
@@ -57,9 +56,7 @@ public class WarGameConfig {
                 } catch (IOException e2) {
                     e2.printStackTrace();
                 }
-            }
-            else
-            {
+            } else {
                 JOptionPane.showMessageDialog(null,
                         "Le fichier de configuration de Warbot est introuvable dans le jar.",
                         "Fichier manquant",
@@ -67,7 +64,7 @@ public class WarGameConfig {
                 System.exit(0);
             }
         }
-	}
+    }
 
     public static Map<String, Object> getConfigOfWarAgent(WarAgentType agentType) {
         Map<String, Object> warAgentsConfigs = (Map<String, Object>) config.get("WarAgents");
@@ -82,25 +79,25 @@ public class WarGameConfig {
 
     public static Hitbox getHitboxOfWarAgent(WarAgentType agentType) {
         Map<String, Object> warAgentConfig = getConfigOfWarAgent(agentType);
-        if((! warAgentConfig.isEmpty()) && warAgentConfig.containsKey("Hitbox"))
+        if ((!warAgentConfig.isEmpty()) && warAgentConfig.containsKey("Hitbox"))
             return createHitboxFromData((Map<String, Object>) warAgentConfig.get("Hitbox"));
         else
             return new Hitbox(new Ellipse2D.Double(0, 0, 3, 3), 3, 3);
     }
 
-	public static int getMaxDistanceTake() {
+    public static int getMaxDistanceTake() {
         if (config.containsKey("MaxDistanceTake"))
             return (int) config.get("MaxDistanceTake");
         else
             return 5;
-	}
+    }
 
-	public static int getMaxDistanceGive() {
+    public static int getMaxDistanceGive() {
         if (config.containsKey("MaxDistanceGive"))
             return (int) config.get("MaxDistanceGive");
         else
             return 5;
-	}
+    }
 
     public static int getMaxDistanceBuild() {
         if (config.containsKey("MaxDistanceBuild"))
@@ -116,9 +113,9 @@ public class WarGameConfig {
             return 5;
     }
 
-	@SuppressWarnings("unchecked")
-	public static Class<? extends PerceptsGetter> getDefaultPerception() {
-        if(config.containsKey("Perception")) {
+    @SuppressWarnings("unchecked")
+    public static Class<? extends PerceptsGetter> getDefaultPerception() {
+        if (config.containsKey("Perception")) {
             String className = PerceptsGetter.class.getPackage().getName() + "." + config.get("Perception");
             try {
                 Class<? extends PerceptsGetter> perceptGetter = (Class<? extends PerceptsGetter>) Class.forName(className);
@@ -128,7 +125,7 @@ public class WarGameConfig {
             }
         }
         return InConePerceptsGetter.class;
-	}
+    }
 
     private static Hitbox createHitboxFromData(Map<String, Object> shapeData) {
         Hitbox hitbox = null;
@@ -146,7 +143,7 @@ public class WarGameConfig {
                 break;
             case "Circle":
                 radius = (double) shapeData.get("Radius");
-                hitbox = new Hitbox(new Ellipse2D.Double(0, 0, radius*2., radius*2.), radius*2., radius*2.);
+                hitbox = new Hitbox(new Ellipse2D.Double(0, 0, radius * 2., radius * 2.), radius * 2., radius * 2.);
                 break;
             case "Triangle":
                 radius = (double) shapeData.get("Radius");
@@ -174,7 +171,7 @@ public class WarGameConfig {
                 position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 180));
                 diamond.lineTo(position.getX(), position.getY());
                 diamond.lineTo(firstPosition.getX(), firstPosition.getY());
-                hitbox = new Hitbox(diamond, radius*2., radius*2.);
+                hitbox = new Hitbox(diamond, radius * 2., radius * 2.);
                 break;
             case "Arrow":
                 radius = (double) shapeData.get("Radius");

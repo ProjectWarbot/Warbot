@@ -11,61 +11,59 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class Script {
-	
-	private ScriptInterpreterLanguage langage;
-	private StringBuilder codeAgent;
-	
-	public Script(ScriptInterpreterLanguage langage) {
-		super();
-		this.langage = langage;
-	}
 
-	public ScriptInterpreterLanguage getLangage() {
-		return langage;
-	}
-	
-	public StringBuilder getCodeAgent() {
-		return codeAgent;
-	}
-	
+    private ScriptInterpreterLanguage langage;
+    private StringBuilder codeAgent;
 
-	public void setCodeAgent(StringBuilder codeAgent) {
-		this.codeAgent = codeAgent;
-	}
+    public Script(ScriptInterpreterLanguage langage) {
+        super();
+        this.langage = langage;
+    }
 
-	public void addCodeToAgent(StringBuilder code) {
-		codeAgent.append(code);
-	}
+    public static Script checkDangerousFunctions(ScriptedTeam team, InputStream input, WarAgentType agent) throws IOException, DangerousFunctionPythonException {
 
-	public void addCodeToAgent(Script script) {
-		codeAgent.append(script.getCodeAgent());
-	}
+        Script sc = team.getInterpreter().createScript(input);
+        String lg = "";
+        ScriptInterpreterLanguage lang = sc.getLangage();
 
-	@Override
-	public String toString() {
-		return "Script [langage = " + langage + "]";
-	}
+        if (lang.equals(ScriptInterpreterLanguage.PYTHON))
+            lg = "def";
+        else if (lang.equals(ScriptInterpreterLanguage.JAVASCRIPT))
+            lg = "var";
+        else if (lang.equals(ScriptInterpreterLanguage.RUBY))
+            lg = "def";
 
+        for (String s : ScriptedTeam.getFunctions()) {
+            Pattern p = Pattern.compile(".*(" + lg + ")\\s+(" + s + ")");
+            Matcher m = p.matcher(sc.getCodeAgent().toString());
+            if (m.find())
+                throw new DangerousFunctionPythonException(s, agent.toString());
+        }
+        return sc;
+    }
 
-	public static Script checkDangerousFunctions(ScriptedTeam team, InputStream input, WarAgentType agent) throws IOException, DangerousFunctionPythonException {
+    public ScriptInterpreterLanguage getLangage() {
+        return langage;
+    }
 
-		Script sc = team.getInterpreter().createScript(input);
-		String lg = "";
-		ScriptInterpreterLanguage lang = sc.getLangage();
+    public StringBuilder getCodeAgent() {
+        return codeAgent;
+    }
 
-		if(lang.equals(ScriptInterpreterLanguage.PYTHON))
-			lg = "def";
-		else if (lang.equals(ScriptInterpreterLanguage.JAVASCRIPT))
-			lg = "var";
-		else if (lang.equals(ScriptInterpreterLanguage.RUBY))
-			lg = "def";
+    public void setCodeAgent(StringBuilder codeAgent) {
+        this.codeAgent = codeAgent;
+    }
 
-		for (String s : ScriptedTeam.getFunctions()) {
-			Pattern p = Pattern.compile(".*(" + lg + ")\\s+(" + s + ")");
-			Matcher m = p.matcher(sc.getCodeAgent().toString());
-			if(m.find())
-				throw new DangerousFunctionPythonException(s, agent.toString());
-		}
-		return sc;
-	}
+    public void addCodeToAgent(StringBuilder code) {
+        codeAgent.append(code);
+    }
+
+    public void addCodeToAgent(Script script) {
+        codeAgent.append(script.getCodeAgent());
+    }
+
+    @Override
+    public String toString() {
+        return "Script [langage = " + langage + "]";
+    }
 }

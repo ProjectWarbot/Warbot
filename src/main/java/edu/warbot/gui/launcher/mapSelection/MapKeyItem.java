@@ -47,22 +47,22 @@ public class MapKeyItem extends JPanel implements PaintablePanel.Painter {
     @Override
     public void paint(Graphics2D g, int paintingID) {
         Shape shape;
-        switch(paintingID) {
+        switch (paintingID) {
             case ID_KEY_FOOD_POSITIONS:
-                shape = new WarCircle(PICTURE_WIDTH/2., PICTURE_HEIGHT/2., Math.min(PICTURE_HEIGHT, PICTURE_WIDTH)/2.);
+                shape = new WarCircle(PICTURE_WIDTH / 2., PICTURE_HEIGHT / 2., Math.min(PICTURE_HEIGHT, PICTURE_WIDTH) / 2.);
                 g.setColor(MapMiniature.COLOR_FOOD);
                 g.fill(shape);
                 g.setColor(MapMiniature.COLOR_FOOD.darker());
                 g.draw(shape);
                 break;
             case ID_KEY_TEAMS_POSITIONS:
-                shape = new WarCircle(PICTURE_WIDTH/3., PICTURE_HEIGHT/3., Math.min(PICTURE_HEIGHT, PICTURE_WIDTH)/3.);
+                shape = new WarCircle(PICTURE_WIDTH / 3., PICTURE_HEIGHT / 3., Math.min(PICTURE_HEIGHT, PICTURE_WIDTH) / 3.);
                 Color color = new Color(WarGame.TEAM_COLORS[0].getRed(), WarGame.TEAM_COLORS[0].getGreen(), WarGame.TEAM_COLORS[0].getBlue(), MapMiniature.FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY);
                 g.setColor(color);
                 g.fill(shape);
                 g.setColor(color.darker());
                 g.draw(shape);
-                shape = new WarCircle(PICTURE_WIDTH - (PICTURE_WIDTH/3.), PICTURE_HEIGHT - (PICTURE_HEIGHT/3.), Math.min(PICTURE_HEIGHT/3., PICTURE_WIDTH/3.));
+                shape = new WarCircle(PICTURE_WIDTH - (PICTURE_WIDTH / 3.), PICTURE_HEIGHT - (PICTURE_HEIGHT / 3.), Math.min(PICTURE_HEIGHT / 3., PICTURE_WIDTH / 3.));
                 color = new Color(WarGame.TEAM_COLORS[1].getRed(), WarGame.TEAM_COLORS[1].getGreen(), WarGame.TEAM_COLORS[1].getBlue(), MapMiniature.FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY);
                 g.setColor(color);
                 g.fill(shape);

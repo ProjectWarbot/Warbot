@@ -6,10 +6,14 @@ import edu.warbot.brains.capacities.Controllable;
 
 public abstract class WarBrain implements ControllableActions, Controllable {
 
-	public WarBrain() {}
-	
-    public void activate() {}
+    public WarBrain() {
+    }
 
-    public String action() { return ACTION_IDLE; }
+    public void activate() {
+    }
+
+    public String action() {
+        return ACTION_IDLE;
+    }
 
 }

@@ -4,26 +4,27 @@ import edu.warbot.agents.enums.WarAgentType;
 
 /**
  * Les attributs doivent etre public
- * 
- * les attributs peuvent etre de types : 
+ * <p>
+ * les attributs peuvent etre de types :
  * Boolean, Integer, String, EnumAction,
  * WarAgentType, EnumMethod, EnumOperand, EnumMessage
  */
 
-public class GenericPlanSettings extends AbstractGenericSettings{
+public class GenericPlanSettings extends AbstractGenericSettings {
 
-	public WarAgentType Agent_type = WarAgentType.WarExplorer;;
-	
-	public Integer Number_agent = 1;
+    public WarAgentType Agent_type = WarAgentType.WarExplorer;
+    ;
 
-	public Integer Min_life = 30;
-	
-	public EnumMessage Message;
+    public Integer Number_agent = 1;
 
-	public Boolean Pourcentage = true;
+    public Integer Min_life = 30;
 
-	public Boolean Offensif;
-	
-	public Integer Tik_number = 500;
-	
+    public EnumMessage Message;
+
+    public Boolean Pourcentage = true;
+
+    public Boolean Offensif;
+
+    public Integer Tik_number = 500;
+
 }

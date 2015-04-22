@@ -9,38 +9,38 @@ import edu.warbot.communications.WarMessage;
 import java.util.ArrayList;
 
 public abstract class WarKamikazeBrainController extends WarKamikazeBrain {
-	
-	public WarKamikazeBrainController() {
-		super();
-	}
 
-	@Override
-	public String action() {
-		
-		ArrayList<WarMessage> msgs = getMessages();
-		
-		for(WarMessage msg : msgs) {
-			if(msg.getMessage().equals("Enemy base on sight")) {
-				setHeading(msg.getAngle());
-			}
-		}
-		
-		ArrayList<WarAgentPercept> percepts = getPercepts();
-		
-		for (WarAgentPercept p : percepts) {
-			switch(p.getType()) {
-			case WarBase :
-				if (isEnemy(p)) {
-					return WarKamikaze.ACTION_FIRE;
-				}
-				break;
-			default:
-				break;
-			}
-		}
-		
-		if (isBlocked())
-			setRandomHeading();
-		return WarExplorer.ACTION_MOVE;
-	}
+    public WarKamikazeBrainController() {
+        super();
+    }
+
+    @Override
+    public String action() {
+
+        ArrayList<WarMessage> msgs = getMessages();
+
+        for (WarMessage msg : msgs) {
+            if (msg.getMessage().equals("Enemy base on sight")) {
+                setHeading(msg.getAngle());
+            }
+        }
+
+        ArrayList<WarAgentPercept> percepts = getPercepts();
+
+        for (WarAgentPercept p : percepts) {
+            switch (p.getType()) {
+                case WarBase:
+                    if (isEnemy(p)) {
+                        return WarKamikaze.ACTION_FIRE;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (isBlocked())
+            setRandomHeading();
+        return WarExplorer.ACTION_MOVE;
+    }
 }

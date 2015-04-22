@@ -31,7 +31,7 @@ public class PaintablePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if(painter != null)
+        if (painter != null)
             painter.paint((Graphics2D) g, id);
     }
 

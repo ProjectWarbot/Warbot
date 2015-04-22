@@ -13,30 +13,30 @@ import java.util.ArrayList;
 
 public class MoveToolMouseListener implements MouseListener, MouseMotionListener {
 
-	private DebugModePanel _debugToolBar;
-	private WarAgent _currentSelectedAgent;
-	private WarGame game;
+    private DebugModePanel _debugToolBar;
+    private WarAgent _currentSelectedAgent;
+    private WarGame game;
 
-	public MoveToolMouseListener(DebugModePanel debugToolBar) {
-		_debugToolBar = debugToolBar;
-		_currentSelectedAgent = null;
-		game = _debugToolBar.getViewer().getGame();
-	}
+    public MoveToolMouseListener(DebugModePanel debugToolBar) {
+        _debugToolBar = debugToolBar;
+        _currentSelectedAgent = null;
+        game = _debugToolBar.getViewer().getGame();
+    }
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-	@Override
-	public void mousePressed(MouseEvent e) {
+    @Override
+    public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             _debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
 
@@ -47,15 +47,15 @@ public class MoveToolMouseListener implements MouseListener, MouseMotionListener
                 _currentSelectedAgent = agents.get(0);
             }
         }
-	}
+    }
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
+    @Override
+    public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             _currentSelectedAgent = null;
             _debugToolBar.getViewer().setMapExplorationEventsEnabled(true);
         }
-	}
+    }
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -65,7 +65,7 @@ public class MoveToolMouseListener implements MouseListener, MouseMotionListener
             _currentSelectedAgent.setPosition(newPos);
             _currentSelectedAgent.moveOutOfCollision();
             if (_currentSelectedAgent instanceof ControllableWarAgent)
-            ((ControllableWarAgent) _currentSelectedAgent).forcePerceptsUpdate();
+                ((ControllableWarAgent) _currentSelectedAgent).forcePerceptsUpdate();
 
             _debugToolBar.getViewer().getFrame().repaint();
         }

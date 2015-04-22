@@ -10,56 +10,56 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
     private static final int MAX_CELL_SIZE = 10;
     private static final int MIN_CELL_SIZE = 1;
 
-	private AbstractWarViewer viewer;
+    private AbstractWarViewer viewer;
 
     private CoordCartesian oldMouseDragPosition;
     private CoordCartesian oldViewerPosition;
     private boolean onlyRightClick;
 
-	public MapExplorationListener(AbstractWarViewer viewer) {
-		this.viewer = viewer;
+    public MapExplorationListener(AbstractWarViewer viewer) {
+        this.viewer = viewer;
         this.onlyRightClick = false;
 
 
-	}
+    }
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
-        if((!onlyRightClick) || (onlyRightClick && e.getButton() == MouseEvent.BUTTON2) ) {
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if ((!onlyRightClick) || (onlyRightClick && e.getButton() == MouseEvent.BUTTON2)) {
             CoordCartesian movement = new CoordCartesian(
                     e.getX() - oldMouseDragPosition.getX(),
                     e.getY() - oldMouseDragPosition.getY());
             viewer.moveMapOffsetTo(movement.getX() + oldViewerPosition.getX(), movement.getY() + oldViewerPosition.getY());
         }
-	}
+    }
 
-	@Override
-	public void mouseMoved(MouseEvent e) {
-	}
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-        if((!onlyRightClick) || (onlyRightClick && e.getButton() == MouseEvent.BUTTON2) ) {
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if ((!onlyRightClick) || (onlyRightClick && e.getButton() == MouseEvent.BUTTON2)) {
             oldMouseDragPosition = new CoordCartesian(e.getX(), e.getY());
             oldViewerPosition = new CoordCartesian(viewer.getMapOffsetX(), viewer.getMapOffsetY());
         }
-	}
+    }
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {

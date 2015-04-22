@@ -11,14 +11,14 @@ import java.util.ArrayList;
 
 public class DeleteToolMouseListener implements MouseListener {
 
-	private DebugModePanel _debugToolBar;
-	
-	public DeleteToolMouseListener(DebugModePanel debugToolBar) {
-		_debugToolBar = debugToolBar;
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
+    private DebugModePanel _debugToolBar;
+
+    public DeleteToolMouseListener(DebugModePanel debugToolBar) {
+        _debugToolBar = debugToolBar;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             // On sélectionne l'agent sous le clique de souris
             CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
@@ -36,22 +36,22 @@ public class DeleteToolMouseListener implements MouseListener {
                 }
             }
         }
-	}
+    }
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-	}
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
 
 }

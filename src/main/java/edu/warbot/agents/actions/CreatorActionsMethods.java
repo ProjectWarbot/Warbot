@@ -5,5 +5,5 @@ import edu.warbot.agents.actions.constants.CreatorActions;
 
 public interface CreatorActionsMethods extends CreatorActions {
 
-	public String create();
+    public String create();
 }
