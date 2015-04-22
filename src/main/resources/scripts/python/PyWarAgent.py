@@ -532,9 +532,6 @@ class PyWarAgent(ScriptAgent):
 			"""
 			return WarFood.HEALTH_GIVEN
 
-
-
-
 # === FUNCTION ===
 
 def sendMessage(idAgent, message, content):
@@ -731,3 +728,134 @@ def isReloading():
 
 def printCodeur():
 	print "Lopez Jimmy"
+
+def getPerceptsWarBase():
+	__percept = WA.getPercepts()
+	__base = []
+	for percept in __percept:
+		if (percept.getType().equals(WarAgentType.WarBase)):
+			__base.append(percept)
+	return __base;
+
+def getPerceptsWarEngineer():
+	__percept = WA.getPercepts()
+	__engi = []
+	for percept in __percept:
+		if (percept.getType().equals(WarAgentType.WarEngineer)):
+			__engi.append(percept)
+	return __engi;
+
+def getPerceptsWarExplorer():
+	__percept = WA.getPercepts()
+	__explo = []
+	for percept in __percept:
+		if (percept.getType().equals(WarAgentType.WarExplorer)):
+			__explo.append(percept)
+	return __explo;
+
+def getPerceptsWarKamikaze():
+	__percept = WA.getPercepts()
+	__kami = []
+	for percept in __percept:
+		if (percept.getType().equals(WarAgentType.WarKamikaze)):
+			__kami.append(percept)
+	return __kami;
+
+def getPerceptsWarBase():
+	__percept = WA.getPercepts()
+	__base = []
+	for percept in __percept:
+		if (percept.getType().equals(WarAgentType.WarBase)):
+			__base.append(percept)
+	return __base;
+
+def getPerceptsWarRocketLauncher():
+	__percept = WA.getPercepts()
+	__rockLaun = []
+	for percept in __percept:
+		if (percept.getType().equals(WarAgentType.WarRocketLauncher)):
+			__rockLaun.append(percept)
+	return __rockLaun;
+
+def getPerceptsWarTurret():
+	__percept = WA.getPercepts()
+	__turr = []
+	for percept in __percept:
+		if (percept.getType().equals(WarAgentType.WarTurret)):
+			__turr.append(percept)
+	return __turr;
+
+
+def getPerceptsAlliesWarBase():
+	return getPerceptsAlliesByType(WarAgentType.WarBase);
+
+def getPerceptsAlliesWarEngineer():
+	return getPerceptsAlliesByType(WarAgentType.WarEngineer);
+
+def getPerceptsAlliesWarExplorer():
+	return getPerceptsAlliesByType(WarAgentType.WarExplorer);
+
+def getPerceptsAlliesWarKamikaze():
+	return getPerceptsAlliesByType(WarAgentType.WarKamikaze);
+
+def getPerceptsAlliesWarRocketLauncher():
+	return getPerceptsAlliesByType(WarAgentType.WarRocketLauncher);
+
+def getPerceptsAlliesWarTurret():
+	return getPerceptsAlliesByType(WarAgentType.WarTurret);
+
+def getPerceptsEnemiesWarBase():
+	return getPerceptsEnemiesByType(WarAgentType.WarBase);
+
+def getPerceptsEnemiesWarEngineer():
+	return getPerceptsEnemiesByType(WarAgentType.WarEngineer);
+
+def getPerceptsEnemiesWarExplorer():
+	return getPerceptsEnemiesByType(WarAgentType.WarExplorer);
+
+def getPerceptsEnemiesWarKamikaze():
+	return getPerceptsEnemiesByType(WarAgentType.WarKamikaze);
+
+def getPerceptsEnemiesWarRocketLauncher():
+	return getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
+
+def getPerceptsEnemiesWarTurret():
+	return getPerceptsEnemiesByType(WarAgentType.WarTurret);
+
+def followTarget(percept):
+	setHeading(percept.getAngle());
+
+def haveTarget():
+	__percept = WA.getPercepts();
+	return len(__percept) > 0;
+
+def haveNoTarget():
+	__percept = WA.getPercepts();
+	return len(__percept) == 0;
+
+def isBase(percept):
+	return percept.getType().equals(WarAgentType.WarBase);
+
+def isEngineer(percept):
+	return percept.getType().equals(WarAgentType.WarEngineer);
+
+def isExplorer(percept):
+	return percept.getType().equals(WarAgentType.WarExplorer);
+
+def isKamikaze(percept):
+	return percept.getType().equals(WarAgentType.WarKamikaze);
+
+def isRocketLauncher(percept):
+	return percept.getType().equals(WarAgentType.WarRocketLauncher);
+
+def isTurret(percept):
+	return percept.getType().equals(WarAgentType.WarTurret);
+
+def isAlly(percept):
+	return not isEnemy(percept);
+
+def shootTarget():
+	if (isReloaded()):
+		return fire()
+	else :
+		return reloadWeapon()
