@@ -12,183 +12,182 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class ViewBrain extends JPanel{
+public class ViewBrain extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    /**
+     * * Attributs **
+     */
+    public JList<String> jListCondition;
+    public JList<String> jListState;
+    private ModeleBrain modeleBrain;
+    private PanelEditor panelEditor;
+    private DefaultListModel<String> listModeleCond;
+    private DefaultListModel<String> listModelState;
+    private JButton buttonAddSate;
+    private JButton buttonEditState;
+    private JButton buttonDelState;
+    private JButton buttonAddCond;
+    private JButton buttonEditCond;
+    private JButton buttonDelCond;
 
-	private ModeleBrain modeleBrain;
-	
-	private PanelEditor panelEditor;
+    public ViewBrain(ModeleBrain modeleBrain) {
+        this.modeleBrain = modeleBrain;
 
-	public ViewBrain(ModeleBrain modeleBrain) {
-		this.modeleBrain = modeleBrain;
-		
-		createView();
-	}
+        createView();
+    }
 
-	public void createView() {
+    public void createView() {
 
-		this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
-		// left panel les boutons
-		this.add(getPanelLeft(), BorderLayout.WEST);
-		
-		// Panel center (l'éditeur)
-		panelEditor = new PanelEditor(this.modeleBrain);
-		
-		this.add(panelEditor, BorderLayout.CENTER);
+        // left panel les boutons
+        this.add(getPanelLeft(), BorderLayout.WEST);
 
-		// Panel droite
-	}
+        // Panel center (l'éditeur)
+        panelEditor = new PanelEditor(this.modeleBrain);
 
-	private JPanel getPanelLeft() {
-		JPanel p = new JPanel(new GridLayout(2, 1));
-		p.add(getPanelState());
-		p.add(getPanelCondition());
-		return p;
-	}
+        this.add(panelEditor, BorderLayout.CENTER);
 
-	private Component getPanelState() {
-		JPanel panel = new JPanel(new VerticalLayout());
-		panel.setBorder(new TitledBorder("States"));
-		
-		buttonAddSate = new JButton("Add State");
-		buttonEditState = new JButton("Edit State");
-		buttonDelState = new JButton("Delete State");
-		
-		listModelState = new DefaultListModel<>();
-		jListState = new JList<>(listModelState);
-		
-		jListState.setLayoutOrientation(JList.VERTICAL);
-		jListState.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		updateSelectedState();
-		
-		panel.add(buttonAddSate);
-		panel.add(new JSeparator());
-		panel.add(buttonEditState);
-		panel.add(new JSeparator());
-		panel.add(buttonDelState);
-		panel.add(new JSeparator());
-		panel.add(new JLabel("First state"));
-		panel.add(new JScrollPane(jListState));
-		
-		
-		return panel;
-	}
+        // Panel droite
+    }
 
-	private JPanel getPanelCondition() {
-		JPanel panel = new JPanel(new VerticalLayout());
-		panel.setBorder(new TitledBorder("Conditions"));
-		panel.setPreferredSize(new Dimension(150, -1));
+    private JPanel getPanelLeft() {
+        JPanel p = new JPanel(new GridLayout(2, 1));
+        p.add(getPanelState());
+        p.add(getPanelCondition());
+        return p;
+    }
 
-		buttonAddCond = new JButton("Add condition");
-		buttonEditCond = new JButton("Edit condition");
-		buttonDelCond = new JButton("Delete condition");
-		
-		listModeleCond = new DefaultListModel<>();
-		jListCondition = new JList<>(listModeleCond);
-		jListCondition.setLayoutOrientation(JList.VERTICAL);
-		jListCondition.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		updateSelectedCondition();
+    private Component getPanelState() {
+        JPanel panel = new JPanel(new VerticalLayout());
+        panel.setBorder(new TitledBorder("States"));
 
-		panel.add(buttonAddCond);
-		panel.add(new JSeparator());
-		panel.add(buttonEditCond);
-		panel.add(new JSeparator());
-		panel.add(buttonDelCond);
-		panel.add(new JSeparator());
-		panel.add(jListCondition);
-		panel.add(new JLabel("Conditions list"));
-		panel.add(new JScrollPane(jListCondition));
-		
-		return panel;
-	}
+        buttonAddSate = new JButton("Add State");
+        buttonEditState = new JButton("Edit State");
+        buttonDelState = new JButton("Delete State");
 
-	public void addState(ModelState state) {
-		panelEditor.addState(state);
-		listModelState.addElement(state.getName());
-	}
+        listModelState = new DefaultListModel<>();
+        jListState = new JList<>(listModelState);
 
-	public void addCondition(ModelCondition condition) {
-		panelEditor.addCondition(condition);	
-		listModeleCond.addElement(condition.getName());	
-	}
+        jListState.setLayoutOrientation(JList.VERTICAL);
+        jListState.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-	public PanelEditor getViewEditor() {
-		return (PanelEditor) this.panelEditor;
-	}
+        updateSelectedState();
 
-	public ModeleBrain getModel(){
-		return this.modeleBrain;
-	}	
+        panel.add(buttonAddSate);
+        panel.add(new JSeparator());
+        panel.add(buttonEditState);
+        panel.add(new JSeparator());
+        panel.add(buttonDelState);
+        panel.add(new JSeparator());
+        panel.add(new JLabel("First state"));
+        panel.add(new JScrollPane(jListState));
 
-	/*** Accesseurs ***/
-	
-	public JButton getButtonAddState() {
-		return this.buttonAddSate;
-	}
 
-	public AbstractButton getButtonDelState() {
-		return this.buttonDelState;
-	}
+        return panel;
+    }
 
-	public JButton getButtonEditState() {
-		return this.buttonEditState;
-	}
+    private JPanel getPanelCondition() {
+        JPanel panel = new JPanel(new VerticalLayout());
+        panel.setBorder(new TitledBorder("Conditions"));
+        panel.setPreferredSize(new Dimension(150, -1));
 
-	public JButton getButtonAddCond() {
-		return this.buttonAddCond;
-	}
+        buttonAddCond = new JButton("Add condition");
+        buttonEditCond = new JButton("Edit condition");
+        buttonDelCond = new JButton("Delete condition");
 
-	public JButton getButtonEditCond() {
-		return this.buttonEditCond;
-	}
+        listModeleCond = new DefaultListModel<>();
+        jListCondition = new JList<>(listModeleCond);
+        jListCondition.setLayoutOrientation(JList.VERTICAL);
+        jListCondition.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-	public JButton getButtonDelCond() {
-		return buttonDelCond;
-	}
+        updateSelectedCondition();
 
-	/**** Attributs ***/
-	public JList<String> jListCondition;
-	private DefaultListModel<String> listModeleCond;
-	
-	public JList<String> jListState;
-	private DefaultListModel<String> listModelState;
-	
-	private JButton buttonAddSate;
-	private JButton buttonEditState;
-	private JButton buttonDelState;
-	private JButton buttonAddCond;
-	private JButton buttonEditCond;
-	private JButton buttonDelCond;
+        panel.add(buttonAddCond);
+        panel.add(new JSeparator());
+        panel.add(buttonEditCond);
+        panel.add(new JSeparator());
+        panel.add(buttonDelCond);
+        panel.add(new JSeparator());
+        panel.add(jListCondition);
+        panel.add(new JLabel("Conditions list"));
+        panel.add(new JScrollPane(jListCondition));
 
-	public void updateSelectedState() {
-		listModelState.clear();
-		for (ModelState s : modeleBrain.getStates()) {
-			listModelState.addElement(s.getName());
-		}
-	}
+        return panel;
+    }
 
-	public void updateSelectedCondition() {
-		listModeleCond.clear();
-		for (ModelCondition c : modeleBrain.getConditions()) {
-			listModeleCond.addElement(c.getName());
-		}
-	}
+    public void addState(ModelState state) {
+        panelEditor.addState(state);
+        listModelState.addElement(state.getName());
+    }
 
-	public void removeCondition(PanelCondition panel) {
-		getViewEditor().removePanelCondition(panel);
-		updateSelectedCondition();
-		getViewEditor().unselectAllItems();		
-	}
+    public void addCondition(ModelCondition condition) {
+        panelEditor.addCondition(condition);
+        listModeleCond.addElement(condition.getName());
+    }
 
-	public void removeState(PanelState panel) {
-		getViewEditor().removePanelState(panel);
-		updateSelectedState();
-		getViewEditor().unselectAllItems();
-	}
+    public PanelEditor getViewEditor() {
+        return (PanelEditor) this.panelEditor;
+    }
+
+    public ModeleBrain getModel() {
+        return this.modeleBrain;
+    }
+
+    /**
+     * Accesseurs **
+     */
+
+    public JButton getButtonAddState() {
+        return this.buttonAddSate;
+    }
+
+    public AbstractButton getButtonDelState() {
+        return this.buttonDelState;
+    }
+
+    public JButton getButtonEditState() {
+        return this.buttonEditState;
+    }
+
+    public JButton getButtonAddCond() {
+        return this.buttonAddCond;
+    }
+
+    public JButton getButtonEditCond() {
+        return this.buttonEditCond;
+    }
+
+    public JButton getButtonDelCond() {
+        return buttonDelCond;
+    }
+
+    public void updateSelectedState() {
+        listModelState.clear();
+        for (ModelState s : modeleBrain.getStates()) {
+            listModelState.addElement(s.getName());
+        }
+    }
+
+    public void updateSelectedCondition() {
+        listModeleCond.clear();
+        for (ModelCondition c : modeleBrain.getConditions()) {
+            listModeleCond.addElement(c.getName());
+        }
+    }
+
+    public void removeCondition(PanelCondition panel) {
+        getViewEditor().removePanelCondition(panel);
+        updateSelectedCondition();
+        getViewEditor().unselectAllItems();
+    }
+
+    public void removeState(PanelState panel) {
+        getViewEditor().removePanelState(panel);
+        updateSelectedState();
+        getViewEditor().unselectAllItems();
+    }
 
 
 }

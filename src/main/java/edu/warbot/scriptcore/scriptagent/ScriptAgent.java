@@ -5,7 +5,7 @@ import edu.warbot.brains.WarBrain;
 
 public interface ScriptAgent {
 
-	public String action();
+    public String action();
 
-	public void link(WarBrain brain);
+    public void link(WarBrain brain);
 }

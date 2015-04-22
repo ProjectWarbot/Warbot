@@ -8,9 +8,9 @@ import java.awt.geom.Arc2D;
 
 public class InConePerceptsGetter extends PerceptsGetter {
 
-	public InConePerceptsGetter(ControllableWarAgent agent, WarGame game) {
-		super(agent, game);
-	}
+    public InConePerceptsGetter(ControllableWarAgent agent, WarGame game) {
+        super(agent, game);
+    }
 
 //	@Override
 //	public ArrayList<WarPercept> getAgentPercepts() {

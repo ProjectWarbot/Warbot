@@ -41,7 +41,7 @@ public class WarNumberAgent {
     }
 
     public void avoidIncoherence() throws IncoherenceNumberAgentException {
-        if ( (max < 0) || (min < 0) || (min > max))
+        if ((max < 0) || (min < 0) || (min > max))
             throw new IncoherenceNumberAgentException(this);
     }
 

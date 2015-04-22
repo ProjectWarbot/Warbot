@@ -1,11 +1,5 @@
 package edu.warbot.game.mode.endCondition;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.MotherNatureTeam;
@@ -13,7 +7,13 @@ import edu.warbot.game.Team;
 import edu.warbot.game.TeamListener;
 import edu.warbot.game.WarGame;
 
-public class NumberLostAgentEndCondition extends AbstractEndCondition implements TeamListener{
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+public class NumberLostAgentEndCondition extends AbstractEndCondition implements TeamListener {
 
     private long maxAgentLost;
 
@@ -30,8 +30,8 @@ public class NumberLostAgentEndCondition extends AbstractEndCondition implements
 
         this.lostAgentByTeam = new HashMap<Team, Long>();
 
-        for(Team team : teamsOfGame)
-            if(!(team instanceof MotherNatureTeam))
+        for (Team team : teamsOfGame)
+            if (!(team instanceof MotherNatureTeam))
                 lostAgentByTeam.put(team, new Long(0));
 
         for (Team t : getGame().getPlayerTeams()) {
@@ -48,7 +48,7 @@ public class NumberLostAgentEndCondition extends AbstractEndCondition implements
     @Override
     public boolean isGameEnded() {
 
-        if(getTeamVictory() != null) {
+        if (getTeamVictory() != null) {
             System.out.println("Team victory : " + teamVictory.getName());
             return true;
         }
@@ -64,7 +64,7 @@ public class NumberLostAgentEndCondition extends AbstractEndCondition implements
     @Override
     public void onAgentRemoved(WarAgent removedAgent) {
 
-        if(removedAgent instanceof ControllableWarAgent) {
+        if (removedAgent instanceof ControllableWarAgent) {
 
             Iterator<Entry<Team, Long>> entries = lostAgentByTeam.entrySet().iterator();
 
@@ -75,7 +75,7 @@ public class NumberLostAgentEndCondition extends AbstractEndCondition implements
 
                 thisEntry.setValue(newNumberLost);
 
-                if(thisEntry.getValue() > maxAgentLost)
+                if (thisEntry.getValue() > maxAgentLost)
                     whoTeamWin(removedAgent);
             }
         }
@@ -84,15 +84,14 @@ public class NumberLostAgentEndCondition extends AbstractEndCondition implements
 
 
     public void whoTeamWin(WarAgent removedAgent) {
-        for(Team team : teamsOfGame)
-            if(!(team instanceof MotherNatureTeam) && !(team.equals(removedAgent.getTeam())))
+        for (Team team : teamsOfGame)
+            if (!(team instanceof MotherNatureTeam) && !(team.equals(removedAgent.getTeam())))
                 teamVictory = team;
     }
 
     public Team getTeamVictory() {
         return teamVictory;
     }
-
 
 
 }

@@ -3,8 +3,10 @@ package edu.warbot.launcher;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.swing.*;
-import java.io.*;
-import java.net.URL;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,11 +25,10 @@ public class UserPreferences {
             settings = (Map<String, Object>) yaml.load(input);
             input.close();
         } catch (IOException e) {
-            InputStream input= UserPreferences.class.getClassLoader().getResourceAsStream(userSettingsFilePath.replaceAll
-                    (File.separator,"/"));
+            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream(userSettingsFilePath.replaceAll
+                    (File.separator, "/"));
 
-            if(input!=null)
-            {
+            if (input != null) {
                 //Fichier de configuration par défaut dans le jar
                 Yaml yaml = new Yaml();
                 settings = (Map<String, Object>) yaml.load(input);
@@ -36,9 +37,7 @@ public class UserPreferences {
                 } catch (IOException e2) {
                     e2.printStackTrace();
                 }
-            }
-            else
-            {
+            } else {
                 JOptionPane.showMessageDialog(null,
                         "Le fichier des préférences de l'utilisateur est introuvable dans le jar.",
                         "Fichier manquant",

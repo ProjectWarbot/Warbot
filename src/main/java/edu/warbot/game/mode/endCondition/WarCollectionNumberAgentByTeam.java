@@ -1,12 +1,12 @@
 package edu.warbot.game.mode.endCondition;
 
+import edu.warbot.agents.WarAgent;
+import edu.warbot.game.Team;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import edu.warbot.agents.WarAgent;
-import edu.warbot.game.Team;
 
 public class WarCollectionNumberAgentByTeam {
 
@@ -34,7 +34,7 @@ public class WarCollectionNumberAgentByTeam {
         while (entries.hasNext()) {
             Entry<String, Long> thisEntry = entries.next();
 
-            if(equalAgent(thisEntry.getKey(), agent))
+            if (equalAgent(thisEntry.getKey(), agent))
                 return thisEntry.getValue();
         }
 
@@ -47,9 +47,9 @@ public class WarCollectionNumberAgentByTeam {
         while (entries.hasNext()) {
             Entry<String, Long> thisEntry = entries.next();
 
-            if(equalAgent(thisEntry.getKey(), agent)) {
+            if (equalAgent(thisEntry.getKey(), agent)) {
                 Long l = thisEntry.getValue();
-                if(l < Long.MAX_VALUE)
+                if (l < Long.MAX_VALUE)
                     thisEntry.setValue(l++);
                 break;
             }
@@ -62,9 +62,9 @@ public class WarCollectionNumberAgentByTeam {
         while (entries.hasNext()) {
             Entry<String, Long> thisEntry = entries.next();
 
-            if(equalAgent(thisEntry.getKey(), agent)) {
+            if (equalAgent(thisEntry.getKey(), agent)) {
                 Long l = thisEntry.getValue();
-                if(l > 0)
+                if (l > 0)
                     thisEntry.setValue(l--);
                 break;
             }
@@ -72,7 +72,7 @@ public class WarCollectionNumberAgentByTeam {
     }
 
     public void addNewAgent(WarAgent agent) {
-        if(!isInCollectionOfAgent(agent))
+        if (!isInCollectionOfAgent(agent))
             agentsTeam.put(agent.getClass().getSimpleName(), new Long(1));
     }
 
@@ -83,7 +83,7 @@ public class WarCollectionNumberAgentByTeam {
         while (entries.hasNext()) {
             Entry<String, Long> thisEntry = entries.next();
 
-            if(equalAgent(thisEntry.getKey(), agent))
+            if (equalAgent(thisEntry.getKey(), agent))
                 return true;
         }
 

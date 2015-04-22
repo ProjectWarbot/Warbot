@@ -18,37 +18,37 @@ import java.util.List;
 
 public abstract class PerceptsGetter {
 
-	private ControllableWarAgent _agent;
-	private WarGame game;
+    private ControllableWarAgent _agent;
+    private WarGame game;
 
     private Area thisTickPerceptionArea;
     private boolean perceptsAlreadyGetThisTick;
     private ArrayList<WarAgentPercept> allPercepts;
-	private ArrayList<WarAgentPercept> alliesPercepts;
+    private ArrayList<WarAgentPercept> alliesPercepts;
     private ArrayList<WarAgentPercept> enemiesPercepts;
     private ArrayList<WarAgentPercept> resourcesPercepts;
     private ArrayList<WallPercept> wallsPercepts;
 
-	public PerceptsGetter(ControllableWarAgent agent, WarGame game) {
-		_agent = agent;
-		this.game = game;
+    public PerceptsGetter(ControllableWarAgent agent, WarGame game) {
+        _agent = agent;
+        this.game = game;
         allPercepts = new ArrayList<>();
         alliesPercepts = new ArrayList<>();
         enemiesPercepts = new ArrayList<>();
         resourcesPercepts = new ArrayList<>();
         wallsPercepts = new ArrayList<>();
-	}
+    }
 
-	protected ControllableWarAgent getAgent() {
-		return _agent;
-	}
-	
-	protected WarGame getGame() {
-		return game;
-	}
+    protected ControllableWarAgent getAgent() {
+        return _agent;
+    }
 
-	public ArrayList<WarAgentPercept> getPercepts() {
-        if (! perceptsAlreadyGetThisTick) {
+    protected WarGame getGame() {
+        return game;
+    }
+
+    public ArrayList<WarAgentPercept> getPercepts() {
+        if (!perceptsAlreadyGetThisTick) {
             allPercepts = getAgentPercepts();
             for (WarAgentPercept percept : allPercepts) {
                 if (getAgent().isEnemy(percept)) {
@@ -76,7 +76,7 @@ public abstract class PerceptsGetter {
             if (agentToTestVisible.getID() != getAgent().getID()) {
                 Area agentArea = new Area(agentToTestVisible.getActualForm());
                 agentArea.intersect(visibleArea);
-                if (! agentArea.isEmpty())
+                if (!agentArea.isEmpty())
                     percepts.add(new WarAgentPercept(getAgent(), agentToTestVisible));
             }
         }
@@ -85,50 +85,50 @@ public abstract class PerceptsGetter {
     }
 
     public Area getPerceptionArea() {
-        if(thisTickPerceptionArea == null)
+        if (thisTickPerceptionArea == null)
             thisTickPerceptionArea = removeWallsHidedAreasAndGetWallPercepts(new Area(getPerceptionAreaShape()));
         return thisTickPerceptionArea;
     }
 
     protected abstract Shape getPerceptionAreaShape();
 
-	public ArrayList<WarAgentPercept> getWarAgentsPercepts(boolean ally) {
-		if(! perceptsAlreadyGetThisTick)
-			getPercepts();
-
-		if(ally)
-			return alliesPercepts;
-		else
-			return enemiesPercepts;
-	}
-
-	public ArrayList<WarAgentPercept> getResourcesPercepts() {
-        if(! perceptsAlreadyGetThisTick)
+    public ArrayList<WarAgentPercept> getWarAgentsPercepts(boolean ally) {
+        if (!perceptsAlreadyGetThisTick)
             getPercepts();
 
-		return resourcesPercepts;
-	}
+        if (ally)
+            return alliesPercepts;
+        else
+            return enemiesPercepts;
+    }
 
-	public ArrayList<WarAgentPercept> getPerceptsByType(WarAgentType agentType, boolean ally){
-        if(! perceptsAlreadyGetThisTick)
+    public ArrayList<WarAgentPercept> getResourcesPercepts() {
+        if (!perceptsAlreadyGetThisTick)
             getPercepts();
 
-		ArrayList<WarAgentPercept> perceptsToReturn = new ArrayList<>();
-		ArrayList<WarAgentPercept> perceptsToLoop;
+        return resourcesPercepts;
+    }
 
-		if(ally)
-			perceptsToLoop = alliesPercepts;
-		else
-			perceptsToLoop = enemiesPercepts;
+    public ArrayList<WarAgentPercept> getPerceptsByType(WarAgentType agentType, boolean ally) {
+        if (!perceptsAlreadyGetThisTick)
+            getPercepts();
 
-		for (WarAgentPercept warPercept : perceptsToLoop) {
-			if(warPercept.getType().equals(agentType)){
-				perceptsToReturn.add(warPercept);
-			}
-		}
+        ArrayList<WarAgentPercept> perceptsToReturn = new ArrayList<>();
+        ArrayList<WarAgentPercept> perceptsToLoop;
 
-		return perceptsToReturn;
-	}
+        if (ally)
+            perceptsToLoop = alliesPercepts;
+        else
+            perceptsToLoop = enemiesPercepts;
+
+        for (WarAgentPercept warPercept : perceptsToLoop) {
+            if (warPercept.getType().equals(agentType)) {
+                perceptsToReturn.add(warPercept);
+            }
+        }
+
+        return perceptsToReturn;
+    }
 
     public void setPerceptsOutdated() {
         thisTickPerceptionArea = null;
@@ -154,7 +154,7 @@ public abstract class PerceptsGetter {
         ArrayList<Line2D.Double> wallSegmentsInPerception = new ArrayList<>();
 
         Area wallsInPerceptionArea = game.getMap().getMapForbidArea();
-        for(WarAgent building : game.getBuildingsInRadiusOf(getAgent(), getAgent().getHitboxMaxRadius() + getAgent().getDistanceOfView())) {
+        for (WarAgent building : game.getBuildingsInRadiusOf(getAgent(), getAgent().getHitboxMaxRadius() + getAgent().getDistanceOfView())) {
             wallsInPerceptionArea.add(building.getActualForm());
         }
         wallsInPerceptionArea.intersect(initialPerceptionArea);
@@ -169,7 +169,7 @@ public abstract class PerceptsGetter {
         // On récupère les segments de murs dans la zone de perception
         // Pour chaque bloque de murs dans la zone de perception
         List<Point2D.Double> wallPoints = new ArrayList<>();
-        for(Path2D.Double wallInPerceptionPath : dividePluralPathIntoSingularPathsLined(wallsContoursPath)) {
+        for (Path2D.Double wallInPerceptionPath : dividePluralPathIntoSingularPathsLined(wallsContoursPath)) {
             List<Point2D.Double> currentWallPoints = GeometryTools.getPointsFromPath(wallInPerceptionPath);
             if (currentWallPoints.size() > 1) {
                 for (int i = 0; i < (currentWallPoints.size() - 1); i++) {
@@ -182,12 +182,12 @@ public abstract class PerceptsGetter {
 
         // On récupère les points de ces murs vus par l'agent
         HashMap<Point2D.Double, Boolean> wallPointsSeenByAgent = new HashMap<>();
-        for(Point2D.Double wallPoint : wallPoints) {
+        for (Point2D.Double wallPoint : wallPoints) {
             Line2D.Double lineFromPointToAgent = new Line2D.Double(wallPoint, getAgent().getPosition());
             boolean pointSeenByAgent = true;
-            for(Line2D.Double comparedWall : wallSegmentsInPerception) {
-                if(! (comparedWall.getP1().equals(wallPoint) || comparedWall.getP2().equals(wallPoint))) { // Si le point n'appartient pas au segment
-                    if(lineFromPointToAgent.intersectsLine(comparedWall)) {
+            for (Line2D.Double comparedWall : wallSegmentsInPerception) {
+                if (!(comparedWall.getP1().equals(wallPoint) || comparedWall.getP2().equals(wallPoint))) { // Si le point n'appartient pas au segment
+                    if (lineFromPointToAgent.intersectsLine(comparedWall)) {
                         pointSeenByAgent = false;
                         break;
                     }
@@ -197,9 +197,9 @@ public abstract class PerceptsGetter {
         }
         // On récupère les murs vus par l'agent (dont les deux extrémités ainsi que le point du milieu du mur sont vus par l'agent
         List<Line2D.Double> seenWallsSegments = new ArrayList<>();
-        for(Line2D.Double wall : wallSegmentsInPerception) {
+        for (Line2D.Double wall : wallSegmentsInPerception) {
             boolean wallSeenByAgent = true;
-            if(wallPointsSeenByAgent.get(wall.getP1()) && wallPointsSeenByAgent.get(wall.getP2())) {
+            if (wallPointsSeenByAgent.get(wall.getP1()) && wallPointsSeenByAgent.get(wall.getP2())) {
                 // Si on voit les deux extrémités du mur
                 // On regarde si le milieu du mur est aussi vu
                 Line2D.Double lineFromMiddleToAgent = new Line2D.Double(
@@ -229,7 +229,7 @@ public abstract class PerceptsGetter {
 
         // On supprime de la zone de perception de l'agent l'ombre des murs
         double shadowPointsDistance = 100;
-        for(Line2D.Double wallSegment : seenWallsSegments) {
+        for (Line2D.Double wallSegment : seenWallsSegments) {
             Path2D.Double currentShadow = new Path2D.Double();
 
             CoordCartesian srcPoint = new CoordCartesian(wallSegment.getP1().getX(), wallSegment.getP1().getY());
@@ -279,7 +279,7 @@ public abstract class PerceptsGetter {
             int type = it.currentSegment(coords);
             switch (type) {
                 case PathIterator.SEG_MOVETO:
-                    if(currentPath != null)
+                    if (currentPath != null)
                         singularPaths.add(new Path2D.Double(currentPath));
                     currentPath = new Path2D.Double();
                     currentPath.moveTo(coords[0], coords[1]);
@@ -296,7 +296,7 @@ public abstract class PerceptsGetter {
             }
             it.next();
         }
-        if(currentPath != null)
+        if (currentPath != null)
             singularPaths.add(new Path2D.Double(currentPath));
 
         return singularPaths;
@@ -312,7 +312,7 @@ public abstract class PerceptsGetter {
             int type = it.currentSegment(coords);
             switch (type) {
                 case PathIterator.SEG_MOVETO:
-                    if(currentPath != null)
+                    if (currentPath != null)
                         singularPaths.add(new Path2D.Double(currentPath));
                     currentPath = new Path2D.Double();
                     currentPath.moveTo(coords[0], coords[1]);
@@ -331,7 +331,7 @@ public abstract class PerceptsGetter {
             }
             it.next();
         }
-        if(currentPath != null)
+        if (currentPath != null)
             singularPaths.add(new Path2D.Double(currentPath));
 
         return singularPaths;

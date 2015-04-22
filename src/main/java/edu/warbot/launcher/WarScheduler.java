@@ -17,32 +17,32 @@ import turtlekit.kernel.TKScheduler;
 
 public class WarScheduler extends TKScheduler implements WarGameListener {
 
-	// Délai initial entre chaque tick. Evite que le jeu aille trop vite.
-	public static final int INITIAL_DELAY = 10;
+    // Délai initial entre chaque tick. Evite que le jeu aille trop vite.
+    public static final int INITIAL_DELAY = 10;
 
-	private GenericBehaviorActivator<WarAgent> _warAgentDoBeforeEachTickActivator;
-	private WarGame game;
+    private GenericBehaviorActivator<WarAgent> _warAgentDoBeforeEachTickActivator;
+    private WarGame game;
     private boolean isGameOver;
-	
-	public WarScheduler() {
-		this.game = Shared.getGame();
-	}
-	
-	@Override
-	protected void activate() {
-		super.activate();
 
-		_warAgentDoBeforeEachTickActivator = new GenericBehaviorActivator<>(community, TKOrganization.TURTLES_GROUP, TKOrganization.TURTLE_ROLE, "doBeforeEachTick");
-		addActivator(_warAgentDoBeforeEachTickActivator);
+    public WarScheduler() {
+        this.game = Shared.getGame();
+    }
 
-		setDelay(INITIAL_DELAY);
+    @Override
+    protected void activate() {
+        super.activate();
 
-		game.addWarGameListener(this);
-	}
+        _warAgentDoBeforeEachTickActivator = new GenericBehaviorActivator<>(community, TKOrganization.TURTLES_GROUP, TKOrganization.TURTLE_ROLE, "doBeforeEachTick");
+        addActivator(_warAgentDoBeforeEachTickActivator);
 
-	@Override
-	public void doSimulationStep() {
-        if (! isGameOver) {
+        setDelay(INITIAL_DELAY);
+
+        game.addWarGameListener(this);
+    }
+
+    @Override
+    public void doSimulationStep() {
+        if (!isGameOver) {
             if (logger != null) {
                 logger.finest("Doing simulation step " + getGVT());
             }
@@ -67,17 +67,19 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
 
             game.doAfterEachTick();
         }
-	}
+    }
 
-	protected GenericBehaviorActivator<WarAgent> getWarAgentDoBeforeEachTickActivator() {
-		return _warAgentDoBeforeEachTickActivator;
-	}
-
-    @Override
-    public void onNewTeamAdded(Team newTeam) {}
+    protected GenericBehaviorActivator<WarAgent> getWarAgentDoBeforeEachTickActivator() {
+        return _warAgentDoBeforeEachTickActivator;
+    }
 
     @Override
-    public void onTeamLost(Team removedTeam) {}
+    public void onNewTeamAdded(Team newTeam) {
+    }
+
+    @Override
+    public void onTeamLost(Team removedTeam) {
+    }
 
     @Override
     public void onGameOver() {
@@ -96,7 +98,8 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
     }
 
     @Override
-    public void onGameStarted() {}
+    public void onGameStarted() {
+    }
 
     public WarGame getGame() {
         return game;

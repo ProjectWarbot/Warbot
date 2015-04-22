@@ -1,5 +1,8 @@
 package edu.warbot.launcher;
 
+import edu.warbot.FSM.WarFSMBrain;
+import edu.warbot.FSMEditor.FSMModelRebuilder;
+import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
@@ -38,16 +41,12 @@ public class WarMain implements WarGameListener {
     private static final String CMD_GAME_MODE = "--gamemode";
     private static final String CMD_HELP = "--help";
     private static final String TMP_BRAINS_OUTPUT_DIRECTORY = "bin";
-
+    HashMap<String, Class<? extends WarBrain>> brainControllers = new HashMap<String, Class<? extends WarBrain>>();
     private LoadingDialog loadingDialog;
-
     private WarGame game;
     private WarGameSettings settings;
     private WarLauncherInterface launcherInterface;
-
     private Map<String, Team> availableTeams;
-
-
 
     public WarMain() {
         availableTeams = new HashMap<>();
@@ -72,14 +71,14 @@ public class WarMain implements WarGameListener {
                 }
             });
         } else {
-            JOptionPane.showMessageDialog(null, "Aucune équipe n'a été trouvé dans le dossier \""+ TEAMS_DIRECTORY_NAME + "\"",
+            JOptionPane.showMessageDialog(null, "Aucune équipe n'a été trouvé dans le dossier \"" + TEAMS_DIRECTORY_NAME + "\"",
                     "Aucune équipe", JOptionPane.ERROR_MESSAGE);
         }
 
         loadDial.dispose();
     }
 
-    public WarMain(WarGameSettings settings, String ... selectedTeamsName) throws WarCommandException {
+    public WarMain(WarGameSettings settings, String... selectedTeamsName) throws WarCommandException {
         availableTeams = new HashMap<>();
 
         // On initialise la liste des équipes existantes dans le dossier "teams"
@@ -90,7 +89,7 @@ public class WarMain implements WarGameListener {
         if (availableTeams.size() > 0) {
             // On lance le jeu
             this.settings = settings;
-            if(selectedTeamsName.length > 1) {
+            if (selectedTeamsName.length > 1) {
                 for (String teamName : selectedTeamsName) {
                     if (availableTeams.containsKey(teamName))
                         settings.addSelectedTeam(availableTeams.get(teamName));
@@ -102,7 +101,7 @@ public class WarMain implements WarGameListener {
             }
             start();
         } else {
-            throw new WarCommandException("Not team found in folder \""+ TEAMS_DIRECTORY_NAME + "\"");
+            throw new WarCommandException("Not team found in folder \"" + TEAMS_DIRECTORY_NAME + "\"");
         }
     }
 
@@ -232,7 +231,7 @@ public class WarMain implements WarGameListener {
         Map<String, Team> loadedTeams = new HashMap<String, Team>();
         loadedTeams.putAll(getTeamsFromSourceDirectory());
 
-        for(Map.Entry<String, Team> currentLoadedTeam : getTeamsFromJarDirectory(loadedTeams.keySet()).entrySet()) {
+        for (Map.Entry<String, Team> currentLoadedTeam : getTeamsFromJarDirectory(loadedTeams.keySet()).entrySet()) {
             loadedTeams.put(currentLoadedTeam.getKey(), currentLoadedTeam.getValue());
         }
         return loadedTeams;
@@ -244,7 +243,7 @@ public class WarMain implements WarGameListener {
         String jarDirectoryPath = TEAMS_DIRECTORY_NAME + File.separator;
         File jarDirectory = new File(jarDirectoryPath);
         // On regarde si un dossier jar existe
-        if (! jarDirectory.exists() || jarDirectory.isDirectory()) {
+        if (!jarDirectory.exists() || jarDirectory.isDirectory()) {
             jarDirectory.mkdir();
         }
         File[] filesInJarDirectory = jarDirectory.listFiles();
@@ -254,8 +253,7 @@ public class WarMain implements WarGameListener {
             try {
 
                 //Lecture depuis un jar
-                if (currentFile.getCanonicalPath().endsWith(".jar"))
-                {
+                if (currentFile.getCanonicalPath().endsWith(".jar")) {
                     Team currentTeam;
                     JarFile jarCurrentFile = new JarFile(currentFile);
 
@@ -278,26 +276,23 @@ public class WarMain implements WarGameListener {
                     }
                 }
                 //lecture depuis une archive zip
-                else if(currentFile.getCanonicalPath().endsWith(".zip"))
-                {
+                else if (currentFile.getCanonicalPath().endsWith(".zip")) {
                     ZipFile zipCurrentFile = new ZipFile(currentFile);
                     //TODO PUT ZIP TEAM HANDLER
                 }
                 //Lecture depuis un dossier
-                else if(currentFile.isDirectory())
-                {
+                else if (currentFile.isDirectory()) {
                     //LOOK FOR A CONFIG.YML
                     List<String> files = Arrays.asList(currentFile.list());
-                    if(files.contains(TeamConfigReader.FILE_NAME))
-                    {
+                    if (files.contains(TeamConfigReader.FILE_NAME)) {
                         Team currentTeam;
-                        currentTeam = loadTeamFromDirectory(currentFile,excludedTeams);
+                        currentTeam = loadTeamFromDirectory(currentFile, excludedTeams);
                         // Si il y a déjà une équipe du même nom ou qu'elle est exclue, on ne l'ajoute pas
                         if (teamsLoaded.containsKey(currentTeam.getName()))
                             System.err.println("Erreur lors de la lecture d'une équipe : le nom d'équipe '" + currentTeam.getName() + "' est déjà utilisé.");
                         else
                             teamsLoaded.put(currentTeam.getName(), currentTeam);
-                    }else { // Si le fichier de configuration n'a pas été trouvé
+                    } else { // Si le fichier de configuration n'a pas été trouvé
                         //TODO FAIRE UNE FOUILLE RECURSIVE ?
                         System.err.println("Le fichier de configuration est introuvable dans le dossier " + currentFile.getCanonicalPath());
                     }
@@ -334,6 +329,7 @@ public class WarMain implements WarGameListener {
 
     /**
      * CHARGEMENT D'UNE EQUIPE SCRIPTEE DEPUIS UN DOSSIER
+     *
      * @param file
      * @param excludedTeams
      * @return
@@ -352,8 +348,7 @@ public class WarMain implements WarGameListener {
                 return name.equals(TeamConfigReader.FILE_NAME);
             }
         });
-        if(config.length==0)
-        {
+        if (config.length == 0) {
             throw new IOException("Not found configuration");
         }
 
@@ -368,8 +363,8 @@ public class WarMain implements WarGameListener {
         }
 
         System.out.println(teamConfigReader.getTeamName());
-        if(teamConfigReader.isScriptedTeam())
-            currentTeam = instanciedScriptedTeam(teamConfigReader,file);
+        if (teamConfigReader.isScriptedTeam())
+            currentTeam = instanciedScriptedTeam(teamConfigReader, file);
         else
             currentTeam = new Team(teamConfigReader.getTeamName());
 
@@ -379,8 +374,7 @@ public class WarMain implements WarGameListener {
                 return name.equals(teamConfigReader.getIconPath());
             }
         });
-        if(logo.length==1)
-        {
+        if (logo.length == 1) {
             ImageIcon teamLogo = null;
             try {
                 FileInputStream fis = new FileInputStream(logo[0]);
@@ -452,7 +446,7 @@ public class WarMain implements WarGameListener {
                 Team currentTeam;
 
                 // On analyse le fichier XML
-                FileInputStream input = new FileInputStream(getClass().getClassLoader().getResource(currentFolder).getFile()+"/"+TeamConfigReader.FILE_NAME);
+                FileInputStream input = new FileInputStream(getClass().getClassLoader().getResource(currentFolder).getFile() + "/" + TeamConfigReader.FILE_NAME);
                 TeamConfigReader teamConfigReader = new TeamConfigReader();
                 teamConfigReader.load(input);
                 input.close();
@@ -489,11 +483,24 @@ public class WarMain implements WarGameListener {
         return teamsLoaded;
     }
 
-
     public Team instanciedScriptedTeam(final TeamConfigReader teamConfigReader, File teamDirectory) throws
             NotFoundScriptLanguageException, UnrecognizedScriptLanguageException, IOException, ClassNotFoundException, DangerousFunctionPythonException {
-        ScriptedTeam team = new ScriptedTeam(teamConfigReader.getTeamName());
-        team.initListFunctions();
+
+
+        if (brainControllers.isEmpty()) {
+            try {
+                brainControllers.put("WarBase", createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarBase"));
+                brainControllers.put("WarExplorer", createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarExplorer"));
+                brainControllers.put("WarEngineer", createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarEngineer"));
+                brainControllers.put("WarRocketLauncher", createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarRocketLauncher"));
+                brainControllers.put("WarKamikaze", createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarKamikaze"));
+                brainControllers.put("WarTurret", createNewWarBrainImplementationClass("edu.warbot.scriptcore.team.ScriptableWarTurret"));
+            } catch (NotFoundException | CannotCompileException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        ScriptedTeam team = new ScriptedTeam(teamConfigReader.getTeamName(), brainControllers);
+        team.initFunctionList();
         ScriptInterpreterLanguage language = teamConfigReader.getScriptLanguage();
         team.setInterpreter(ScriptInterpreterFactory.getInstance(language).createScriptInterpreter());
         final Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
@@ -537,18 +544,17 @@ public class WarMain implements WarGameListener {
 
 
         Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
-        if(teamConfigReader.isFSMTeam()) {
-//            File fileFSMConfig = new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getFSMConfigurationFileName());
-//
-//        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
-//        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
-//        	currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
-//
-//            for (String agentName : brainControllersClassesName.keySet()) {
-//                currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrain.class);
-//            }
-        }
-        else {
+        if (teamConfigReader.isFSMTeam()) {
+            File fileFSMConfig = new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getFSMConfigurationFileName());
+
+            FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
+            FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+            currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
+
+            for (String agentName : brainControllersClassesName.keySet()) {
+                currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrain.class);
+            }
+        } else {
             ClassPool defaultClassPool = ClassPool.getDefault();
             for (String agentName : brainControllersClassesName.keySet()) {
                 currentTeam.addBrainControllerClassForAgent(agentName, createNewWarBrainImplementationClass(defaultClassPool, teamConfigReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)));
@@ -558,9 +564,37 @@ public class WarMain implements WarGameListener {
         return currentTeam;
     }
 
+    private Class<? extends WarBrain> createNewWarBrainImplementationClass(String brainClassName) throws NotFoundException, CannotCompileException, IOException {
+        ClassPool classPool = ClassPool.getDefault();
+        CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
+        if (!brainImplementationClass.isFrozen()) {
+            brainImplementationClass.setModifiers(Modifier.PUBLIC);
+            brainImplementationClass.setName(brainClassName + "BrainImplementation");
+
+            CtClass brainClass = classPool.get(brainClassName);
+            String capacitiesPackageName = Agressive.class.getPackage().getName();
+            for (CtClass brainInterface : brainClass.getSuperclass().getInterfaces()) {
+                if (brainInterface.getPackageName().equals(capacitiesPackageName)) {
+                    CtClass brainInterfaceImplementation = classPool.get(WarBrainImplementation.class.getPackage().getName() + ".War" + brainInterface.getSimpleName() + "BrainImplementation");
+                    for (CtMethod interfaceImplementationMethod : brainInterface.getDeclaredMethods()) {
+                        brainImplementationClass.addMethod(new CtMethod(
+                                brainInterfaceImplementation.getDeclaredMethod(interfaceImplementationMethod.getName(), interfaceImplementationMethod.getParameterTypes()),
+                                brainImplementationClass, null));
+                    }
+                }
+            }
+
+            brainImplementationClass.setSuperclass(brainClass);
+
+            return (Class<? extends WarBrain>) brainImplementationClass.toClass().asSubclass(WarBrain.class);
+        } else {
+            return null;
+        }
+    }
+
     private Class<? extends WarBrain> createNewWarBrainImplementationClass(ClassPool classPool, String brainClassName) throws NotFoundException, CannotCompileException, IOException {
         CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
-        if(! brainImplementationClass.isFrozen()) {
+        if (!brainImplementationClass.isFrozen()) {
             brainImplementationClass.setName(brainClassName + "BrainImplementation");
             brainImplementationClass.setModifiers(Modifier.PUBLIC);
 
@@ -652,11 +686,11 @@ public class WarMain implements WarGameListener {
 
     @Override
     public void onGameOver() {
-        if(launcherInterface != null)
+        if (launcherInterface != null)
             launcherInterface.displayGameResults(game);
         else { // Si la simulation a été lancée depuis la ligne de commande
             String finalTeams = "";
-            for(Team team : game.getPlayerTeams()) {
+            for (Team team : game.getPlayerTeams()) {
                 finalTeams += team.getName() + ", ";
             }
             finalTeams = finalTeams.substring(0, finalTeams.length() - 2);
@@ -689,7 +723,7 @@ public class WarMain implements WarGameListener {
             return game;
         }
 
-        public static Map<String, Team> getAvailableTeams(){
+        public static Map<String, Team> getAvailableTeams() {
             return availableTeams;
         }
     }
@@ -697,7 +731,7 @@ public class WarMain implements WarGameListener {
     protected static class WarCommandException extends Exception {
 
         public WarCommandException(String message) {
-            super(message + "\nEnter \""+CMD_NAME+" "+CMD_HELP+"\" for more informations.");
+            super(message + "\nEnter \"" + CMD_NAME + " " + CMD_HELP + "\" for more informations.");
         }
 
     }

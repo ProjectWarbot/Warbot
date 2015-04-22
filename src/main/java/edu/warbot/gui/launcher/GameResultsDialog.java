@@ -55,10 +55,12 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
     }
 
     @Override
-    public void windowOpened(WindowEvent e) {}
+    public void windowOpened(WindowEvent e) {
+    }
 
     @Override
-    public void windowClosing(WindowEvent e) {}
+    public void windowClosing(WindowEvent e) {
+    }
 
     @Override
     public void windowClosed(WindowEvent e) {
@@ -66,25 +68,32 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {}
+    public void windowIconified(WindowEvent e) {
+    }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {}
+    public void windowDeiconified(WindowEvent e) {
+    }
 
     @Override
-    public void windowActivated(WindowEvent e) {}
+    public void windowActivated(WindowEvent e) {
+    }
 
     @Override
-    public void windowDeactivated(WindowEvent e) {}
+    public void windowDeactivated(WindowEvent e) {
+    }
 
     @Override
-    public void onNewTeamAdded(Team newTeam) {}
+    public void onNewTeamAdded(Team newTeam) {
+    }
 
     @Override
-    public void onTeamLost(Team removedTeam) {}
+    public void onTeamLost(Team removedTeam) {
+    }
 
     @Override
-    public void onGameOver() {}
+    public void onGameOver() {
+    }
 
     @Override
     public void onGameStopped() {
@@ -92,5 +101,6 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
     }
 
     @Override
-    public void onGameStarted() {}
+    public void onGameStarted() {
+    }
 }

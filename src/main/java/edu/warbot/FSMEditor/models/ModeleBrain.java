@@ -6,100 +6,97 @@ import edu.warbot.agents.enums.WarAgentType;
 import java.util.ArrayList;
 
 public class ModeleBrain {
-	
-	private WarAgentType agentType;
-	
-	private ModelState firstState;
-	
-	private String firstStateID;
 
-	private ArrayList<ModelState> sates = new ArrayList<>();
-	private ArrayList<ModelCondition> conditions = new ArrayList<>();
-	
-	public ModeleBrain(WarAgentType agentType) {
-		this.agentType = agentType;
-	}
+    /**
+     * * Les modeles brains connaissent leurs vue **
+     */
+    ViewBrain viewBrain;
+    private WarAgentType agentType;
+    private ModelState firstState;
+    private String firstStateID;
+    private ArrayList<ModelState> sates = new ArrayList<>();
+    private ArrayList<ModelCondition> conditions = new ArrayList<>();
 
-	public void addState(ModelState d) {
-		this.sates.add(d);
-		if(this.firstState == null)
-			this.firstState = d;
-	}
-	
-	public void addCondition(ModelCondition c) {
-		this.conditions.add(c);
-	}
+    public ModeleBrain(WarAgentType agentType) {
+        this.agentType = agentType;
+    }
 
-	public ArrayList<ModelState> getStates(){
-		return this.sates;
-	}
+    public void addState(ModelState d) {
+        this.sates.add(d);
+        if (this.firstState == null)
+            this.firstState = d;
+    }
 
-	public void removeState(ModelState m) {
-		for (ModelCondition modelCondition : m.getConditionsOut()) {
-			modelCondition.setSource(null);
-		}
+    public void addCondition(ModelCondition c) {
+        this.conditions.add(c);
+    }
 
-		for (ModelCondition modelCondition : conditions) {
-			if(modelCondition.getStateDestination().equals(m)){
-				modelCondition.setDestination(null);
-				modelCondition.setStateOutId(null);
-			}
-			
-		}
-		
-		this.sates.remove(m);
-	}
+    public ArrayList<ModelState> getStates() {
+        return this.sates;
+    }
 
-	public void removeCondition(ModelCondition modeleCond) {
-		//Supprime la condition en tant que condition de sortie des états
-		for (ModelState modelS : sates) {
-			if(modelS.getConditionsOut().contains(modeleCond))
-				modelS.removeConditionOut(modeleCond);
-		}
+    public void removeState(ModelState m) {
+        for (ModelCondition modelCondition : m.getConditionsOut()) {
+            modelCondition.setSource(null);
+        }
 
-		//Supprime la condition
-		conditions.remove(modeleCond);
-		
-	}
+        for (ModelCondition modelCondition : conditions) {
+            if (modelCondition.getStateDestination().equals(m)) {
+                modelCondition.setDestination(null);
+                modelCondition.setStateOutId(null);
+            }
 
-	public ArrayList<ModelCondition> getConditions() {
-		return this.conditions;
-	}
+        }
 
-	public String getAgentTypeName() {
-		return this.agentType.toString();
-	}
-	
-	public WarAgentType getAgentType() {
-		return this.agentType;
-	}
+        this.sates.remove(m);
+    }
 
-	/**** Les modeles brains connaissent leurs vue ***/
-	ViewBrain viewBrain;
+    public void removeCondition(ModelCondition modeleCond) {
+        //Supprime la condition en tant que condition de sortie des états
+        for (ModelState modelS : sates) {
+            if (modelS.getConditionsOut().contains(modeleCond))
+                modelS.removeConditionOut(modeleCond);
+        }
 
+        //Supprime la condition
+        conditions.remove(modeleCond);
 
-	public void setViewBrain(ViewBrain vb) {
-		this.viewBrain = vb;
-	}
-	
-	public ViewBrain getViewBrain(){
-		return viewBrain;
-	}
+    }
 
-	public void setFirstState(ModelState modelState) {
-		this.firstState = modelState;
-	}
+    public ArrayList<ModelCondition> getConditions() {
+        return this.conditions;
+    }
 
-	public ModelState getFirstState() {
-		return firstState;
-	}
+    public String getAgentTypeName() {
+        return this.agentType.toString();
+    }
 
-	public void setFirstStateID(String first) {
-		this.firstStateID = first;
-	}
-	
-	public String getFirstStateID() {
-		return this.firstStateID;
-	}
+    public WarAgentType getAgentType() {
+        return this.agentType;
+    }
+
+    public ViewBrain getViewBrain() {
+        return viewBrain;
+    }
+
+    public void setViewBrain(ViewBrain vb) {
+        this.viewBrain = vb;
+    }
+
+    public ModelState getFirstState() {
+        return firstState;
+    }
+
+    public void setFirstState(ModelState modelState) {
+        this.firstState = modelState;
+    }
+
+    public String getFirstStateID() {
+        return this.firstStateID;
+    }
+
+    public void setFirstStateID(String first) {
+        this.firstStateID = first;
+    }
 
 }

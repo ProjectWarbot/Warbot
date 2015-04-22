@@ -9,52 +9,52 @@ import edu.warbot.brains.capacities.Movable;
 
 import java.util.ArrayList;
 
-public class WarActionHealAlly<BrainType extends WarBrain & Movable> extends WarAction<BrainType>{
+public class WarActionHealAlly<BrainType extends WarBrain & Movable> extends WarAction<BrainType> {
 
-	private WarAgentType agentType;
+    private WarAgentType agentType;
 
-	public WarActionHealAlly(BrainType brain, WarAgentType agentType) {
-		super(brain);
-		this.agentType = agentType;
-	}
-	
-	public String executeAction(){
-		
-		if(getAgent().isBagEmpty()){
-			getAgent().setDebugString("ActionHealAlly : empty bag");
-			return MovableWarAgent.ACTION_IDLE;
-		}
-		
-		ArrayList<WarAgentPercept> percept = getAgent().getPerceptsAllies();
-		
-		for (WarAgentPercept p : percept) {
-				
-			if(p.getType().equals(agentType) && 
-					p.getHealth() + WarFood.HEALTH_GIVEN < p.getMaxHealth() ){
+    public WarActionHealAlly(BrainType brain, WarAgentType agentType) {
+        super(brain);
+        this.agentType = agentType;
+    }
 
-				if(p.getDistance() < MovableWarAgent.MAX_DISTANCE_GIVE){
-					getAgent().setDebugString("ActionHealAlly : ally healed" + p.getType());
-					getAgent().setIdNextAgentToGive(p.getID());
-					return MovableWarAgent.ACTION_GIVE;
-				}else{
-					getAgent().setDebugString("ActionHealAlly : heal ally " + p.getType());
-					getAgent().setHeading(p.getAngle());
-					return MovableWarAgent.ACTION_MOVE;
-				}
-				
-			}
-		}
-			
-		if(getAgent().isBlocked())
-			getAgent().setRandomHeading();
-		
-		getAgent().setDebugString("ActionHealAlly : seek ally");
-		return MovableWarAgent.ACTION_MOVE;
-		
-	}
+    public String executeAction() {
 
-	@Override
-	public void actionWillBegin() {
-		super.actionWillBegin();
-	}
+        if (getAgent().isBagEmpty()) {
+            getAgent().setDebugString("ActionHealAlly : empty bag");
+            return MovableWarAgent.ACTION_IDLE;
+        }
+
+        ArrayList<WarAgentPercept> percept = getAgent().getPerceptsAllies();
+
+        for (WarAgentPercept p : percept) {
+
+            if (p.getType().equals(agentType) &&
+                    p.getHealth() + WarFood.HEALTH_GIVEN < p.getMaxHealth()) {
+
+                if (p.getDistance() < MovableWarAgent.MAX_DISTANCE_GIVE) {
+                    getAgent().setDebugString("ActionHealAlly : ally healed" + p.getType());
+                    getAgent().setIdNextAgentToGive(p.getID());
+                    return MovableWarAgent.ACTION_GIVE;
+                } else {
+                    getAgent().setDebugString("ActionHealAlly : heal ally " + p.getType());
+                    getAgent().setHeading(p.getAngle());
+                    return MovableWarAgent.ACTION_MOVE;
+                }
+
+            }
+        }
+
+        if (getAgent().isBlocked())
+            getAgent().setRandomHeading();
+
+        getAgent().setDebugString("ActionHealAlly : seek ally");
+        return MovableWarAgent.ACTION_MOVE;
+
+    }
+
+    @Override
+    public void actionWillBegin() {
+        super.actionWillBegin();
+    }
 }

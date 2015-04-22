@@ -36,12 +36,12 @@ public class MapSelectionDialog extends JFrame implements ActionListener, ListSe
         // Map list
         MapMiniature selectedMapMiniature = null;
         mapMiniaturesList = new Vector<>();
-        for(Class mapClass : ClassFinder.find(AbstractWarMap.class.getPackage().getName())) {
+        for (Class mapClass : ClassFinder.find(AbstractWarMap.class.getPackage().getName())) {
             if (mapClass.getSuperclass().equals(AbstractWarMap.class)) {
                 try {
                     MapMiniature currentMapMiniature = new MapMiniature((AbstractWarMap) mapClass.newInstance(), MapMiniature.SIZE_SMALL);
                     mapMiniaturesList.add(currentMapMiniature);
-                    if(currentMapMiniature.getMap().getName().equals(warLauncherInterface.getGameSettings().getSelectedMap().getName()))
+                    if (currentMapMiniature.getMap().getName().equals(warLauncherInterface.getGameSettings().getSelectedMap().getName()))
                         selectedMapMiniature = currentMapMiniature;
                 } catch (InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
@@ -49,7 +49,7 @@ public class MapSelectionDialog extends JFrame implements ActionListener, ListSe
             }
         }
         mapMiniaturesJList = new JList(mapMiniaturesList);
-        if(selectedMapMiniature != null)
+        if (selectedMapMiniature != null)
             mapMiniaturesJList.setSelectedValue(selectedMapMiniature, true);
         else
             mapMiniaturesJList.setSelectedIndex(0);

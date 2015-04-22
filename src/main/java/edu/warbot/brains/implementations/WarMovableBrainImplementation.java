@@ -1,8 +1,6 @@
 package edu.warbot.brains.implementations;
 
 import edu.warbot.agents.actions.constants.MovableActions;
-import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Movable;
 
 public class WarMovableBrainImplementation extends WarBrainImplementation implements MovableActions, Movable {
