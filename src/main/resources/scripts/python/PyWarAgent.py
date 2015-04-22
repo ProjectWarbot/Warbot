@@ -729,6 +729,14 @@ def isReloading():
 def printCodeur():
 	print "Lopez Jimmy"
 
+def getPerceptsFood():
+	__percept = WA.getPercepts();
+	__food = [];
+	for percept in __percept:
+		if (percept.getType().equals(WarAgentType.WarFood)):
+			__food.append(percept)
+	return __food;
+
 def getPerceptsWarBase():
 	__percept = WA.getPercepts()
 	__base = []
@@ -829,9 +837,15 @@ def haveTarget():
 	__percept = WA.getPercepts();
 	return len(__percept) > 0;
 
+def haveTargets(percept):
+	return len(percept) > 0;
+
 def haveNoTarget():
 	__percept = WA.getPercepts();
 	return len(__percept) == 0;
+
+def haveNoTargets(percept):
+	return len(percept) == 0;
 
 def isBase(percept):
 	return percept.getType().equals(WarAgentType.WarBase);
@@ -870,3 +884,48 @@ def pickableFood(percept):
 
 def isNotBagFull():
 	return not WA.isBagFull();
+
+def isMessageOfWarBase(message):
+	return message.getSenderType() == WarAgentType.WarBase;
+
+def isMessageOfWarEngineer(message):
+	return message.getSenderType() == WarAgentType.WarEngineer;
+
+def isMessageOfWarExplorer(message):
+	return message.getSenderType() == WarAgentType.WarExplorer;
+
+def isMessageOfWarKamikaze(message):
+	return message.getSenderType() == WarAgentType.WarKamikaze;
+
+def isMessageOfWarRocketLauncher(message):
+	return message.getSenderType() == WarAgentType.WarRocketLauncher;
+
+def isMessageOfWarTurret(message):
+	return message.getSenderType() == WarAgentType.WarTurret;
+
+def sendMessageToBases(message, content):
+	return broadcastMessageToAgentType(WarAgentType.WarBase, message, content);
+
+def sendMessageToEngineers(message, content):
+	return broadcastMessageToAgentType(WarAgentType.WarEngineer, message, content);
+
+def sendMessageToExplorers(message, content):
+	return broadcastMessageToAgentType(WarAgentType.WarExplorer, message, content);
+
+def sendMessageToKamikazes(message, content):
+	return broadcastMessageToAgentType(WarAgentType.WarKamikaze, message, content);
+
+def sendMessageToRocketLaunchers(message, content):
+	return broadcastMessageToAgentType(WarAgentType.WarRocketLauncher, message, content);
+
+def sendMessageToTurrets(message, content):
+	return broadcastMessageToAgentType(WarAgentType.WarTurret, message, content);
+
+def isPossibleToGiveFood(percept):
+	return percept.getDistance() < maxDistanceGive();
+
+def giveToTarget(percept) :
+	setIdNextAgentToGive(percept.getID());
+
+
+
