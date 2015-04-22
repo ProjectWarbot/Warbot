@@ -44,8 +44,7 @@ public class WarGameConfig {
             Yaml yaml = new Yaml();
             config = (Map<String, Object>) yaml.load(input);
         } catch (FileNotFoundException e) {
-            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream(gameConfigFilePath.replaceAll
-                    (File.separator, "/"));
+            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream(gameConfigFilePath);
 
             if (input != null) {
                 //Fichier de configuration par défaut dans le jar
