@@ -110,3 +110,14 @@ sendMessageToRocketLaunchers
 sendMessageToTurrets
 isPossibleToGiveFood
 giveToTarget
+createEngineer
+createExplorer
+createKamikaze
+createRocketLauncher
+createTurret
+createWall
+getNextBuildingToBuild
+setNextBuildingToBuild
+isAbleToBuild
+getIdNextBuildingToRepair
+setIdNextBuildingToRepair

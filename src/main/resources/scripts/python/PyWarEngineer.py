@@ -42,6 +42,12 @@ class PyWarEngineer(PyWarAgent):
 	def take(self):
 		return EngineerAction.ACTION_TAKE;
 
+	def build(self):
+		return EngineerAction.ACTION_BUILD;
+
+	def repair(self):
+		return EngineerAction.ACTION_REPAIR;
+
 	def maxDistanceGive(self):
 		return EngineerAction.MAX_DISTANCE_GIVE;
 
@@ -49,9 +55,24 @@ class PyWarEngineer(PyWarAgent):
 
 	def setNextAgentToCreate(self, nextAgentToCreate):
 		self.getRetAgent().setNextAgentToCreate(nextAgentToCreate)
+
+	def setNextBuildingToBuild(self, nextBuildToCreate):
+		self.getRetAgent().setNextBuildingToBuild(nextBuildToCreate)
 	
 	def getNextAgentToCreate(self):
 		return self.getRetAgent().getNextAgentToCreate()
 
+	def getNextBuildingToBuild(self):
+		return self.getRetAgent().getNextBuildingToBuild()
+
 	def isAbleToCreate(self, agent):
 		return self.getRetAgent().isAbleToCreate(agent)
+
+	def isAbleToBuild(self, agent):
+		return self.getRetAgent().isAbleToBuild(agent)
+
+	def getIdNextBuildingToRepair(self):
+		return self.getRetAgent().getIdNextBuildingToRepair()
+
+	def setIdNextBuildingToRepair(self, idBuilding):
+		self.getRetAgent().setIdNextBuildingToRepair(idBuilding)

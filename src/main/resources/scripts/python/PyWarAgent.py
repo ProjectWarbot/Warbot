@@ -13,6 +13,9 @@ from java.awt import Color
 from java.util import ArrayList
 from edu.warbot.communications import WarMessage
 from edu.warbot.tools.geometry import CoordPolar
+from edu.warbot.agents.agents import WarEngineer as EngineerAction
+from edu.warbot.agents.agents import WarBase as BaseAction
+from edu.warbot.brains.capacities import Builder
 
 global WA;
 
@@ -705,11 +708,26 @@ def maxDistanceGive():
 def setNextAgentToCreate(nextAgentToCreate):
 	WA.setNextAgentToCreate(nextAgentToCreate)
 
+def setNextBuildingToBuild(nextBuid):
+	WA.setNextBuildingToBuild(nextBuid)
+
 def getNextAgentToCreate():
 	return WA.getNextAgentToCreate()
 
+def getNextBuildingToBuild():
+	return WA.getNextBuildingToBuild()
+
+def getIdNextBuildingToRepair():
+	return WA.getIdNextBuildingToRepair()
+
+def setIdNextBuildingToRepair(idBuild):
+	return WA.setIdNextBuildingToRepair(idBuild)
+
 def isAbleToCreate(agent):
 	return WA.isAbleToCreate(agent)
+
+def isAbleToBuild(agent):
+	return WA.isAbleToBuild(agent)
 
 def ticksToReload():
 	return WA.ticksToReload();
@@ -927,5 +945,27 @@ def isPossibleToGiveFood(percept):
 def giveToTarget(percept) :
 	setIdNextAgentToGive(percept.getID());
 
+def createEngineer():
+	setNextAgentToCreate(WarAgentType.WarEngineer)
+	return WA.create()
 
+def createExplorer():
+	setNextAgentToCreate(WarAgentType.WarExplorer)
+	return WA.create()
+
+def createKamikaze():
+	setNextAgentToCreate(WarAgentType.WarKamikaze)
+	return WA.create()
+
+def createRocketLauncher():
+	setNextAgentToCreate(WarAgentType.WarRocketLauncher)
+	return WA.create()
+
+def createTurret():
+	setNextAgentToCreate(WarAgentType.WarTurret)
+	return WA.create()
+
+def createWall():
+	setNextBuildingToBuild(WarAgentType.Wall);
+	return WA.build()
 
