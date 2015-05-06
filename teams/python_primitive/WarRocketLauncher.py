@@ -1,5 +1,5 @@
 
-def actionRocketLauncher():
+def actionRocketLauncher(	)	:
 
 	for percept in getPerceptsEnemiesWarRocketLauncher():
 
@@ -15,10 +15,10 @@ def actionRocketLauncher():
 
 		followTarget(percept)
 
-		return shootTarget();
+		return shootTarget()	;
 
 	if (haveNoTarget()):
-		setDebugString("No cible")
+		setDebugString("No cible				vggcg")
 
 	if (haveTarget()):
 		setDebugString("Cible")
