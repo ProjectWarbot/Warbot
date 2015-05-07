@@ -1,12 +1,12 @@
 package edu.warbot.launcher;
 
-import edu.warbot.FSM.WarFSMBrain;
-import edu.warbot.FSMEditor.FSMModelRebuilder;
-import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.brains.implementations.WarBrainImplementation;
+import edu.warbot.fsm.WarFSMBrain;
+import edu.warbot.fsm.editor.FSMModelRebuilder;
+import edu.warbot.fsm.editor.parsing.xml.FsmXmlReader;
 import edu.warbot.game.*;
 import edu.warbot.gui.launcher.LoadingDialog;
 import edu.warbot.gui.launcher.WarLauncherInterface;
@@ -414,10 +414,10 @@ public class WarMain implements WarGameListener {
         ClassPool classPool = ClassPool.getDefault();
         classPool.insertClassPath(urlName);
 
-        // Vérifie si l'équipe est une FSM (on regarde dans le fichier de configuration)
+        // Vérifie si l'équipe est une fsm (on regarde dans le fichier de configuration)
         Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
         if (teamConfigReader.isFSMTeam()) {
-            // TODO partie FSM
+            // TODO partie fsm
 //            JarEntry entryFSMConfiguration = jarEntries.get(FsmXmlParser.xmlConfigurationDefaultFilename);
 //
 //            InputStream fileFSMConfig = jarFile.getInputStream(entryFSMConfiguration);
@@ -715,8 +715,9 @@ public class WarMain implements WarGameListener {
         loadingDialog.dispose();
     }
 
-    public static class Shared {
-        public static WarGame game;
+    static class Shared {
+        private static WarGame game;
+
         private static Map<String, Team> availableTeams;
 
         public static WarGame getGame() {

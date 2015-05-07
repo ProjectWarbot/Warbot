@@ -17,8 +17,6 @@ public class UserPreferences {
     static private Map<String, Object> settings = null;
 
     static {
-
-
         try {
             InputStream input = new FileInputStream(new File(userSettingsFilePath));
             Yaml yaml = new Yaml();

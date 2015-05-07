@@ -1,6 +1,6 @@
 package edu.warbot.launcher;
 
-import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
+import edu.warbot.fsm.editor.parsing.xml.FsmXmlReader;
 import edu.warbot.scriptcore.exceptions.NotFoundScriptLanguageException;
 import edu.warbot.scriptcore.exceptions.UnrecognizedScriptLanguageException;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
@@ -101,10 +101,10 @@ public class TeamConfigReader {
     }
 
     /**
-     * Méthode que li le fichier de configuration et renvoi si l'équipe est une FSM ou non
-     * Pour l'instant une équipe doit entièrement etre une FSM ou non (ça ne peut pas etre dépendant de chaque agent)
+     * Méthode que li le fichier de configuration et renvoi si l'équipe est une fsm ou non
+     * Pour l'instant une équipe doit entièrement etre une fsm ou non (ça ne peut pas etre dépendant de chaque agent)
      * Par la suite il faudra modifier le fichier XML et mettre pour chaque agent si il est programmé avec un brain
-     * ou si il est programmé avec un fichier de configuration FSM
+     * ou si il est programmé avec un fichier de configuration fsm
      *
      * @return
      */
