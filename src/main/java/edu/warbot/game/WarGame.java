@@ -2,6 +2,7 @@ package edu.warbot.game;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarBuilding;
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.mode.AbstractGameMode;
 import edu.warbot.maps.AbstractWarMap;
 

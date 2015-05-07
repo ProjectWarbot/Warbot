@@ -62,13 +62,13 @@ public abstract class WarEngineerBrainController extends WarEngineerBrain {
                 if (getHealth() > WarTurret.COST) {
                     setDebugString("Creating tower");
                     broadcastMessageToAll("Don't need food anymore", "");
-                    setNextAgentToCreate(WarAgentType.WarTurret);
+                    setNextBuildingToBuild(WarAgentType.Wall);
                     _angleDirection = 0.0;
                     _nbTurrets++;
                     if (_nbTurrets == 4) {
                         _aim = true;
                     }
-                    return WarEngineer.ACTION_CREATE;
+                    return WarEngineer.ACTION_BUILD;
                 } else {
                     _state = 2;
                 }
@@ -126,14 +126,14 @@ public abstract class WarEngineerBrainController extends WarEngineerBrain {
             } else {
                 setDebugString("Creating tower");
                 broadcastMessageToAll("Don't need food anymore", "");
-                setNextAgentToCreate(WarAgentType.WarTurret);
+                setNextBuildingToBuild(WarAgentType.Wall);
                 _angleDirection = 0.0;
                 _nbTurrets++;
                 if (_nbTurrets == 4) {
                     _aim = true;
                 }
                 _state = 0;
-                return WarEngineer.ACTION_CREATE;
+                return WarEngineer.ACTION_BUILD;
             }
         }
 

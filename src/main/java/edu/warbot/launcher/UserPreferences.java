@@ -25,7 +25,8 @@ public class UserPreferences {
             settings = (Map<String, Object>) yaml.load(input);
             input.close();
         } catch (IOException e) {
-            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream(userSettingsFilePath);
+            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream
+                    (userSettingsFilePath.replaceAll("\\\\", "/"));
 
             if (input != null) {
                 //Fichier de configuration par défaut dans le jar

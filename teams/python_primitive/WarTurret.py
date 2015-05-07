@@ -1,0 +1,3 @@
+
+def actionTurret():
+	return idle();

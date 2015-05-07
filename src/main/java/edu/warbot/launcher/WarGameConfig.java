@@ -35,7 +35,7 @@ public class WarGameConfig {
 
     public static final String RESOURCE_WARFOOD_CONFIG_HEALTH_GIVEN = "HealthGived";
 
-    static private String gameConfigFilePath = "config" + File.separatorChar + "warbot_settings.yml";
+    static private String gameConfigFilePath = "config" + File.separator + "warbot_settings.yml";
     static private Map<String, Object> config = null;
 
     static {
@@ -44,7 +44,8 @@ public class WarGameConfig {
             Yaml yaml = new Yaml();
             config = (Map<String, Object>) yaml.load(input);
         } catch (FileNotFoundException e) {
-            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream(gameConfigFilePath);
+            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream
+                    (gameConfigFilePath.replaceAll("\\\\", "/"));
 
             if (input != null) {
                 //Fichier de configuration par défaut dans le jar
