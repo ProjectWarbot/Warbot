@@ -1,5 +1,6 @@
 package edu.warbot.launcher;
 
+import com.badlogic.gdx.Input;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
@@ -25,6 +26,9 @@ import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -394,7 +398,7 @@ public class WarMain implements WarGameListener {
     private Team loadTeamFromJar(File file, JarFile jarFile, HashMap<String, JarEntry> jarEntries, Set<String> excludedTeams) throws IOException, ClassNotFoundException, NotFoundException, CannotCompileException, TeamAlreadyExistsException {
         Team currentTeam;
 
-        // On analyse le fichier XML
+        // On analyse le fichier YML
         BufferedInputStream input = new BufferedInputStream(jarFile.getInputStream(jarEntries.get("config.yml")));
         TeamConfigReader teamConfigReader = new TeamConfigReader();
         teamConfigReader.load(input);
@@ -412,8 +416,15 @@ public class WarMain implements WarGameListener {
         // On recherche les classes de type Brain
         String urlName = file.getCanonicalPath();
         ClassPool classPool = ClassPool.getDefault();
-        classPool.insertClassPath(urlName);
+        System.out.println(urlName);
+        ClassPath cp = classPool.insertClassPath(urlName);
 
+        URL url = cp.find("myteam.WarBaseBrainController");
+        try {
+            System.out.println(url.toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         // Vérifie si l'équipe est une fsm (on regarde dans le fichier de configuration)
         Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
         if (teamConfigReader.isFSMTeam()) {
@@ -445,8 +456,9 @@ public class WarMain implements WarGameListener {
             try {
                 Team currentTeam;
 
-                // On analyse le fichier XML
-                FileInputStream input = new FileInputStream(getClass().getClassLoader().getResource(currentFolder).getFile() + "/" + TeamConfigReader.FILE_NAME);
+                // On analyse le fichier YML
+                System.out.println();
+                InputStream input = getClass().getClassLoader().getResourceAsStream(currentFolder+"/" + TeamConfigReader.FILE_NAME);
                 TeamConfigReader teamConfigReader = new TeamConfigReader();
                 teamConfigReader.load(input);
                 input.close();
@@ -476,6 +488,9 @@ public class WarMain implements WarGameListener {
             } catch (CannotCompileException e) {
                 e.printStackTrace();
             } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                System.err.println("Lecture des fichiers JAR : Mauvaise URI");
                 e.printStackTrace();
             }
         }
@@ -534,14 +549,29 @@ public class WarMain implements WarGameListener {
 
     }
 
-    private Team loadTeamFromSources(Map<String, String> teamsSourcesFolders, TeamConfigReader teamConfigReader) throws ClassNotFoundException, IOException, NotFoundException, CannotCompileException {
+    private Team loadTeamFromSources(Map<String, String> teamsSourcesFolders, final TeamConfigReader teamConfigReader) throws ClassNotFoundException, IOException, NotFoundException, CannotCompileException, URISyntaxException {
         Team currentTeam;
-        File teamDirectory = new File(getClass().getClassLoader().getResource(teamsSourcesFolders.get(teamConfigReader.getTeamName())).getFile());
+        URL url = getClass().getClassLoader().getResource(teamsSourcesFolders.get(teamConfigReader.getTeamName()));
+        File teamDirectory = new File(url.getFile());
         currentTeam = new Team(teamConfigReader.getTeamName());
-        currentTeam.setLogo(getTeamLogoFromFile(new File(teamDirectory.getAbsolutePath() + "/" + teamConfigReader.getIconPath())));
-        currentTeam.setDescription(teamConfigReader.getTeamDescription().trim());
-        // TODO get sound
+//        url = getClass().getClassLoader().getResource(teamDirectory.getAbsolutePath() + "/" + teamConfigReader.getIconPath());
+//        System.out.println(teamDirectory.getAbsolutePath() + "/" + teamConfigReader.getIconPath());
+//        System.out.println(url==null);
+        //TODO FIX LOADING OF SOURCE TEAM LOGO
+        if(teamDirectory.isDirectory()) {
+            File[] icons = teamDirectory.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File file, String s) {
+                    return s.equals(teamConfigReader.getIconPath());
+                }
+            });
+            if(icons.length>0) {
+                currentTeam.setLogo(getTeamLogoFromFile(icons[0]));
+            }
+        }
 
+
+        currentTeam.setDescription(teamConfigReader.getTeamDescription().trim());
 
         Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
         if (teamConfigReader.isFSMTeam()) {
@@ -597,8 +627,9 @@ public class WarMain implements WarGameListener {
         if (!brainImplementationClass.isFrozen()) {
             brainImplementationClass.setName(brainClassName + "BrainImplementation");
             brainImplementationClass.setModifiers(Modifier.PUBLIC);
-
+            System.out.println(brainClassName);
             CtClass brainClass = classPool.get(brainClassName);
+            classPool.find(brainClassName);
             String capacitiesPackageName = Agressive.class.getPackage().getName();
             for (CtClass brainInterface : brainClass.getSuperclass().getInterfaces()) {
                 if (brainInterface.getPackageName().equals(capacitiesPackageName)) {
