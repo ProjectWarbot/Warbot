@@ -4,7 +4,7 @@
 
     <groupId>edu</groupId>
     <artifactId>warbot</artifactId>
-    <version>3.2.1-BETA</version>
+    <version>3.2.2</version>
     <packaging>jar</packaging>
 
     <name>warbot</name>
@@ -12,10 +12,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <!-- Warbot scriptable -->
-        <javax.javaee-version>7.0</javax.javaee-version>
-        <jython-version>2.5.4-rc1</jython-version>
 
         <!-- Warbot classique -->
         <com.badlogicgames.gdx-version>1.5.4</com.badlogicgames.gdx-version>
@@ -26,30 +22,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-scripting</artifactId>
-            <version>3.6.0</version>
+            <groupId>org.mozilla</groupId>
+            <artifactId>rhino</artifactId>
+            <version>1.7.6</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.mozilla</groupId>-->
-        <!--<artifactId>rhino</artifactId>-->
-        <!--<version>1.7R5</version>-->
-        <!--</dependency>-->
 
-        <!--<dependency>-->
-        <!--<groupId>org.python</groupId>-->
-        <!--<artifactId>jython</artifactId>-->
-        <!--<version>2.7-rc1</version>-->
-            <!--<groupId>org.mozilla</groupId>-->
-            <!--<artifactId>rhino</artifactId>-->
-            <!--<version>1.7R5</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.python</groupId>-->
-            <!--<artifactId>jython</artifactId>-->
-            <!--<version>2.7-rc1</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython-standalone</artifactId>
+            <version>2.7-b3</version>
+        </dependency>
 
         <dependency>
             <groupId>net.sf.retrotranslator</groupId>
@@ -98,6 +80,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -118,8 +101,11 @@
                 <version>2.5</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.5</version>
                 <configuration>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
                     <archive>
                         <manifest>
                             <mainClass>edu.warbot.launcher.WarMain</mainClass>
@@ -129,6 +115,17 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!-- this is used for inheritance merges -->
+                        <phase>package</phase>
+                        <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

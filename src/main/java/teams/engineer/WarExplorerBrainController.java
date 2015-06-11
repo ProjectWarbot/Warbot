@@ -74,7 +74,6 @@ public abstract class WarExplorerBrainController extends WarExplorerBrain {
                 return WarExplorer.ACTION_MOVE;
             }
         }
-
         if (isBlocked())
             setRandomHeading();
         return WarExplorer.ACTION_MOVE;

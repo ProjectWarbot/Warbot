@@ -1,6 +1,5 @@
 package edu.warbot.game;
 
-import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.agents.*;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.buildings.Wall;
@@ -9,6 +8,7 @@ import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.communications.WarKernelMessage;
+import edu.warbot.fsm.editor.models.Model;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CoordCartesian;

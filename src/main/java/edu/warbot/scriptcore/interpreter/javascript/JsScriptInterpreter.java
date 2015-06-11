@@ -22,58 +22,67 @@ import java.util.Scanner;
 
 public class JsScriptInterpreter implements ScriptInterpreter {
 
+    private static Map<String, Script> jsScriptsFirst = new HashMap<String, Script>();
+    private static Map<String, Script> jsScriptsSecond = new HashMap<String, Script>();
+    private static Map<String, Script> jsScriptsThird = new HashMap<String, Script>();
+    private static boolean initConfiguration = false;
     protected Map<WarAgentType, Script> scripts;
-
     protected ScriptEngine engine;
-
 
     public JsScriptInterpreter() {
         super();
         this.scripts = new HashMap<WarAgentType, Script>();
         ScriptEngineManager manager = new ScriptEngineManager();
         this.engine = manager.getEngineByName("rhino");
-        Map<String, File> jsScriptsFirst = new HashMap<String, File>();
-        Map<String, File> jsScriptsSecond = new HashMap<String, File>();
-        Map<String, File> jsScriptsThird = new HashMap<String, File>();
+        if (!initConfiguration) {
+            InputStream jsClassExtend = getFileJavascript("scripts/javascript/ClassExtend.js");
 
-        File jsClassExtend = getFileJavascript("scripts/javascript/ClassExtend.js");
+            InputStream jsWarAgent = getFileJavascript("scripts/javascript/JsWarAgent.js");
 
-        File jsWarAgent = getFileJavascript("scripts/javascript/JsWarAgent.js");
+            InputStream jsWarBase = getFileJavascript("scripts/javascript/JsWarBase.js");
+            InputStream jsWarEngineer = getFileJavascript("scripts/javascript/JsWarEngineer.js");
+            InputStream jsWarExplorer = getFileJavascript("scripts/javascript/JsWarExplorer.js");
+            InputStream jsWarKamikaze = getFileJavascript("scripts/javascript/JsWarKamikaze.js");
+            InputStream jsWarRocketLauncher = getFileJavascript("scripts/javascript/JsWarRocketLauncher.js");
+            InputStream jsWarTurret = getFileJavascript("scripts/javascript/JsWarTurret.js");
+            try {
+                jsScriptsFirst.put("ClassExtend", createScript(jsClassExtend));
 
-        File jsWarBase = getFileJavascript("scripts/javascript/JsWarBase.js");
-        File jsWarEngineer = getFileJavascript("scripts/javascript/JsWarEngineer.js");
-        File jsWarExplorer = getFileJavascript("scripts/javascript/JsWarExplorer.js");
-        File jsWarKamikaze = getFileJavascript("scripts/javascript/JsWarKamikaze.js");
-        File jsWarRocketLauncher = getFileJavascript("scripts/javascript/JsWarRocketLauncher.js");
-        File jsWarTurret = getFileJavascript("scripts/javascript/JsWarTurret.js");
+                jsScriptsSecond.put("JsWarAgent", createScript(jsWarAgent));
 
-        jsScriptsFirst.put("ClassExtend", jsClassExtend);
-
-        jsScriptsSecond.put("JsWarAgent", jsWarAgent);
-
-        jsScriptsThird.put("JsWarBase", jsWarBase);
-        jsScriptsThird.put("JsWarEngineer", jsWarEngineer);
-        jsScriptsThird.put("JsWarExplorer", jsWarExplorer);
-        jsScriptsThird.put("JsWarKamikaze", jsWarKamikaze);
-        jsScriptsThird.put("JsWarRocketLauncher", jsWarRocketLauncher);
-        jsScriptsThird.put("JsWarTurret", jsWarTurret);
+                jsScriptsThird.put("JsWarBase", createScript(jsWarBase));
+                jsScriptsThird.put("JsWarEngineer", createScript(jsWarEngineer));
+                jsScriptsThird.put("JsWarExplorer", createScript(jsWarExplorer));
+                jsScriptsThird.put("JsWarKamikaze", createScript(jsWarKamikaze));
+                jsScriptsThird.put("JsWarRocketLauncher", createScript(jsWarRocketLauncher));
+                jsScriptsThird.put("JsWarTurret", createScript(jsWarTurret));
+                jsClassExtend.close();
+                jsWarAgent.close();
+                jsWarEngineer.close();
+                jsWarExplorer.close();
+                jsWarKamikaze.close();
+                jsWarRocketLauncher.close();
+                jsWarTurret.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            initConfiguration = true;
+        }
 
         instanciedJsScript(jsScriptsFirst);
         instanciedJsScript(jsScriptsSecond);
         instanciedJsScript(jsScriptsThird);
-
     }
 
-    private File getFileJavascript(String pathJavascript) {
-        return new File(getClass().getClassLoader().getResource(pathJavascript).getFile());
+    private InputStream getFileJavascript(String pathJavascript) {
+        return getClass().getClassLoader().getResourceAsStream(pathJavascript);
     }
 
-    private void instanciedJsScript(Map<String, File> map) {
-        try {
-            Iterator<Entry<String, File>> entries = map.entrySet().iterator();
+    private void instanciedJsScript(Map<String, Script> map) {
+        Iterator<Entry<String, Script>> entries = map.entrySet().iterator();
             while (entries.hasNext()) {
-                Entry<String, File> thisEntry = entries.next();
-                Script s = createScript(thisEntry.getValue());
+                Entry<String, Script> thisEntry = entries.next();
+                Script s = thisEntry.getValue();
 
                 if (thisEntry.getKey().equals("ClassExtend")) {
                     evalClass(s);
@@ -83,9 +92,7 @@ public class JsScriptInterpreter implements ScriptInterpreter {
                     ScriptAgent sa = giveScriptAgent(s, thisEntry.getKey());
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
 
     }
 

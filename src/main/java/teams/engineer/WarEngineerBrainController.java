@@ -38,8 +38,9 @@ public abstract class WarEngineerBrainController extends WarEngineerBrain {
     public String action() {
 
         if (_idBase == 0) {
-            broadcastMessageToAll("Give me your ID base", "");
+//            broadcastMessageToAll("Give me your ID base", "");
         }
+
 
         if (getHealth() < WarEngineer.MAX_HEALTH && !isBagEmpty()) {
             return WarEngineer.ACTION_EAT;

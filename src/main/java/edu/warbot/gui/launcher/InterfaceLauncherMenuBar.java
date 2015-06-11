@@ -1,6 +1,6 @@
 package edu.warbot.gui.launcher;
 
-import edu.warbot.FSMEditor.FSMEditor;
+import edu.warbot.fsm.editor.FSMEditor;
 import edu.warbot.gui.GuiIconsLoader;
 import edu.warbot.gui.viewer.debug.eventlisteners.LoadSituationActionListener;
 
@@ -27,12 +27,12 @@ public class InterfaceLauncherMenuBar extends JMenuBar {
         add(menuFile);
 
 
-        JMenu menuFSM = new JMenu("FSM");
+        JMenu menuFSM = new JMenu("fsm");
         menuFSM.setMnemonic(KeyEvent.VK_F);
 
-        JMenuItem itemCreateFSM = new JMenuItem("Créer une FSM");
+        JMenuItem itemCreateFSM = new JMenuItem("Créer une fsm");
         itemCreateFSM.setMnemonic(KeyEvent.VK_C);
-        itemCreateFSM.setToolTipText("Lance l'outil de cr�ation d'architecture FSM pour Warbot");
+        itemCreateFSM.setToolTipText("Lance l'outil de cr�ation d'architecture fsm pour Warbot");
         itemCreateFSM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
