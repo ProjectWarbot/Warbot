@@ -3,7 +3,10 @@ package edu.warbot.launcher;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -14,22 +17,16 @@ public class UserPreferences {
     static private Map<String, Object> settings = null;
 
     static {
-
-
         try {
             InputStream input = new FileInputStream(new File(userSettingsFilePath));
             Yaml yaml = new Yaml();
             settings = (Map<String, Object>) yaml.load(input);
             input.close();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Le fichier des préférences de l'utilisateur est introuvable.",
-                    "Fichier manquant",
-                    JOptionPane.ERROR_MESSAGE);
-            InputStream input= UserPreferences.class.getResourceAsStream(userSettingsFilePath.replaceAll
-                    (File.separator,"/"));
-            if(input!=null)
-            {
+            InputStream input = UserPreferences.class.getClassLoader().getResourceAsStream
+                    (userSettingsFilePath.replaceAll("\\\\", "/"));
+
+            if (input != null) {
                 //Fichier de configuration par défaut dans le jar
                 Yaml yaml = new Yaml();
                 settings = (Map<String, Object>) yaml.load(input);
@@ -38,13 +35,12 @@ public class UserPreferences {
                 } catch (IOException e2) {
                     e2.printStackTrace();
                 }
-            }
-            else
-            {
+            } else {
                 JOptionPane.showMessageDialog(null,
-                        "Le fichier des préférences de l'utilisateur est introuvable.",
+                        "Le fichier des préférences de l'utilisateur est introuvable dans le jar.",
                         "Fichier manquant",
                         JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
             }
 
         }

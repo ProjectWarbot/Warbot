@@ -9,24 +9,24 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class TeamsDatasTable extends JTable implements WarGameListener {
 
-	private TeamsDatasTableModel _model;
-	private WarGame game;
-	
-	public TeamsDatasTable(WarGame game) {
-		super();
-		this.game = game;
-		
-		setDefaultRenderer(Object.class, new DefaultCellRenderer());
-		getTableHeader().setVisible(false);
-		setRowHeight(20);
-		
-		_model = new TeamsDatasTableModel(game);
-		setModel(_model);
-		getColumnModel().getColumn(0).setCellRenderer(new HeaderCellRenderer());
-		
-		game.addWarGameListener(this);
-	}
-	
+    private TeamsDatasTableModel _model;
+    private WarGame game;
+
+    public TeamsDatasTable(WarGame game) {
+        super();
+        this.game = game;
+
+        setDefaultRenderer(Object.class, new DefaultCellRenderer());
+        getTableHeader().setVisible(false);
+        setRowHeight(20);
+
+        _model = new TeamsDatasTableModel(game);
+        setModel(_model);
+        getColumnModel().getColumn(0).setCellRenderer(new HeaderCellRenderer());
+
+        game.addWarGameListener(this);
+    }
+
     @Override
     public void onNewTeamAdded(Team newTeam) {
         updateTeamsDataTable();
@@ -38,13 +38,16 @@ public class TeamsDatasTable extends JTable implements WarGameListener {
     }
 
     @Override
-    public void onGameOver() {}
+    public void onGameOver() {
+    }
 
     @Override
-    public void onGameStopped() {}
+    public void onGameStopped() {
+    }
 
     @Override
-    public void onGameStarted() {}
+    public void onGameStarted() {
+    }
 
     private void updateTeamsDataTable() {
         _model = new TeamsDatasTableModel(game);

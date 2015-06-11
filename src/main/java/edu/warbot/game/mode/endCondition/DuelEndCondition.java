@@ -32,7 +32,7 @@ public class DuelEndCondition extends AbstractEndCondition implements TeamListen
 //                nbTeamsWithoutBase++;
 //            }
 //        }
-        return getGame().getPlayerTeams().size() <= 1 ;
+        return getGame().getPlayerTeams().size() <= 1;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DuelEndCondition extends AbstractEndCondition implements TeamListen
     @Override
     public void onAgentRemoved(WarAgent removedAgent) {
         if (removedAgent.getTeam().getNbUnitsLeftOfType(WarAgentType.WarBase) == 0) {
-                getGame().setTeamAsLost(removedAgent.getTeam());
-            }
+            getGame().setTeamAsLost(removedAgent.getTeam());
+        }
     }
 }

@@ -17,15 +17,11 @@ public class MapMiniature extends JPanel {
     public static final double SIZE_MEDIUM = 1.;
     public static final double SIZE_LARGE = 2.;
     public static final double SIZE_VERY_LARGE = 3.;
-
+    public static final int FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY = 120;
+    public static final Color COLOR_FOOD = new Color(MotherNatureTeam.COLOR.getRed(), MotherNatureTeam.COLOR.getGreen(), MotherNatureTeam.COLOR.getBlue(), FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY);
     private static final double MAP_MARGIN = 5.;
     private static final double DEFAULT_WIDTH = 200.;
     private static final double DEFAULT_HEIGHT = 120.;
-
-    public static final int FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY = 120;
-
-    public static final Color COLOR_FOOD = new Color(MotherNatureTeam.COLOR.getRed(), MotherNatureTeam.COLOR.getGreen(), MotherNatureTeam.COLOR.getBlue(), FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY);
-
     private AbstractWarMap map;
     private double width;
     private double height;
@@ -51,7 +47,7 @@ public class MapMiniature extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        double resizeMultiplier = Math.min((height -(MAP_MARGIN*2.)) / map.getHeight(), (width -(MAP_MARGIN*2.)) / map.getWidth());
+        double resizeMultiplier = Math.min((height - (MAP_MARGIN * 2.)) / map.getHeight(), (width - (MAP_MARGIN * 2.)) / map.getWidth());
 
         // Translation
         Shape mapBorders = GeometryTools.resize(new Rectangle2D.Double(0, 0, map.getWidth(), map.getHeight()), resizeMultiplier);

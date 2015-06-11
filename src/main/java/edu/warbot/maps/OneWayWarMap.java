@@ -23,17 +23,17 @@ public class OneWayWarMap extends AbstractWarMap {
                 new CoordCartesian(TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
                 new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() / 2),
                 new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
-				);
-		addTeamPositions(
-				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
-				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() / 2),
-				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
-				);
+        );
+        addTeamPositions(
+                new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
+                new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() / 2),
+                new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
+        );
 
         addFoodPosition(getCenterX() - (getCenterX() / 4.), getCenterY());
         addFoodPosition(getCenterX(), getCenterY());
         addFoodPosition(getCenterX(), getCenterY());
         addFoodPosition(getCenterX() + (getCenterX() / 4.), getCenterY());
-	}
+    }
 
 }

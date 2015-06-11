@@ -1,28 +1,28 @@
 package teams.fsm;
 
-import edu.warbot.FSM.WarFSM;
 import edu.warbot.brains.brains.WarExplorerBrain;
+import edu.warbot.fsm.WarFSM;
 
 public abstract class WarExplorerBrainController extends WarExplorerBrain {
 
-	private WarFSM<WarExplorerBrain> fsm;
+    private WarFSM<WarExplorerBrain> fsm;
 
-	public WarExplorerBrainController() {
-		super();
-	}
+    public WarExplorerBrainController() {
+        super();
+    }
 
-	@Override
-	public String action() {
-		return fsm.executeFSM();
-	}
+    @Override
+    public String action() {
+        return fsm.executeFSM();
+    }
 
-	@Override
-	public void activate() {
-		initialisation();
-	}
+    @Override
+    public void activate() {
+        initialisation();
+    }
 
-	private void initialisation() {
-		fsm = new WarFSM<WarExplorerBrain>();
+    private void initialisation() {
+        fsm = new WarFSM<WarExplorerBrain>();
 
 //		/*** Reflexes ***/
 //		WarCondition<WarExplorerAdapter> condReflex = new WarConditionPerceptCounter<WarExplorerAdapter>(getAgent(), WarAgentType.WarBase, true, ">", 0);
@@ -79,5 +79,5 @@ public abstract class WarExplorerBrainController extends WarExplorerBrain {
 //		fsm.setFirstEtat(etatGetFood);
 //
 //		fsm.initFSM();
-	}
+    }
 }

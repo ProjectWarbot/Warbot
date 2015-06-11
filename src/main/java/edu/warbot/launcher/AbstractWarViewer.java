@@ -57,7 +57,7 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
     @Override
     public void setupFrame(final JFrame frame) {
         super.setupFrame(frame);
-        for(MouseWheelListener listener : getDisplayPane().getMouseWheelListeners())
+        for (MouseWheelListener listener : getDisplayPane().getMouseWheelListeners())
             getDisplayPane().removeMouseWheelListener(listener);
         setDisplayPane(new JPanel() {
             @Override
@@ -107,7 +107,7 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
-        SingleAgentProbe<TKScheduler,Double> p = new SingleAgentProbe<>(getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE,"GVT");
+        SingleAgentProbe<TKScheduler, Double> p = new SingleAgentProbe<>(getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE, "GVT");
         addProbe(p);
         final TKScheduler tkScheduler = p.getCurrentAgentsList().get(0);
 
@@ -137,7 +137,7 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
             // On récupère la liste des agents vus par l'agent sélectionné
             WarAgent selectedAgent = getDebugModePanel().getDebugTools().getSelectedAgent();
             if (selectedAgent instanceof ControllableWarAgent) {
-                for(WarAgentPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
+                for (WarAgentPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
                     agentsIDsSeenBySelectedAgent.add(p.getID());
             }
         }
@@ -190,7 +190,7 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
     }
 
     public void setMapExplorationEventsEnabled(boolean bool) {
-        mapExplorationMouseListener.setOnlyRightClick(! bool);
+        mapExplorationMouseListener.setOnlyRightClick(!bool);
     }
 
 }

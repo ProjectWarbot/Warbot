@@ -1,13 +1,13 @@
 package edu.warbot.scriptcore.script;
 
-import edu.warbot.scriptcore.interpreter.ScriptInterpreterLangage;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
 
-public class PyScript extends Script{
+public class PyScript extends Script {
 
-	
-	public PyScript(StringBuilder file) {
-		super(ScriptInterpreterLangage.PYTHON);
-		setCodeAgent(file);
-	}
+
+    public PyScript(StringBuilder file) {
+        super(ScriptInterpreterLanguage.PYTHON);
+        setCodeAgent(file);
+    }
 
 }

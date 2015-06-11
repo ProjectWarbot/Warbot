@@ -3,16 +3,17 @@ package edu.warbot.scriptcore.interpreter.javascript;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreterFactory;
 
-public class JsScriptInterpreterFactory extends ScriptInterpreterFactory{
-	
-	public JsScriptInterpreterFactory() {
-	}
+public class JsScriptInterpreterFactory extends ScriptInterpreterFactory {
 
-	@Override
-	public ScriptInterpreter createScriptInterpreter() {
-		JsScriptInterpreter interpreter = new JsScriptInterpreter();;
-		return interpreter;
-	}
+    public JsScriptInterpreterFactory() {
+    }
 
-	
+    @Override
+    public ScriptInterpreter createScriptInterpreter() {
+        JsScriptInterpreter interpreter = new JsScriptInterpreter();
+        ;
+        return interpreter;
+    }
+
+
 }
