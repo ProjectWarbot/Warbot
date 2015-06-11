@@ -1,7 +1,7 @@
 package teams.fsm;
 
-import edu.warbot.FSM.WarFSM;
 import edu.warbot.brains.brains.WarBaseBrain;
+import edu.warbot.fsm.WarFSM;
 
 public abstract class WarBaseBrainController extends WarBaseBrain {
 

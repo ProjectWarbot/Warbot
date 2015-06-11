@@ -16,7 +16,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,13 +60,14 @@ public class ScriptedTeam extends Team {
             String defaultSourceFile = "scripts/function/";
             String defaultNameFile = "function.txt";
 
-            File file = null;
+            InputStream file = null;
 
             try {
                 URL path = getClass().getClassLoader().getResource(defaultSourceFile + defaultNameFile);
                 if (path == null)
                     throw new NotFoundConfigurationException(defaultNameFile);
-                file = new File(path.getFile());
+
+                file = getClass().getClassLoader().getResourceAsStream(defaultSourceFile + defaultNameFile);
 
                 Scanner scanner = new Scanner(file);
                 while (scanner.hasNext()) {
@@ -73,8 +76,6 @@ public class ScriptedTeam extends Team {
                 scanner.close();
             } catch (NotFoundConfigurationException e) {
                 System.err.println(e.getMessage());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             }
 
             initFunction = true;
