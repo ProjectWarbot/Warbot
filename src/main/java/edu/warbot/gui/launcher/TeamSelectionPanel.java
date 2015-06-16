@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 @SuppressWarnings("serial")
-public class PnlTeamSelection extends JPanel {
+public class TeamSelectionPanel extends JPanel {
 
     private ArrayList<JRadioButton> _radioButtons;
     private Map<String, Team> availableTeams;
 
-    public PnlTeamSelection(String title, Map<String, Team> availableTeams) {
+    public TeamSelectionPanel(String title, Map<String, Team> availableTeams) {
         super();
         this.availableTeams = availableTeams;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

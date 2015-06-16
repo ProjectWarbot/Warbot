@@ -11,7 +11,6 @@ public class JsScriptInterpreterFactory extends ScriptInterpreterFactory {
     @Override
     public ScriptInterpreter createScriptInterpreter() {
         JsScriptInterpreter interpreter = new JsScriptInterpreter();
-        ;
         return interpreter;
     }
 

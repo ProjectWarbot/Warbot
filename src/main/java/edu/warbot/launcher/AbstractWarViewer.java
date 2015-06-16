@@ -8,7 +8,6 @@ import edu.warbot.gui.viewer.MapExplorationListener;
 import edu.warbot.gui.viewer.WarToolBar;
 import edu.warbot.gui.viewer.debug.DebugModePanel;
 import edu.warbot.gui.viewer.stats.GameStatsPanel;
-import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.tools.geometry.CoordCartesian;
 import madkit.simulation.probe.SingleAgentProbe;
 import turtlekit.agr.TKOrganization;
@@ -26,26 +25,27 @@ import java.util.ArrayList;
 public abstract class AbstractWarViewer extends AbstractGridViewer {
 
     protected static final int DEFAULT_CELL_SIZE = 1;
-
+    private final boolean isRenderable;
     private WarToolBar warToolBar;
     private DebugModePanel debugModePanel;
     private GameStatsPanel gameStatsPanel;
-
     private MapExplorationListener mapExplorationMouseListener;
-
     private ArrayList<Integer> agentsIDsSeenBySelectedAgent;
-
     private double mapOffsetX, mapOffsetY;
-
     private WarGame game;
 
-    public AbstractWarViewer() {
+    public AbstractWarViewer(WarGame warGame, boolean isRenderable) {
         super();
-        this.game = Shared.getGame();
+        this.isRenderable = isRenderable;
+        this.game = warGame;
         warToolBar = new WarToolBar(this);
         debugModePanel = new DebugModePanel(this);
         gameStatsPanel = new GameStatsPanel(game);
         agentsIDsSeenBySelectedAgent = new ArrayList<>();
+    }
+
+    public boolean isRenderable() {
+        return isRenderable;
     }
 
     @Override

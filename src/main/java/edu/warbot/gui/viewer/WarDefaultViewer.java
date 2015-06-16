@@ -7,6 +7,7 @@ import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.actions.MovableActionsMethods;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.game.Team;
+import edu.warbot.game.WarGame;
 import edu.warbot.launcher.AbstractWarViewer;
 import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.GeometryTools;
@@ -23,8 +24,8 @@ public class WarDefaultViewer extends AbstractWarViewer {
 
     private ArrayList<WarStar> explosions;
 
-    public WarDefaultViewer() {
-        super();
+    public WarDefaultViewer(WarGame warGame) {
+        super(warGame, true);
 
         explosions = new ArrayList<>();
 

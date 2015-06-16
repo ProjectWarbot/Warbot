@@ -29,8 +29,8 @@ public class WarLauncherInterface extends JFrame {
     private HashMap<WarAgentType, NbWarAgentSlider> sliderNbAgents;
     private HashMap<WarAgentType, NbWarAgentSlider> foodCreationRates;
 
-    private PnlTeamSelection pnlSelectionTeam1;
-    private PnlTeamSelection pnlSelectionTeam2;
+    private TeamSelectionPanel pnlSelectionTeam1;
+    private TeamSelectionPanel pnlSelectionTeam2;
 
     private MapMiniature currentDisplayedMapMiniature;
 
@@ -203,15 +203,17 @@ public class WarLauncherInterface extends JFrame {
 
         // TODO
 
+        toReturn.add(new JLabel("not installed"));
+
         return toReturn;
     }
 
     private JPanel creerPanelModeClassic() {
         JPanel toReturn = new JPanel(new GridLayout(1, 2));
 
-        pnlSelectionTeam1 = new PnlTeamSelection("Choix de l'équipe 1", warMain.getAvailableTeams());
+        pnlSelectionTeam1 = new TeamSelectionPanel("Choix de l'équipe 1", warMain.getAvailableTeams());
         toReturn.add(new JScrollPane(pnlSelectionTeam1));
-        pnlSelectionTeam2 = new PnlTeamSelection("Choix de l'équipe 2", warMain.getAvailableTeams());
+        pnlSelectionTeam2 = new TeamSelectionPanel("Choix de l'équipe 2", warMain.getAvailableTeams());
         toReturn.add(new JScrollPane(pnlSelectionTeam2));
 
         return toReturn;
