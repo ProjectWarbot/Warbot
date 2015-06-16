@@ -8,6 +8,7 @@ import edu.warbot.gui.viewer.MapExplorationListener;
 import edu.warbot.gui.viewer.WarToolBar;
 import edu.warbot.gui.viewer.debug.DebugModePanel;
 import edu.warbot.gui.viewer.stats.GameStatsPanel;
+import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CartesianCoordinates;
 import madkit.simulation.probe.SingleAgentProbe;
 import turtlekit.agr.TKOrganization;
@@ -25,27 +26,26 @@ import java.util.ArrayList;
 public abstract class AbstractWarViewer extends AbstractGridViewer {
 
     protected static final int DEFAULT_CELL_SIZE = 1;
-    private final boolean isRenderable;
+
     private WarToolBar warToolBar;
     private DebugModePanel debugModePanel;
     private GameStatsPanel gameStatsPanel;
+
     private MapExplorationListener mapExplorationMouseListener;
+
     private ArrayList<Integer> agentsIDsSeenBySelectedAgent;
+
     private double mapOffsetX, mapOffsetY;
+
     private WarGame game;
 
-    public AbstractWarViewer(WarGame warGame, boolean isRenderable) {
+    public AbstractWarViewer() {
         super();
-        this.isRenderable = isRenderable;
-        this.game = warGame;
+        this.game = Shared.getGame();
         warToolBar = new WarToolBar(this);
         debugModePanel = new DebugModePanel(this);
         gameStatsPanel = new GameStatsPanel(game);
         agentsIDsSeenBySelectedAgent = new ArrayList<>();
-    }
-
-    public boolean isRenderable() {
-        return isRenderable;
     }
 
     @Override
@@ -149,12 +149,12 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
         getFrame().repaint();
     }
 
-    public CartesianCoordinates convertClickPositionToMapPosition(double clicX, double clicY) {
-        return new CartesianCoordinates((clicX - getMapOffsetX()) / cellSize, (clicY - getMapOffsetY()) / cellSize);
+    public CoordCartesian convertClickPositionToMapPosition(double clicX, double clicY) {
+        return new CoordCartesian((clicX - getMapOffsetX()) / cellSize, (clicY - getMapOffsetY()) / cellSize);
     }
 
-    public CartesianCoordinates convertMapPositionToDisplayPosition(double mapX, double mapY) {
-        return new CartesianCoordinates((mapX * cellSize) + getMapOffsetX(), (mapY * cellSize) + getMapOffsetY());
+    public CoordCartesian convertMapPositionToDisplayPosition(double mapX, double mapY) {
+        return new CoordCartesian((mapX * cellSize) + getMapOffsetX(), (mapY * cellSize) + getMapOffsetY());
     }
 
     public double getMapOffsetX() {
