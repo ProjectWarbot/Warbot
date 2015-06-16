@@ -13,12 +13,12 @@ public abstract class WarTurretBrain extends WarBrain implements AgressiveAction
     }
 
     @Override
-    public String fire() {
+    public final String fire() {
         return ACTION_FIRE;
     }
 
     @Override
-    public String beginReloadWeapon() {
+    public final String beginReloadWeapon() {
         return ACTION_RELOAD;
     }
 

@@ -86,6 +86,6 @@ release.properties
 .classpath
 .project
 *.class
-teams/*.jar
-!teams/
+inGameTeams/*.jar
+!inGameTeams/
 build/

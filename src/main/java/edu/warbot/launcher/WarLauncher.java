@@ -2,8 +2,8 @@ package edu.warbot.launcher;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.MotherNatureTeam;
-import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameSettings;
 import edu.warbot.gui.viewer.WarDefaultViewer;
@@ -15,7 +15,6 @@ import madkit.kernel.Madkit;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
 import turtlekit.kernel.TKLauncher;
-import turtlekit.kernel.TKScheduler;
 import turtlekit.kernel.TurtleKit;
 
 import java.lang.reflect.InvocationTargetException;
@@ -57,12 +56,11 @@ public class WarLauncher extends TKLauncher {
         setMadkitProperty(TurtleKit.Option.environment, WarEnvironment.class.getName());
 
 //        super.createSimulationInstance();
-        this.launchAgent(this.getMadkitProperty(TurtleKit.Option.environment));
+        launchAgent(this.getMadkitProperty(TurtleKit.Option.environment));
         launchScheduler();
         launchViewers();
 
         this.launchConfigTurtles();
-
 
         if (settings.getSituationLoader() == null)
             launchAllAgents();
@@ -79,7 +77,7 @@ public class WarLauncher extends TKLauncher {
 
     @Override
     protected void launchScheduler() {
-        TKScheduler scheduler = new WarScheduler(warGame);
+        WarScheduler scheduler = new WarScheduler(warGame);
         this.launchAgent(scheduler);
         try {
             scheduler.setSimulationDuration((double) Integer.parseInt(this.getMadkitProperty(TurtleKit.Option.endTime)));
@@ -107,7 +105,7 @@ public class WarLauncher extends TKLauncher {
 
     private void launchAllAgents() {
         WarGame game = warGame;
-        ArrayList<Team> playerTeams = game.getPlayerTeams();
+        ArrayList<InGameTeam> playerInGameTeams = game.getPlayerTeams();
         AbstractWarMap map = game.getMap();
         ArrayList<ArrayList<WarCircle>> teamsPositions = map.getTeamsPositions();
         int teamCount = 0;
@@ -115,7 +113,7 @@ public class WarLauncher extends TKLauncher {
 
         try {
             int compteur;
-            for (Team t : playerTeams) {
+            for (InGameTeam t : playerInGameTeams) {
                 // On sélectionne aléatoirement la position de l'équipe depuis les différentes possibilités
                 WarCircle selectedPosition = teamsPositions.get(teamCount).get(new Random().nextInt(teamsPositions.get(teamCount).size()));
                 for (WarAgentType agentType : WarAgentType.values()) {
@@ -129,7 +127,7 @@ public class WarLauncher extends TKLauncher {
                             e.printStackTrace();
                         }
                         // On créé autant de WarFood que d'agent au départ
-                        motherNatureTeam.createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);
+                        motherNatureTeam.createAndLaunchResource(game.getMap(), this, WarAgentType.WarFood);
                     }
                 }
                 teamCount++;

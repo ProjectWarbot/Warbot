@@ -131,7 +131,7 @@ class PyWarAgent(ScriptAgent):
 			attention car l'appele de cette méthode efface la liste des messages après
 			utilisation, donc ne l'appeler qu'une fois par tick
 
-			return : ArrayList<WarMessage> la liste des messages
+			return : List<WarMessage> la liste des messages
 			"""
 
 		def getMessages(self):
@@ -223,10 +223,10 @@ class PyWarAgent(ScriptAgent):
 
 		def getPerceptsAllies(self):
 			"""
-			Permet de savoir la liste des agents qui sont dans notre teams
+			Permet de savoir la liste des agents qui sont dans notre inGameTeams
 			que notre agent perçoit dans sont champ de vision
 
-			return : ArrayList<WarAgentPercept> la liste des agents perçu
+			return : List<WarAgentPercept> la liste des agents perçu
 			"""
 			__ally = self.getRetAgent().getPerceptsAllies()
 			perceptAlly = []
@@ -237,10 +237,10 @@ class PyWarAgent(ScriptAgent):
 
 		def getPerceptsEnemies(self):
 			"""
-			Permet de savoir la liste des agents qui sont dans la teams adverse
+			Permet de savoir la liste des agents qui sont dans la inGameTeams adverse
 			que notre agent perçoit dans sont champ de vision
 
-			return : ArrayList<WarAgentPercept> la liste des agents perçu
+			return : List<WarAgentPercept> la liste des agents perçu
 			"""
 			__Enem = self.getRetAgent().getPerceptsEnemies()
 			perceptEnem = []
@@ -254,7 +254,7 @@ class PyWarAgent(ScriptAgent):
 			Permet de savoir la liste des ressources que notre agent
 			perçoit dans sont champ de vision
 
-			return : ArrayList<WarAgentPercept> la liste des ressources perçu
+			return : List<WarAgentPercept> la liste des ressources perçu
 			"""
 			__Ress = self.getRetAgent().getPerceptsResources()
 			perceptRess = []
@@ -265,12 +265,12 @@ class PyWarAgent(ScriptAgent):
 
 		def getPerceptsAlliesByType(self, agentType):
 			"""
-			Permet de savoir la liste des agents de notre teams d'un type d'agent particulier
+			Permet de savoir la liste des agents de notre inGameTeams d'un type d'agent particulier
 			que notre agent perçoit dans sont champ de vision
 
 			agentType -- WarAgentType -- le type d'agent que l'on chercher
 
-			return : ArrayList<WarAgentPercept> la liste des agents perçu
+			return : List<WarAgentPercept> la liste des agents perçu
 			"""
 			__ally = self.getRetAgent().getPerceptsAlliesByType(agentType)
 			perceptAlly = []
@@ -281,12 +281,12 @@ class PyWarAgent(ScriptAgent):
 
 		def getPerceptsEnemiesByType(self, agentType):
 			"""
-			Permet de savoir la liste des agents de la teams adverse d'un type d'agent particulier
+			Permet de savoir la liste des agents de la inGameTeams adverse d'un type d'agent particulier
 			que notre agent perçoit dans sont champ de vision
 
 			agentType -- WarAgentType -- le type d'agent que l'on chercher
 
-			return : ArrayList<WarAgentPercept> la liste des agents perçu
+			return : List<WarAgentPercept> la liste des agents perçu
 			"""
 			__Enem = self.getRetAgent().getPerceptsEnemiesByType(agentType)
 			perceptEnem = []
@@ -300,7 +300,7 @@ class PyWarAgent(ScriptAgent):
 			Permet de savoir la liste des agents que notre agent
 			perçoit dans sont champ de vision
 
-			return : ArrayList<WarAgentPercept> la liste des agents perçu
+			return : List<WarAgentPercept> la liste des agents perçu
 			"""
 			__percept = self.getRetAgent().getPercepts()
 			percept = []
@@ -444,7 +444,7 @@ class PyWarAgent(ScriptAgent):
 			"""
 			Permet de savoir à quel type appartient notre agent
 
-			return : String le nom de la teams de notre agent
+			return : String le nom de la inGameTeams de notre agent
 			"""
 			return self.getRetAgent().getTeamName()
 

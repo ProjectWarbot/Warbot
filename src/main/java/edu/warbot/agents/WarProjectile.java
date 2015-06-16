@@ -2,7 +2,7 @@ package edu.warbot.agents;
 
 import edu.warbot.agents.actions.MovableActionsMethods;
 import edu.warbot.brains.capacities.Movable;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.PolarCoordinates;
@@ -19,8 +19,8 @@ public abstract class WarProjectile extends WarAgent implements MovableActionsMe
     private WarAgent _sender;
     private int _currentAutonomy;
 
-    public WarProjectile(String firstActionToDo, Team team, Hitbox hitbox, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
-        super(firstActionToDo, team, hitbox);
+    public WarProjectile(String firstActionToDo, InGameTeam inGameTeam, Hitbox hitbox, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
+        super(firstActionToDo, inGameTeam, hitbox);
 
         this._speed = speed;
         this._explosionRadius = explosionRadius;

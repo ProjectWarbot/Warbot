@@ -11,7 +11,7 @@ import edu.warbot.fsm.WarFSMMessage;
 import edu.warbot.tools.geometry.PolarCoordinates;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public class WarActionDefendre extends WarAction<WarRocketLauncherBrain> {
 
@@ -29,7 +29,7 @@ public class WarActionDefendre extends WarAction<WarRocketLauncherBrain> {
             return WarRocketLauncher.ACTION_RELOAD;
         }
 
-        ArrayList<WarAgentPercept> perceptEnemy = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
+        List<WarAgentPercept> perceptEnemy = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
 
         // si j'ai un enemy dans mon percept
         if (perceptEnemy != null & perceptEnemy.size() > 0) {

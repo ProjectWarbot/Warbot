@@ -1,4 +1,4 @@
-# Directories path where a team can be loaded
+# Directories path where a inGameTeam can be loaded
 teamsSourcesFolders:
 #   <teamName>: path/to/directory/separated/by/slashes
     Engineer: "teams/engineer"

@@ -8,7 +8,6 @@ import edu.warbot.gui.viewer.MapExplorationListener;
 import edu.warbot.gui.viewer.WarToolBar;
 import edu.warbot.gui.viewer.debug.DebugModePanel;
 import edu.warbot.gui.viewer.stats.GameStatsPanel;
-import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CartesianCoordinates;
 import madkit.simulation.probe.SingleAgentProbe;
 import turtlekit.agr.TKOrganization;
@@ -39,9 +38,13 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
 
     private WarGame game;
 
-    public AbstractWarViewer() {
+    private boolean isRenderable;
+
+
+    public AbstractWarViewer(WarGame warGame, boolean isRenderable) {
         super();
-        this.game = Shared.getGame();
+        this.isRenderable = isRenderable;
+        this.game = warGame;
         warToolBar = new WarToolBar(this);
         debugModePanel = new DebugModePanel(this);
         gameStatsPanel = new GameStatsPanel(game);
@@ -52,6 +55,10 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
     protected void activate() {
         super.activate();
         setSynchronousPainting(false);
+    }
+
+    public boolean isRenderable() {
+        return isRenderable;
     }
 
     @Override
@@ -149,12 +156,12 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
         getFrame().repaint();
     }
 
-    public CoordCartesian convertClickPositionToMapPosition(double clicX, double clicY) {
-        return new CoordCartesian((clicX - getMapOffsetX()) / cellSize, (clicY - getMapOffsetY()) / cellSize);
+    public CartesianCoordinates convertClickPositionToMapPosition(double clicX, double clicY) {
+        return new CartesianCoordinates((clicX - getMapOffsetX()) / cellSize, (clicY - getMapOffsetY()) / cellSize);
     }
 
-    public CoordCartesian convertMapPositionToDisplayPosition(double mapX, double mapY) {
-        return new CoordCartesian((mapX * cellSize) + getMapOffsetX(), (mapY * cellSize) + getMapOffsetY());
+    public CartesianCoordinates convertMapPositionToDisplayPosition(double mapX, double mapY) {
+        return new CartesianCoordinates((mapX * cellSize) + getMapOffsetX(), (mapY * cellSize) + getMapOffsetY());
     }
 
     public double getMapOffsetX() {

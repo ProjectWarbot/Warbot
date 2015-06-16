@@ -11,7 +11,7 @@ import edu.warbot.fsm.editor.settings.EnumMessage;
 import edu.warbot.tools.geometry.PolarCoordinates;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Cherche la base enemy
@@ -28,7 +28,7 @@ public class WarActionChercherBase extends WarAction<WarRocketLauncherBrain> {
     @Override
     public String executeAction() {
 
-        ArrayList<WarAgentPercept> basePercepts = getAgent().getPerceptsEnemiesByType(WarAgentType.WarBase);
+        List<WarAgentPercept> basePercepts = getAgent().getPerceptsEnemiesByType(WarAgentType.WarBase);
 
         // Je vois la base
         if (basePercepts != null && basePercepts.size() > 0) {

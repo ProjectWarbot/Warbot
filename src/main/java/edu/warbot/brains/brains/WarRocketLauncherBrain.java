@@ -17,17 +17,17 @@ public abstract class WarRocketLauncherBrain extends WarBrain implements Agressi
     }
 
     @Override
-    public String move() {
+    public final String move() {
         return ACTION_MOVE;
     }
 
     @Override
-    public String fire() {
+    public final String fire() {
         return ACTION_FIRE;
     }
 
     @Override
-    public String beginReloadWeapon() {
+    public final String beginReloadWeapon() {
         return ACTION_RELOAD;
     }
 

@@ -56,11 +56,11 @@ public class AddToolMouseListener implements MouseListener, MouseMotionListener 
                         currentCreatedAgent.setPosition(mouseClickPosition.getX(), mouseClickPosition.getY());
                         currentCreatedAgent.moveOutOfCollision();
                     } else {
-                        if (_toolsPnl.getSelectedTeamForNextCreatedAgent() != null) {
+                        if (_toolsPnl.getSelectedInGameTeamForNextCreatedAgent() != null) {
                             if (_toolsPnl.getSelectedWarAgentTypeToCreate().isControllable())
-                                currentCreatedAgent = _toolsPnl.getSelectedTeamForNextCreatedAgent().instantiateNewControllableWarAgent(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
+                                currentCreatedAgent = _toolsPnl.getSelectedInGameTeamForNextCreatedAgent().instantiateNewControllableWarAgent(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
                             else {
-                                currentCreatedAgent = _toolsPnl.getSelectedTeamForNextCreatedAgent().instantiateNewBuilding(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
+                                currentCreatedAgent = _toolsPnl.getSelectedInGameTeamForNextCreatedAgent().instantiateNewBuilding(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
                                 ((AliveWarAgent) currentCreatedAgent).init(((AliveWarAgent) currentCreatedAgent).getMaxHealth());
                             }
                             _debugToolBar.getViewer().launchAgent(currentCreatedAgent);

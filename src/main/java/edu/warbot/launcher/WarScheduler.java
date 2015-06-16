@@ -2,7 +2,7 @@ package edu.warbot.launcher;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameListener;
 import madkit.action.KernelAction;
@@ -61,7 +61,7 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
 
             // Apparition de WarResource
             if (getGVT() % game.getSettings().getFoodAppearanceRate() == 0) {
-                game.getMotherNatureTeam().createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);
+                game.getMotherNatureTeam().createAndLaunchResource(game.getMap(), this, WarAgentType.WarFood);
             }
 
             game.doAfterEachTick();
@@ -73,11 +73,11 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
     }
 
     @Override
-    public void onNewTeamAdded(Team newTeam) {
+    public void onNewTeamAdded(InGameTeam newInGameTeam) {
     }
 
     @Override
-    public void onTeamLost(Team removedTeam) {
+    public void onTeamLost(InGameTeam removedInGameTeam) {
     }
 
     @Override

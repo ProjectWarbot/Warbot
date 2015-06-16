@@ -17,12 +17,12 @@ public abstract class WarKamikazeBrain extends WarBrain implements AgressiveActi
     }
 
     @Override
-    public String fire() {
+    public final String fire() {
         return ACTION_FIRE;
     }
 
     @Override
-    public String beginReloadWeapon() {
+    public final String beginReloadWeapon() {
         return ACTION_RELOAD;
     }
 

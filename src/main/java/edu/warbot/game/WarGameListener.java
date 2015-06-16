@@ -2,9 +2,9 @@ package edu.warbot.game;
 
 public interface WarGameListener {
 
-    public void onNewTeamAdded(Team newTeam);
+    public void onNewTeamAdded(InGameTeam newInGameTeam);
 
-    public void onTeamLost(Team removedTeam);
+    public void onTeamLost(InGameTeam removedInGameTeam);
 
     public void onGameOver();
 

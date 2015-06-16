@@ -26,13 +26,13 @@ public class WarGameSettings {
     private int _foodAppearanceRate;
     private Class<? extends PerceptsGetter> _perceptsGetter;
     private boolean _isEnabledEnhancedGraphism;
-    private List<Team> selectedTeams;
+    private List<InGameTeam> selectedInGameTeams;
     private SituationLoader situationLoader;
     private AbstractWarMap selectedMap;
 
     public WarGameSettings() {
         this._nbAgentOfEachType = new HashMap<>();
-        this.selectedTeams = new ArrayList<>();
+        this.selectedInGameTeams = new ArrayList<>();
 
         restartParameters();
     }
@@ -108,18 +108,18 @@ public class WarGameSettings {
         _isEnabledEnhancedGraphism = bool;
     }
 
-    public List<Team> getSelectedTeams() {
-        return selectedTeams;
+    public List<InGameTeam> getSelectedInGameTeams() {
+        return selectedInGameTeams;
     }
 
-    public void addSelectedTeam(Team team) {
-        selectedTeams.add(team);
+    public void addSelectedTeam(InGameTeam inGameTeam) {
+        selectedInGameTeams.add(inGameTeam);
     }
 
     public void prepareForNewGame() {
-        for (Team t : selectedTeams)
+        for (InGameTeam t : selectedInGameTeams)
             t.removeAllAgents();
-        selectedTeams.clear();
+        selectedInGameTeams.clear();
         situationLoader = null;
     }
 

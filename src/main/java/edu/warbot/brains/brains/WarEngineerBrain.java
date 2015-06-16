@@ -32,17 +32,17 @@ public abstract class WarEngineerBrain extends WarBrain implements CreatorAction
     }
 
     @Override
-    public String move() {
+    public final String move() {
         return ACTION_MOVE;
     }
 
     @Override
-    public String build() {
+    public final String build() {
         return ACTION_BUILD;
     }
 
     @Override
-    public String repair() {
+    public final String repair() {
         return ACTION_REPAIR;
     }
 

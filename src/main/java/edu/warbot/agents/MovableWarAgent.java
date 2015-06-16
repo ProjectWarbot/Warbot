@@ -5,7 +5,7 @@ import edu.warbot.agents.actions.PickerActionsMethods;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Movable;
 import edu.warbot.brains.capacities.Picker;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -14,8 +14,8 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 
     private double _speed;
 
-    public MovableWarAgent(String firstActionToDo, Team team, Hitbox hitbox, WarBrain brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize, double speed) {
-        super(firstActionToDo, team, hitbox, brain, distanceOfView, angleOfView, cost, maxHealth, bagSize);
+    public MovableWarAgent(String firstActionToDo, InGameTeam inGameTeam, Hitbox hitbox, WarBrain brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize, double speed) {
+        super(firstActionToDo, inGameTeam, hitbox, brain, distanceOfView, angleOfView, cost, maxHealth, bagSize);
 
         this._speed = speed;
     }

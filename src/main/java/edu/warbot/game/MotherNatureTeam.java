@@ -5,6 +5,7 @@ import edu.warbot.agents.WarResource;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.resources.WarFood;
+import edu.warbot.agents.teams.JavaTeam;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CartesianCoordinates;
@@ -15,18 +16,19 @@ import madkit.kernel.Agent;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class MotherNatureTeam extends Team {
+public class MotherNatureTeam extends InGameTeam {
 
     public static final String NAME = "Mère nature";
     public static final Color COLOR = Color.GREEN;
 
-    private ArrayList<WarResource> _resources;
+    private ArrayList<WarResource> resources;
 
     public MotherNatureTeam(WarGame game) {
-        super(NAME);
-        _resources = new ArrayList<>();
+        super(new JavaTeam(NAME, "", null, null));
+        resources = new ArrayList<>();
         setColor(COLOR);
         setGame(game);
     }
@@ -58,26 +60,26 @@ public class MotherNatureTeam extends Team {
     @Override
     public void addWarAgent(WarAgent agent) {
         if (agent instanceof WarResource)
-            _resources.add((WarResource) agent);
+            resources.add((WarResource) agent);
         else
             super.addWarAgent(agent);
     }
 
     public ArrayList<WarResource> getResources() {
-        return _resources;
+        return resources;
     }
 
     @Override
     public void removeWarAgent(WarAgent agent) {
         if (agent instanceof WarResource)
-            _resources.remove((WarResource) agent);
+            resources.remove((WarResource) agent);
         else
             super.removeWarAgent(agent);
     }
 
     public ArrayList<WarResource> getAccessibleResourcesFor(WarAgent referenceAgent) {
         ArrayList<WarResource> toReturn = new ArrayList<>();
-        for (WarResource a : _resources) {
+        for (WarResource a : resources) {
             if (referenceAgent.getAverageDistanceFrom(a) <= WarResource.MAX_DISTANCE_TAKE) {
                 toReturn.add(a);
             }
@@ -88,19 +90,21 @@ public class MotherNatureTeam extends Team {
     @Override
     public ArrayList<WarAgent> getAllAgents() {
         ArrayList<WarAgent> toReturn = super.getAllAgents();
-        toReturn.addAll(_resources);
+        toReturn.addAll(resources);
         return toReturn;
     }
 
-    public void createAndLaunchNewResource(AbstractWarMap map, Agent launcher, WarAgentType resourceType) {
+    public void createAndLaunchResource(AbstractWarMap map, Agent launcher, WarAgentType resourceType) {
         if (resourceType.getCategory() == WarAgentCategory.Resource) {
             try {
                 WarResource resource = instantiateNewWarResource(resourceType.toString());
                 launcher.launchAgent(resource);
-                ArrayList<WarCircle> foodPositions = map.getFoodPositions();
+                List<WarCircle> foodPositions = map.getFoodPositions();
+
                 CartesianCoordinates newPos = WarMathTools.addTwoPoints(
                         foodPositions.get(new Random().nextInt(foodPositions.size())).getCenterPosition(),
                         PolarCoordinates.getRandomInBounds(AbstractWarMap.FOOD_POSITION_RADIUS).toCartesian());
+
                 newPos.normalize(0, map.getWidth(), 0, map.getHeight());
                 resource.setPosition(newPos);
                 resource.moveOutOfCollision();
@@ -115,7 +119,7 @@ public class MotherNatureTeam extends Team {
 
     public WarResource instantiateNewWarResource(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
         String resourceToCreateClassName = WarFood.class.getPackage().getName() + "." + agentName;
-        WarResource a = (WarResource) Class.forName(resourceToCreateClassName).getConstructor(Team.class).newInstance(this);
+        WarResource a = (WarResource) Class.forName(resourceToCreateClassName).getConstructor(InGameTeam.class).newInstance(this);
 
 //		a.setLogLevel(getGame().getSettings().getLogLevel());
 

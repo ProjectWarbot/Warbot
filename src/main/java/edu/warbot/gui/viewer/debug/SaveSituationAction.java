@@ -4,7 +4,7 @@ import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.AbstractWarViewer;
 import edu.warbot.launcher.SituationLoader;
 import edu.warbot.tools.WarXmlWriter;
@@ -88,8 +88,8 @@ public class SaveSituationAction extends AbstractAction {
 
             Element teams = doc.createElement("Teams");
             rootElement.appendChild(teams);
-            for (Team t : warViewer.getGame().getAllTeams()) {
-                Element currentTeam = doc.createElement("Team");
+            for (InGameTeam t : warViewer.getGame().getAllTeams()) {
+                Element currentTeam = doc.createElement("InGameTeam");
                 rootElement.appendChild(currentTeam);
                 currentTeam.appendChild(WarXmlWriter.createTextElement(doc,
                         "Name", t.getName()));

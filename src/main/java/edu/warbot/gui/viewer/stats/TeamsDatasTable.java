@@ -1,6 +1,6 @@
 package edu.warbot.gui.viewer.stats;
 
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameListener;
 
@@ -28,12 +28,12 @@ public class TeamsDatasTable extends JTable implements WarGameListener {
     }
 
     @Override
-    public void onNewTeamAdded(Team newTeam) {
+    public void onNewTeamAdded(InGameTeam newInGameTeam) {
         updateTeamsDataTable();
     }
 
     @Override
-    public void onTeamLost(Team removedTeam) {
+    public void onTeamLost(InGameTeam removedInGameTeam) {
 //        updateTeamsDataTable();
     }
 

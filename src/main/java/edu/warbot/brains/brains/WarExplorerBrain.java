@@ -13,7 +13,7 @@ public abstract class WarExplorerBrain extends WarBrain implements MovableAction
     }
 
     @Override
-    public String move() {
+    public final String move() {
         return ACTION_MOVE;
     }
 

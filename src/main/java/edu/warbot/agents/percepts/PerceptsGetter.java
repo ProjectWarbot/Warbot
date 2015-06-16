@@ -23,10 +23,10 @@ public abstract class PerceptsGetter {
 
     private Area thisTickPerceptionArea;
     private boolean perceptsAlreadyGetThisTick;
-    private ArrayList<WarAgentPercept> allPercepts;
-    private ArrayList<WarAgentPercept> alliesPercepts;
-    private ArrayList<WarAgentPercept> enemiesPercepts;
-    private ArrayList<WarAgentPercept> resourcesPercepts;
+    private List<WarAgentPercept> allPercepts;
+    private List<WarAgentPercept> alliesPercepts;
+    private List<WarAgentPercept> enemiesPercepts;
+    private List<WarAgentPercept> resourcesPercepts;
     private ArrayList<WallPercept> wallsPercepts;
 
     public PerceptsGetter(ControllableWarAgent agent, WarGame game) {
@@ -47,7 +47,7 @@ public abstract class PerceptsGetter {
         return game;
     }
 
-    public ArrayList<WarAgentPercept> getPercepts() {
+    public List<WarAgentPercept> getPercepts() {
         if (!perceptsAlreadyGetThisTick) {
             allPercepts = getAgentPercepts();
             for (WarAgentPercept percept : allPercepts) {
@@ -68,8 +68,8 @@ public abstract class PerceptsGetter {
         return allPercepts;
     }
 
-    private ArrayList<WarAgentPercept> getAgentPercepts() {
-        ArrayList<WarAgentPercept> percepts = new ArrayList<WarAgentPercept>();
+    private List<WarAgentPercept> getAgentPercepts() {
+        List<WarAgentPercept> percepts = new ArrayList<WarAgentPercept>();
 
         Area visibleArea = getPerceptionArea();
         for (WarAgent agentToTestVisible : getGame().getAllAgentsInRadiusOf(getAgent(), getAgent().getDistanceOfView())) {
@@ -92,7 +92,7 @@ public abstract class PerceptsGetter {
 
     protected abstract Shape getPerceptionAreaShape();
 
-    public ArrayList<WarAgentPercept> getWarAgentsPercepts(boolean ally) {
+    public List<WarAgentPercept> getWarAgentsPercepts(boolean ally) {
         if (!perceptsAlreadyGetThisTick)
             getPercepts();
 
@@ -102,19 +102,19 @@ public abstract class PerceptsGetter {
             return enemiesPercepts;
     }
 
-    public ArrayList<WarAgentPercept> getResourcesPercepts() {
+    public List<WarAgentPercept> getResourcesPercepts() {
         if (!perceptsAlreadyGetThisTick)
             getPercepts();
 
         return resourcesPercepts;
     }
 
-    public ArrayList<WarAgentPercept> getPerceptsByType(WarAgentType agentType, boolean ally) {
+    public List<WarAgentPercept> getPerceptsByType(WarAgentType agentType, boolean ally) {
         if (!perceptsAlreadyGetThisTick)
             getPercepts();
 
-        ArrayList<WarAgentPercept> perceptsToReturn = new ArrayList<>();
-        ArrayList<WarAgentPercept> perceptsToLoop;
+        List<WarAgentPercept> perceptsToReturn = new ArrayList<>();
+        List<WarAgentPercept> perceptsToLoop;
 
         if (ally)
             perceptsToLoop = alliesPercepts;

@@ -5,7 +5,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.capacities.CommonCapacities;
 import edu.warbot.brains.capacities.Movable;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CartesianCoordinates;
@@ -17,17 +17,20 @@ import turtlekit.kernel.Turtle;
 
 import java.awt.geom.Area;
 
+/**
+ * Définition d'un agent de Warbot à partir d'une "tortue" Turtle de TurtleKit (et par extension Agent de Madkit)
+ */
 public abstract class WarAgent extends Turtle implements CommonCapacities {
 
     private static final int MAP_MARGINS = 2;
 
     private Hitbox hitbox;
-    private Team _team;
+    private InGameTeam InGameTeam;
     private int _dyingStep;
 
-    public WarAgent(String firstActionToDo, Team team, Hitbox hitbox) {
+    public WarAgent(String firstActionToDo, InGameTeam inGameTeam, Hitbox hitbox) {
         super(firstActionToDo);
-        this._team = team;
+        this.InGameTeam = inGameTeam;
         this.hitbox = hitbox;
         _dyingStep = 0;
     }
@@ -36,17 +39,13 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
     protected void activate() {
         super.activate();
         getTeam().addWarAgent(this);
-        requestRole(Team.DEFAULT_GROUP_NAME, getClass().getSimpleName());
-    }
-
-    @Override
-    protected void end() {
-        super.end();
+        requestRole(InGameTeam.DEFAULT_GROUP_NAME, getClass().getSimpleName());
     }
 
     public abstract void kill();
 
     protected void doBeforeEachTick() {
+
     }
 
     @Override
@@ -70,8 +69,8 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         return (getAgentsWithRole(getTeam().getName(), group, role).size());
     }
 
-    public Team getTeam() {
-        return _team;
+    public InGameTeam getTeam() {
+        return InGameTeam;
     }
 
     @Override
@@ -224,7 +223,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
     }
 
     /**
-     * @return Le nombre de tick passés depuis la mort de l'agent
+     * @return Le nombre de pas passés depuis la mort de l'agent
      */
     public int getDyingStep() {
         return _dyingStep;
@@ -244,6 +243,9 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
                 - getHitboxMaxRadius() - a.getHitboxMaxRadius();
     }
 
+    /**
+     * @return le type d'un agent
+     */
     public abstract WarAgentType getType();
 
 }

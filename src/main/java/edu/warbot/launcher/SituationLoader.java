@@ -5,10 +5,8 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.MotherNatureTeam;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
-import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.tools.WarXmlReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -92,34 +90,34 @@ public class SituationLoader {
         return toReturn;
     }
 
-    public List<Team> getTeamsToLoad() {
-        List<Team> teamsToLoad = new ArrayList<Team>();
+    public List<InGameTeam> getTeamsToLoad() {
+        List<InGameTeam> teamsToLoad = new ArrayList<InGameTeam>();
 
-        for (String teamName : xmlSituationFileContent.keySet()) {
-            if (!teamName.equals(MotherNatureTeam.NAME)) {
-                Team currentTeam = Shared.getAvailableTeams().get(Team.getRealNameFromTeamName(teamName));
-                // On vérifie si le jar de l'équipe existe
-                if (currentTeam == null) {
-                    System.err.println("Le fichier JAR de l'équipe " + Team.getRealNameFromTeamName(teamName) + " est manquant.");
-                    System.exit(0);
-                } else {
-                    if (!teamsToLoad.contains(currentTeam))
-                        teamsToLoad.add(currentTeam);
-                    else
-                        teamsToLoad.add(currentTeam.duplicate(teamName));
-                }
-            }
-        }
+//        for (String teamName : xmlSituationFileContent.keySet()) {
+//            if (!teamName.equals(MotherNatureTeam.NAME)) {
+//                InGameTeam currentInGameTeam = Shared.getAvailableTeams().get(InGameTeam.getRealNameFromTeamName(teamName));
+//                // On vérifie si le jar de l'équipe existe
+//                if (currentInGameTeam == null) {
+//                    System.err.println("Le fichier JAR de l'équipe " + InGameTeam.getRealNameFromTeamName(teamName) + " est manquant.");
+//                    System.exit(0);
+//                } else {
+//                    if (!teamsToLoad.contains(currentInGameTeam))
+//                        teamsToLoad.add(currentInGameTeam);
+//                    else
+//                        teamsToLoad.add(currentInGameTeam.duplicate(teamName));
+//                }
+//            }
+//        }
 
         return teamsToLoad;
     }
 
     public void launchAllAgentsFromXmlSituationFile(WarLauncher launcher, WarGame game) {
-        ArrayList<Team> teams = game.getPlayerTeams();
-        teams.add(game.getMotherNatureTeam());
+        ArrayList<InGameTeam> inGameTeams = game.getPlayerTeams();
+        inGameTeams.add(game.getMotherNatureTeam());
 
         try {
-            for (Team t : teams) {
+            for (InGameTeam t : inGameTeams) {
                 ArrayList<HashMap<String, String>> agentsOfCurrentTeam = xmlSituationFileContent.get(t.getName());
                 for (HashMap<String, String> agentDatas : agentsOfCurrentTeam) {
                     WarAgent agent;

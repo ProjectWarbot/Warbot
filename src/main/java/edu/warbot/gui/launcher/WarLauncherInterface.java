@@ -2,7 +2,8 @@ package edu.warbot.gui.launcher;
 
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.agents.teams.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameMode;
 import edu.warbot.game.WarGameSettings;
@@ -34,8 +35,8 @@ public class WarLauncherInterface extends JFrame {
 
     private MapMiniature currentDisplayedMapMiniature;
 
-    private JButton boutonQuitter;
-    private JButton boutonValider;
+    private JButton leaveButton;
+    private JButton validButton;
 
     private JComboBox<String> cbLogLevel;
 
@@ -127,22 +128,22 @@ public class WarLauncherInterface extends JFrame {
 		/* *** Bas : Boutons *** */
         JPanel panelBas = new JPanel();
 
-        boutonValider = new JButton("Valider");
-        boutonValider.addActionListener(new ActionListener() {
+        validButton = new JButton("Valider");
+        validButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 startGame();
             }
         });
-        getRootPane().setDefaultButton(boutonValider);
-        panelBas.add(boutonValider);
+        getRootPane().setDefaultButton(validButton);
+        panelBas.add(validButton);
 
-        boutonQuitter = new JButton("Quitter");
-        boutonQuitter.addActionListener(new ActionListener() {
+        leaveButton = new JButton("Quitter");
+        leaveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(NORMAL);
             }
         });
-        panelBas.add(boutonQuitter);
+        panelBas.add(leaveButton);
 
         mainPanel.add(panelBas, BorderLayout.SOUTH);
 
@@ -175,16 +176,16 @@ public class WarLauncherInterface extends JFrame {
 
         if (settings.getSituationLoader() == null) {
             // On récupère les équipes
-            Team team1 = pnlSelectionTeam1.getSelectedTeam();
-            Team team2 = pnlSelectionTeam2.getSelectedTeam();
+            Team inGameTeam1 = pnlSelectionTeam1.getSelectedTeam();
+            Team inGameTeam2 = pnlSelectionTeam2.getSelectedTeam();
             // Si c'est les mêmes équipes, on en duplique une en lui donnant un autre nom
-            if (team1.equals(team2))
-                team2 = team1.duplicate(team1.getName() + TEXT_ADDED_TO_DUPLICATE_TEAM_NAME);
+            if (inGameTeam1.equals(inGameTeam2))
+                inGameTeam2 = inGameTeam1.duplicate(inGameTeam1.getTeamName() + TEXT_ADDED_TO_DUPLICATE_TEAM_NAME);
             // On ajoute les équipes au jeu
-            settings.addSelectedTeam(team1);
-            settings.addSelectedTeam(team2);
+            settings.addSelectedTeam(new InGameTeam(inGameTeam1));
+            settings.addSelectedTeam(new InGameTeam(inGameTeam2));
         } else {
-            for (Team t : settings.getSituationLoader().getTeamsToLoad())
+            for (InGameTeam t : settings.getSituationLoader().getTeamsToLoad())
                 settings.addSelectedTeam(t);
         }
     }

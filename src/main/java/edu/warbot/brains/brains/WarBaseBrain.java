@@ -13,7 +13,7 @@ public abstract class WarBaseBrain extends WarBrain implements CreatorActionsMet
     }
 
     @Override
-    public String create() {
+    public final String create() {
         return ACTION_CREATE;
     }
 

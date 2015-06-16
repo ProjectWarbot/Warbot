@@ -3,7 +3,7 @@ IconPath: fsm.png
 SoundPath: fsm.wav
 Description: |
     Implémente et test la FSM avec l'éditeur
-BrainsPackage: teams.fsm
+BrainsPackage: inGameTeams.fsm
 AgentsBrainClasses:
     WarBase: WarBaseBrainController
     WarExplorer: WarExplorerBrainController

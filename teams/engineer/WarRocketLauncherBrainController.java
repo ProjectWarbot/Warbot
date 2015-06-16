@@ -35,7 +35,7 @@ public abstract class WarRocketLauncherBrainController extends WarRocketLauncher
         if (getHealth() <= (WarRocketLauncher.MAX_HEALTH / 5))
             return WarRocketLauncher.ACTION_EAT;
 
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {
                 case WarFood:
@@ -70,7 +70,7 @@ public abstract class WarRocketLauncherBrainController extends WarRocketLauncher
             }
         }
 
-        ArrayList<WarMessage> msgs = getMessages();
+        List<WarMessage> msgs = getMessages();
         for (WarMessage msg : msgs) {
             if (msg.getMessage().equals("Enemy base on sight") && !_inDanger) {
                 setHeading(msg.getAngle());
