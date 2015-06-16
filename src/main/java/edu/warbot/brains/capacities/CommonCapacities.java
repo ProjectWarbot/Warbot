@@ -5,25 +5,25 @@ import madkit.kernel.AbstractAgent;
 
 public interface CommonCapacities {
 
-    public AbstractAgent.ReturnCode requestRole(String group, String role);
+    AbstractAgent.ReturnCode requestRole(String group, String role);
 
-    public AbstractAgent.ReturnCode leaveRole(String group, String role);
+    AbstractAgent.ReturnCode leaveRole(String group, String role);
 
-    public AbstractAgent.ReturnCode leaveGroup(String group);
+    AbstractAgent.ReturnCode leaveGroup(String group);
 
-    public int getNumberOfAgentsInRole(String group, String role);
+    int getNumberOfAgentsInRole(String group, String role);
 
-    public double getHeading();
+    double getHeading();
 
-    public void setHeading(double angle);
+    void setHeading(double angle);
 
-    public void setRandomHeading();
+    void setRandomHeading();
 
-    public void setRandomHeading(int range);
+    void setRandomHeading(int range);
 
-    public String getTeamName();
+    String getTeamName();
 
-    public boolean isEnemy(WarAgentPercept percept);
+    boolean isEnemy(WarAgentPercept percept);
 
-    public int getID();
+    int getID();
 }

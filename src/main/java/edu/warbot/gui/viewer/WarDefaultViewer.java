@@ -7,8 +7,9 @@ import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.actions.MovableActionsMethods;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.game.Team;
+import edu.warbot.game.WarGame;
 import edu.warbot.launcher.AbstractWarViewer;
-import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.GeometryTools;
 import edu.warbot.tools.geometry.WarStar;
 
@@ -23,8 +24,8 @@ public class WarDefaultViewer extends AbstractWarViewer {
 
     private ArrayList<WarStar> explosions;
 
-    public WarDefaultViewer() {
-        super();
+    public WarDefaultViewer(WarGame warGame) {
+        super(warGame, true);
 
         explosions = new ArrayList<>();
 
@@ -247,14 +248,14 @@ public class WarDefaultViewer extends AbstractWarViewer {
         g.setColor(previousColor);
     }
 
-    private WarStar createExplosionShape(CoordCartesian pos, int radius) {
+    private WarStar createExplosionShape(CartesianCoordinates pos, int radius) {
         int newRadius = radius * cellSize;
-        return createStar(10, new CoordCartesian(pos.getX() * cellSize, pos.getY() * cellSize), newRadius, newRadius / 2);
+        return createStar(10, new CartesianCoordinates(pos.getX() * cellSize, pos.getY() * cellSize), newRadius, newRadius / 2);
     }
 
     private void paintExplosionShape(Graphics2D g2d, WarStar s) {
         if (s.getRadiusOuterCircle() > 0) { // Erreur de source inconnue qui arrivait souvent
-            RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getCenter().getX(), s.getCenter().getY()),
+            RadialGradientPaint color = new RadialGradientPaint(new CartesianCoordinates(s.getCenter().getX(), s.getCenter().getY()),
                     (float) s.getRadiusOuterCircle(),
                     new float[]{0.0f, 0.8f},
                     new Color[]{Color.RED, Color.YELLOW});

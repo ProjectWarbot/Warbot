@@ -26,11 +26,11 @@ public class WarLauncherInterface extends JFrame {
     public static final String TEXT_ADDED_TO_DUPLICATE_TEAM_NAME = "_bis";
 
     // Eléments de l'interface
-    private HashMap<WarAgentType, NbWarAgentSlider> sliderNbAgents;
-    private HashMap<WarAgentType, NbWarAgentSlider> foodCreationRates;
+    private HashMap<WarAgentType, WarAgentCountSlider> sliderNbAgents;
+    private HashMap<WarAgentType, WarAgentCountSlider> foodCreationRates;
 
-    private PnlTeamSelection pnlSelectionTeam1;
-    private PnlTeamSelection pnlSelectionTeam2;
+    private TeamSelectionPanel pnlSelectionTeam1;
+    private TeamSelectionPanel pnlSelectionTeam2;
 
     private MapMiniature currentDisplayedMapMiniature;
 
@@ -81,7 +81,7 @@ public class WarLauncherInterface extends JFrame {
 
         // Controllables
         for (WarAgentType a : WarAgentType.getControllableAgentTypes()) {
-            NbWarAgentSlider slider = new NbWarAgentSlider("Nombre de " + a.toString(),
+            WarAgentCountSlider slider = new WarAgentCountSlider("Nombre de " + a.toString(),
                     0, 30, UserPreferences.getNbAgentsAtStartOfType(a.toString()), 1, 10);
             sliderNbAgents.put(a, slider);
             pnlNbUnits.add(slider);
@@ -90,7 +90,7 @@ public class WarLauncherInterface extends JFrame {
         // Ressources
         foodCreationRates = new HashMap<>();
         for (WarAgentType a : WarAgentType.getAgentsOfCategories(WarAgentCategory.Resource)) {
-            NbWarAgentSlider slider = new NbWarAgentSlider(a.toString() + " tous les x ticks",
+            WarAgentCountSlider slider = new WarAgentCountSlider(a.toString() + " tous les x ticks",
                     0, 500, 150, 1, 100);
             foodCreationRates.put(a, slider);
             pnlNbUnits.add(slider);
@@ -163,7 +163,7 @@ public class WarLauncherInterface extends JFrame {
         settings.setDefaultLogLevel((Level.parse((String) cbLogLevel.getSelectedItem())));
 
         for (WarAgentType agent : WarAgentType.values()) {
-            NbWarAgentSlider slider = sliderNbAgents.get(agent);
+            WarAgentCountSlider slider = sliderNbAgents.get(agent);
             if (slider != null)
                 settings.setNbAgentOfType(agent, slider.getSelectedValue());
         }
@@ -203,15 +203,17 @@ public class WarLauncherInterface extends JFrame {
 
         // TODO
 
+        toReturn.add(new JLabel("not installed"));
+
         return toReturn;
     }
 
     private JPanel creerPanelModeClassic() {
         JPanel toReturn = new JPanel(new GridLayout(1, 2));
 
-        pnlSelectionTeam1 = new PnlTeamSelection("Choix de l'équipe 1", warMain.getAvailableTeams());
+        pnlSelectionTeam1 = new TeamSelectionPanel("Choix de l'équipe 1", warMain.getAvailableTeams());
         toReturn.add(new JScrollPane(pnlSelectionTeam1));
-        pnlSelectionTeam2 = new PnlTeamSelection("Choix de l'équipe 2", warMain.getAvailableTeams());
+        pnlSelectionTeam2 = new TeamSelectionPanel("Choix de l'équipe 2", warMain.getAvailableTeams());
         toReturn.add(new JScrollPane(pnlSelectionTeam2));
 
         return toReturn;

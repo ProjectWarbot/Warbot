@@ -8,9 +8,9 @@ import edu.warbot.brains.capacities.Movable;
 import edu.warbot.game.Team;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.GeometryTools;
+import edu.warbot.tools.geometry.PolarCoordinates;
 import edu.warbot.tools.geometry.WarCircle;
 import madkit.kernel.AbstractAgent;
 import turtlekit.kernel.Turtle;
@@ -120,19 +120,19 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 
     protected boolean isGoingToBeOutOfMap() {
 
-        CoordCartesian nextPos = new CoordCartesian(getX(), getY());
+        CartesianCoordinates nextPos = new CartesianCoordinates(getX(), getY());
         if (this instanceof MovableActionsMethods)
-            nextPos.add(new CoordPolar(((Movable) this).getSpeed(), getHeading()).toCartesian());
+            nextPos.add(new PolarCoordinates(((Movable) this).getSpeed(), getHeading()).toCartesian());
 
         return !getTeam().getGame().getMap().getMapAccessibleArea().contains(nextPos.getX(), nextPos.getY());
     }
 
     protected boolean isGoingToBeOverAnOtherAgent() {
-        CoordCartesian futurePosition = getPosition();
+        CartesianCoordinates futurePosition = getPosition();
         double searchAreaRadius = getHitboxMaxRadius() * 4.;
         if (this instanceof MovableActionsMethods) {
             searchAreaRadius += ((Movable) this).getSpeed();
-            futurePosition = WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(((Movable) this).getSpeed(), getHeading()));
+            futurePosition = WarMathTools.addTwoPoints(new CartesianCoordinates(getX(), getY()), new PolarCoordinates(((Movable) this).getSpeed(), getHeading()));
         }
         for (WarAgent a : getTeam().getGame().getAllAgentsInRadius(futurePosition.getX(), futurePosition.getY(), searchAreaRadius)) {
             if (a.getID() != getID() && a instanceof AliveWarAgent) {
@@ -152,7 +152,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         return !agentArea.isEmpty();
     }
 
-    protected boolean isInCollisionWithAtPosition(CoordCartesian pos, WarAgent agent) {
+    protected boolean isInCollisionWithAtPosition(CartesianCoordinates pos, WarAgent agent) {
         Area currentAgentArea = new Area(getActualFormAtPosition(pos.getX(), pos.getY()));
         Area agentArea = new Area(agent.getActualForm());
         agentArea.intersect(currentAgentArea);
@@ -164,20 +164,20 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         moveOutOfCollision();
     }
 
-    public void setRandomPositionInCircle(CoordCartesian centerPoint, double radius) {
-        setPosition(WarMathTools.addTwoPoints(centerPoint, CoordPolar.getRandomInBounds(radius).toCartesian()));
+    public void setRandomPositionInCircle(CartesianCoordinates centerPoint, double radius) {
+        setPosition(WarMathTools.addTwoPoints(centerPoint, PolarCoordinates.getRandomInBounds(radius).toCartesian()));
         moveOutOfCollision();
     }
 
     public void setRandomPositionInCircle(WarCircle circle) {
-        setRandomPositionInCircle(new CoordCartesian(circle.getCenterX(), circle.getCenterY()), circle.getRadius());
+        setRandomPositionInCircle(new CartesianCoordinates(circle.getCenterX(), circle.getCenterY()), circle.getRadius());
     }
 
-    public CoordCartesian getPosition() {
-        return new CoordCartesian(getX(), getY());
+    public CartesianCoordinates getPosition() {
+        return new CartesianCoordinates(getX(), getY());
     }
 
-    public void setPosition(CoordCartesian pos) {
+    public void setPosition(CartesianCoordinates pos) {
         setPosition(pos.getX(), pos.getY());
     }
 
@@ -189,10 +189,10 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         boolean isPositionChanged = false;
 
         // Test si l'agent est hors carte
-        CoordCartesian agentPosition = getPosition();
+        CartesianCoordinates agentPosition = getPosition();
         AbstractWarMap map = getTeam().getGame().getMap();
         if (!map.getMapAccessibleArea().contains(agentPosition.getX(), agentPosition.getY())) {
-            CoordPolar moveToMapCenter = new CoordPolar(1, agentPosition.getAngleToPoint(new CoordCartesian(map.getCenterX(), map.getCenterY())));
+            PolarCoordinates moveToMapCenter = new PolarCoordinates(1, agentPosition.getAngleToPoint(new CartesianCoordinates(map.getCenterX(), map.getCenterY())));
             do {
                 agentPosition.add(moveToMapCenter.toCartesian());
             } while (!map.getMapAccessibleArea().contains(agentPosition.getX(), agentPosition.getY()));
@@ -206,7 +206,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
             if (a.getID() != getID() && a instanceof AliveWarAgent) {
                 if (isInCollisionWith(a)) {
                     agentPosition = getPosition();
-                    CoordPolar moveAwayFromAgent = new CoordPolar(1, a.getPosition().getAngleToPoint(getPosition()));
+                    PolarCoordinates moveAwayFromAgent = new PolarCoordinates(1, a.getPosition().getAngleToPoint(getPosition()));
                     do {
                         agentPosition.add(moveAwayFromAgent.toCartesian());
                     }

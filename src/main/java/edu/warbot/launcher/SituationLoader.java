@@ -89,7 +89,6 @@ public class SituationLoader {
             System.err.println("Wrong XPath : " + teamsPath);
             e.printStackTrace();
         }
-
         return toReturn;
     }
 
@@ -115,8 +114,7 @@ public class SituationLoader {
         return teamsToLoad;
     }
 
-    public void launchAllAgentsFromXmlSituationFile(WarLauncher launcher) {
-        WarGame game = Shared.getGame();
+    public void launchAllAgentsFromXmlSituationFile(WarLauncher launcher, WarGame game) {
         ArrayList<Team> teams = game.getPlayerTeams();
         teams.add(game.getMotherNatureTeam());
 

@@ -8,7 +8,7 @@ import edu.warbot.brains.brains.WarRocketLauncherBrain;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.fsm.WarFSMMessage;
 import edu.warbot.fsm.editor.settings.EnumMessage;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.PolarCoordinates;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class WarActionChercherBase extends WarAction<WarRocketLauncherBrain> {
 
-    CoordPolar coordPolarBase;
+    PolarCoordinates polarCoordinatesBase;
 
     public WarActionChercherBase(WarRocketLauncherBrain brain) {
         super(brain);
@@ -45,20 +45,20 @@ public class WarActionChercherBase extends WarAction<WarRocketLauncherBrain> {
         } else { //Si il ny a pas de base dans le percept
 
             // Je me souvient d'ou est la base
-            if (coordPolarBase != null && coordPolarBase.getDistance() > WarRocketLauncher.DISTANCE_OF_VIEW) {
-                getAgent().setHeading(coordPolarBase.getAngle());
+            if (polarCoordinatesBase != null && polarCoordinatesBase.getDistance() > WarRocketLauncher.DISTANCE_OF_VIEW) {
+                getAgent().setHeading(polarCoordinatesBase.getAngle());
                 return MovableWarAgent.ACTION_MOVE;
-            } else if (coordPolarBase != null && coordPolarBase.getDistance() < WarRocketLauncher.DISTANCE_OF_VIEW) {
-                this.coordPolarBase = null;
+            } else if (polarCoordinatesBase != null && polarCoordinatesBase.getDistance() < WarRocketLauncher.DISTANCE_OF_VIEW) {
+                this.polarCoordinatesBase = null;
             }
 
             WarMessage m = getMessageLocateBase();
 
             //Si j'ai un message qui me dit où est la base
             if (m != null && m.getContent().length == 2) {
-                this.coordPolarBase = getAgent().getIndirectPositionOfAgentWithMessage(m);
+                this.polarCoordinatesBase = getAgent().getIndirectPositionOfAgentWithMessage(m);
 
-                getAgent().setHeading(coordPolarBase.getAngle());
+                getAgent().setHeading(polarCoordinatesBase.getAngle());
                 return MovableWarAgent.ACTION_MOVE;
             } else if (m != null) {
                 getAgent().setHeading(m.getAngle());

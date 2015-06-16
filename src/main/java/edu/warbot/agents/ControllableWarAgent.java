@@ -13,8 +13,8 @@ import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.game.Team;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
+import edu.warbot.tools.geometry.PolarCoordinates;
 import madkit.kernel.Message;
 
 import java.awt.*;
@@ -279,22 +279,22 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
      * @return Coordonnee polaire de l'agent ennemi perçu indirectement
      */
     @Override
-    public CoordPolar getIndirectPositionOfAgentWithMessage(WarMessage message) {
+    public PolarCoordinates getIndirectPositionOfAgentWithMessage(WarMessage message) {
         if (message.getContent().length != 2) {
             System.out.println("ATTENTION vous devez envoyer un message avec des informations corrects dans getSecondPositionAgent");
             return null;
         }
 
-        CoordPolar positionAllie = new CoordPolar(message.getDistance(), message.getAngle());
-        CoordPolar positionEnnemi = new CoordPolar(Double.valueOf(message.getContent()[0]), Double.valueOf(message.getContent()[1]));
+        PolarCoordinates positionAllie = new PolarCoordinates(message.getDistance(), message.getAngle());
+        PolarCoordinates positionEnnemi = new PolarCoordinates(Double.valueOf(message.getContent()[0]), Double.valueOf(message.getContent()[1]));
 
-        CoordCartesian vecteurPositionAllie = positionAllie.toCartesian();
-        CoordCartesian vecteurPositionEnemie = positionEnnemi.toCartesian();
+        CartesianCoordinates vecteurPositionAllie = positionAllie.toCartesian();
+        CartesianCoordinates vecteurPositionEnemie = positionEnnemi.toCartesian();
 
-        CoordCartesian positionfinal = new CoordCartesian(vecteurPositionAllie.getX() + vecteurPositionEnemie.getX(),
+        CartesianCoordinates positionfinal = new CartesianCoordinates(vecteurPositionAllie.getX() + vecteurPositionEnemie.getX(),
                 vecteurPositionAllie.getY() + vecteurPositionEnemie.getY());
 
-        CoordPolar polaireFinal = positionfinal.toPolar();
+        PolarCoordinates polaireFinal = positionfinal.toPolar();
 
         return polaireFinal;
     }
@@ -307,15 +307,15 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
      * @return Coordonnee polaire de la position moyenne du groupe ou null si aucune unite
      */
     @Override
-    public CoordPolar getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
+    public PolarCoordinates getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
         ArrayList<WarAgentPercept> listPercept = this.getPerceptsByAgentType(agentType, ally);
 
         if (listPercept.size() == 0)
             return null;
 
         int nbEnemie = listPercept.size();
-        CoordPolar listePolaireEnemie[] = new CoordPolar[nbEnemie];
-        CoordCartesian listeVecteurEnemie[] = new CoordCartesian[nbEnemie];
+        PolarCoordinates listePolaireEnemie[] = new PolarCoordinates[nbEnemie];
+        CartesianCoordinates listeVecteurEnemie[] = new CartesianCoordinates[nbEnemie];
 
         double sommeX = 0, sommeY = 0;
 
@@ -326,17 +326,17 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
             sommeY += listeVecteurEnemie[i].getY();
         }
 
-        CoordCartesian baricentre = new CoordCartesian(sommeX / nbEnemie, sommeY / nbEnemie);
+        CartesianCoordinates baricentre = new CartesianCoordinates(sommeX / nbEnemie, sommeY / nbEnemie);
 
-        CoordPolar baricentrePolaire = baricentre.toPolar();
+        PolarCoordinates baricentrePolaire = baricentre.toPolar();
 
         return baricentrePolaire;
     }
 
     @Override
-    public CoordPolar getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget) {
-        return WarMathTools.addTwoPoints(new CoordPolar(distanceFromAlly, angleToAlly),
-                new CoordPolar(distanceBetweenAllyAndTarget, angleFromAllyToTarget));
+    public PolarCoordinates getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget) {
+        return WarMathTools.addTwoPoints(new PolarCoordinates(distanceFromAlly, angleToAlly),
+                new PolarCoordinates(distanceBetweenAllyAndTarget, angleFromAllyToTarget));
     }
 
     @Override

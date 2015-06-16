@@ -11,8 +11,8 @@ import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.fsm.editor.models.Model;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
+import edu.warbot.tools.geometry.PolarCoordinates;
 
 import javax.swing.*;
 import java.awt.*;
@@ -389,7 +389,7 @@ public class Team {
                         ((AliveWarAgent) builderAgent).launchAgent(building);
 
                         // Position
-                        CoordCartesian newBuildingPosition = WarMathTools.addTwoPoints(((AliveWarAgent) builderAgent).getPosition(), new CoordPolar(WarBuilding.MAX_DISTANCE_BUILD, ((AliveWarAgent) builderAgent).getHeading()));
+                        CartesianCoordinates newBuildingPosition = WarMathTools.addTwoPoints(((AliveWarAgent) builderAgent).getPosition(), new PolarCoordinates(WarBuilding.MAX_DISTANCE_BUILD, ((AliveWarAgent) builderAgent).getHeading()));
                         for (WarAgent agent : getAllAgentsInRadiusOf(building, building.getHitboxMaxRadius())) {
                             agent.moveOutOfCollision();
                         }

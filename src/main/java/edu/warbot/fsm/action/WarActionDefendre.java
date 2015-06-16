@@ -8,14 +8,14 @@ import edu.warbot.agents.projectiles.WarRocket;
 import edu.warbot.brains.brains.WarRocketLauncherBrain;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.fsm.WarFSMMessage;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.PolarCoordinates;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class WarActionDefendre extends WarAction<WarRocketLauncherBrain> {
 
-    CoordPolar coordBase;
+    PolarCoordinates coordBase;
 
     public WarActionDefendre(WarRocketLauncherBrain brain) {
         super(brain);

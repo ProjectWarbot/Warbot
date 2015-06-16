@@ -4,14 +4,14 @@ import edu.warbot.agents.enums.WarAgentType;
 
 public interface Builder {
 
-    public WarAgentType getNextBuildingToBuild();
+    WarAgentType getNextBuildingToBuild();
 
-    public void setNextBuildingToBuild(WarAgentType nextBuildingToBuild);
+    void setNextBuildingToBuild(WarAgentType nextBuildingToBuild);
 
-    public boolean isAbleToBuild(WarAgentType building);
+    boolean isAbleToBuild(WarAgentType building);
 
-    public int getIdNextBuildingToRepair();
+    int getIdNextBuildingToRepair();
 
-    public void setIdNextBuildingToRepair(int idNextBuildingToRepair);
+    void setIdNextBuildingToRepair(int idNextBuildingToRepair);
 
 }

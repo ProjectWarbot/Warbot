@@ -2,20 +2,20 @@ package edu.warbot.tools.geometry;
 
 import java.util.Random;
 
-public class CoordPolar {
+public class PolarCoordinates {
 
     private double _distance;
     private double _angleInDegrees;
 
-    public CoordPolar(double distance, double angleInDegrees) {
+    public PolarCoordinates(double distance, double angleInDegrees) {
         super();
         this._distance = distance;
         setAngle(angleInDegrees);
     }
 
-    public static CoordPolar getRandomInBounds(double maxDistance) {
+    public static PolarCoordinates getRandomInBounds(double maxDistance) {
         Random random = new Random();
-        return new CoordPolar(random.nextDouble() * maxDistance, random.nextDouble() * 359.);
+        return new PolarCoordinates(random.nextDouble() * maxDistance, random.nextDouble() * 359.);
     }
 
     public static double invertDirectionAngle(double angle) {
@@ -38,8 +38,8 @@ public class CoordPolar {
         this._angleInDegrees = invertDirectionAngle(angleInDegrees);
     }
 
-    public CoordCartesian toCartesian() {
-        return new CoordCartesian(this._distance * Math.cos(Math.toRadians(getAngle())),
+    public CartesianCoordinates toCartesian() {
+        return new CartesianCoordinates(this._distance * Math.cos(Math.toRadians(getAngle())),
                 this._distance * Math.sin(Math.toRadians(getAngle())));
     }
 }

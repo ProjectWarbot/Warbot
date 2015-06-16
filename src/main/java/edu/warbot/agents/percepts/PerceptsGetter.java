@@ -5,9 +5,9 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.WarGame;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.GeometryTools;
+import edu.warbot.tools.geometry.PolarCoordinates;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -232,10 +232,10 @@ public abstract class PerceptsGetter {
         for (Line2D.Double wallSegment : seenWallsSegments) {
             Path2D.Double currentShadow = new Path2D.Double();
 
-            CoordCartesian srcPoint = new CoordCartesian(wallSegment.getP1().getX(), wallSegment.getP1().getY());
-            CoordCartesian destPoint = new CoordCartesian(wallSegment.getP2().getX(), wallSegment.getP2().getY());
-            CoordCartesian srcShadowPoint = WarMathTools.addTwoPoints(srcPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(srcPoint)));
-            CoordCartesian destShadowPoint = WarMathTools.addTwoPoints(destPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(destPoint)));
+            CartesianCoordinates srcPoint = new CartesianCoordinates(wallSegment.getP1().getX(), wallSegment.getP1().getY());
+            CartesianCoordinates destPoint = new CartesianCoordinates(wallSegment.getP2().getX(), wallSegment.getP2().getY());
+            CartesianCoordinates srcShadowPoint = WarMathTools.addTwoPoints(srcPoint, new PolarCoordinates(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(srcPoint)));
+            CartesianCoordinates destShadowPoint = WarMathTools.addTwoPoints(destPoint, new PolarCoordinates(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(destPoint)));
 
             currentShadow.moveTo(srcPoint.getX(), srcPoint.getY());
             currentShadow.lineTo(destPoint.getX(), destPoint.getY());

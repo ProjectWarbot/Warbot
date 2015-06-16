@@ -12,7 +12,7 @@ from madkit.kernel.AbstractAgent import ReturnCode
 from java.awt import Color
 from java.util import ArrayList
 from edu.warbot.communications import WarMessage
-from edu.warbot.tools.geometry import CoordPolar
+from edu.warbot.tools.geometry import PolarCoordinates
 from edu.warbot.agents.agents import WarEngineer as EngineerAction
 from edu.warbot.agents.agents import WarBase as BaseAction
 from edu.warbot.brains.capacities import Builder

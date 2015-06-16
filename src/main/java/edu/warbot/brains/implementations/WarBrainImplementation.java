@@ -6,7 +6,7 @@ import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.communications.WarMessage;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.PolarCoordinates;
 import madkit.kernel.AbstractAgent;
 
 import java.awt.*;
@@ -152,17 +152,17 @@ public class WarBrainImplementation extends WarBrain implements AgentBrainImplem
     }
 
     @Override
-    public CoordPolar getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
+    public PolarCoordinates getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
         return agent.getAveragePositionOfUnitInPercept(agentType, ally);
     }
 
     @Override
-    public CoordPolar getIndirectPositionOfAgentWithMessage(WarMessage message) {
+    public PolarCoordinates getIndirectPositionOfAgentWithMessage(WarMessage message) {
         return agent.getIndirectPositionOfAgentWithMessage(message);
     }
 
     @Override
-    public CoordPolar getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget) {
+    public PolarCoordinates getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget) {
         return agent.getTargetedAgentPosition(angleToAlly, distanceFromAlly, angleFromAllyToTarget, distanceBetweenAllyAndTarget);
     }
 

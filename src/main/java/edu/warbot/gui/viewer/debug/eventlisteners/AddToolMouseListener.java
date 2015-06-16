@@ -7,8 +7,8 @@ import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.viewer.debug.DebugModePanel;
 import edu.warbot.gui.viewer.debug.DebugToolsPnl;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
+import edu.warbot.tools.geometry.PolarCoordinates;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -48,7 +48,7 @@ public class AddToolMouseListener implements MouseListener, MouseMotionListener 
         if (e.getButton() == MouseEvent.BUTTON1) {
             _debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
             if (_toolsPnl.getSelectedWarAgentTypeToCreate() != null) {
-                CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+                CartesianCoordinates mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
                 try {
                     if (_toolsPnl.getSelectedWarAgentTypeToCreate().getCategory() == WarAgentCategory.Resource) {
                         currentCreatedAgent = game.getMotherNatureTeam().instantiateNewWarResource(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
@@ -94,8 +94,8 @@ public class AddToolMouseListener implements MouseListener, MouseMotionListener 
     @Override
     public void mouseDragged(MouseEvent e) {
         if (currentCreatedAgent != null) {
-            CoordCartesian mousePosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
-            CoordPolar movement = new CoordCartesian(mousePosition.getX() - currentCreatedAgent.getX(), mousePosition.getY() - currentCreatedAgent.getY()).toPolar();
+            CartesianCoordinates mousePosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+            PolarCoordinates movement = new CartesianCoordinates(mousePosition.getX() - currentCreatedAgent.getX(), mousePosition.getY() - currentCreatedAgent.getY()).toPolar();
             currentCreatedAgent.setHeading(movement.getAngle());
             if (currentCreatedAgent instanceof ControllableWarAgent)
                 ((ControllableWarAgent) currentCreatedAgent).forcePerceptsUpdate();

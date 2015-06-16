@@ -7,14 +7,15 @@ import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameSettings;
 import edu.warbot.gui.viewer.WarDefaultViewer;
-import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.geometry.WarCircle;
+import madkit.action.KernelAction;
 import madkit.action.SchedulingAction;
 import madkit.kernel.Madkit;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
 import turtlekit.kernel.TKLauncher;
+import turtlekit.kernel.TKScheduler;
 import turtlekit.kernel.TurtleKit;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,12 +23,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import static turtlekit.kernel.TurtleKit.Option.launcher;
-
 public class WarLauncher extends TKLauncher {
 
-    public WarLauncher() {
+    private final WarGame warGame;
+
+    public WarLauncher(WarGame warGame) {
         super();
+        this.warGame = warGame;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class WarLauncher extends TKLauncher {
 
     @Override
     protected void createSimulationInstance() {
-        WarGameSettings settings = Shared.getGame().getSettings();
+        WarGameSettings settings = warGame.getSettings();
         setLogLevel(settings.getLogLevel());
         setMadkitProperty(Madkit.LevelOption.agentLogLevel, settings.getLogLevel().toString());
         setMadkitProperty(Madkit.LevelOption.guiLogLevel, settings.getLogLevel().toString());
@@ -47,41 +49,64 @@ public class WarLauncher extends TKLauncher {
         setMadkitProperty(Madkit.LevelOption.networkLogLevel, settings.getLogLevel().toString());
 
         initProperties();
-        setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Double) Shared.getGame().getMap().getWidth()).intValue()));
-        setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Double) Shared.getGame().getMap().getHeight()).intValue()));
+        setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Double) warGame.getMap().getWidth()).intValue()));
+        setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Double) warGame.getMap().getHeight()).intValue()));
 
         setMadkitProperty(TurtleKit.Option.viewers, WarDefaultViewer.class.getName());
         setMadkitProperty(TurtleKit.Option.scheduler, WarScheduler.class.getName());
         setMadkitProperty(TurtleKit.Option.environment, WarEnvironment.class.getName());
 
-        super.createSimulationInstance();
+//        super.createSimulationInstance();
+        this.launchAgent(this.getMadkitProperty(TurtleKit.Option.environment));
+        launchScheduler();
+        launchViewers();
+
+        this.launchConfigTurtles();
+
 
         if (settings.getSituationLoader() == null)
             launchAllAgents();
         else
-            settings.getSituationLoader().launchAllAgentsFromXmlSituationFile(this);
+            settings.getSituationLoader().launchAllAgentsFromXmlSituationFile(this, warGame);
 
         // Puis on lance la simulation
         sendMessage(getMadkitProperty(turtlekit.kernel.TurtleKit.Option.community),
                 TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE, new SchedulingMessage(SchedulingAction.RUN));
 
 
-        Shared.getGame().setGameStarted();
+        warGame.setGameStarted();
+    }
+
+    @Override
+    protected void launchScheduler() {
+        TKScheduler scheduler = new WarScheduler(warGame);
+        this.launchAgent(scheduler);
+        try {
+            scheduler.setSimulationDuration((double) Integer.parseInt(this.getMadkitProperty(TurtleKit.Option.endTime)));
+        } catch (NullPointerException | NumberFormatException var3) {
+            ;
+        }
+    }
+
+    @Override
+    protected void launchViewers() {
+        WarDefaultViewer viewer = new WarDefaultViewer(warGame);
+        this.launchAgent(viewer, viewer.isRenderable());
     }
 
     public void executeLauncher(String... args) {
         final ArrayList<String> arguments = new ArrayList<>(Arrays.asList(
                 Madkit.BooleanOption.desktop.toString(), "false",
-                Madkit.Option.configFile.toString(), "turtlekit/kernel/turtlekit.properties",
-                launcher.toString(), WarLauncher.class.getName()));
+                Madkit.Option.configFile.toString(), "turtlekit/kernel/turtlekit.properties"
+        ));
         if (args != null) {
             arguments.addAll(Arrays.asList(args));
         }
-        new Madkit(arguments.toArray(new String[0]));
+        new Madkit(arguments.toArray(new String[0])).doAction(KernelAction.LAUNCH_AGENT, this);
     }
 
     private void launchAllAgents() {
-        WarGame game = Shared.getGame();
+        WarGame game = warGame;
         ArrayList<Team> playerTeams = game.getPlayerTeams();
         AbstractWarMap map = game.getMap();
         ArrayList<ArrayList<WarCircle>> teamsPositions = map.getTeamsPositions();

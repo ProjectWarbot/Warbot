@@ -1,7 +1,7 @@
 package edu.warbot.gui.viewer;
 
 import edu.warbot.launcher.AbstractWarViewer;
-import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 
 import java.awt.event.*;
 
@@ -12,8 +12,8 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
 
     private AbstractWarViewer viewer;
 
-    private CoordCartesian oldMouseDragPosition;
-    private CoordCartesian oldViewerPosition;
+    private CartesianCoordinates oldMouseDragPosition;
+    private CartesianCoordinates oldViewerPosition;
     private boolean onlyRightClick;
 
     public MapExplorationListener(AbstractWarViewer viewer) {
@@ -26,7 +26,7 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
     @Override
     public void mouseDragged(MouseEvent e) {
         if ((!onlyRightClick) || (onlyRightClick && e.getButton() == MouseEvent.BUTTON2)) {
-            CoordCartesian movement = new CoordCartesian(
+            CartesianCoordinates movement = new CartesianCoordinates(
                     e.getX() - oldMouseDragPosition.getX(),
                     e.getY() - oldMouseDragPosition.getY());
             viewer.moveMapOffsetTo(movement.getX() + oldViewerPosition.getX(), movement.getY() + oldViewerPosition.getY());
@@ -52,8 +52,8 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
     @Override
     public void mousePressed(MouseEvent e) {
         if ((!onlyRightClick) || (onlyRightClick && e.getButton() == MouseEvent.BUTTON2)) {
-            oldMouseDragPosition = new CoordCartesian(e.getX(), e.getY());
-            oldViewerPosition = new CoordCartesian(viewer.getMapOffsetX(), viewer.getMapOffsetY());
+            oldMouseDragPosition = new CartesianCoordinates(e.getX(), e.getY());
+            oldViewerPosition = new CartesianCoordinates(viewer.getMapOffsetX(), viewer.getMapOffsetY());
         }
     }
 
@@ -68,11 +68,11 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
         newCellSize = Math.max(MIN_CELL_SIZE, newCellSize);
         newCellSize = Math.min(MAX_CELL_SIZE, newCellSize);
 
-        CoordCartesian inMapClickPosition = viewer.convertClickPositionToMapPosition(e.getX(), e.getY());
+        CartesianCoordinates inMapClickPosition = viewer.convertClickPositionToMapPosition(e.getX(), e.getY());
 
         viewer.setCellSize(newCellSize);
 
-        CoordCartesian inMapClickNewPosition = viewer.convertClickPositionToMapPosition(e.getX(), e.getY());
+        CartesianCoordinates inMapClickNewPosition = viewer.convertClickPositionToMapPosition(e.getX(), e.getY());
         viewer.moveMapOffsetTo(viewer.getMapOffsetX() - ((inMapClickPosition.getX() - inMapClickNewPosition.getX()) * newCellSize),
                 viewer.getMapOffsetY() - ((inMapClickPosition.getY() - inMapClickNewPosition.getY()) * newCellSize));
     }

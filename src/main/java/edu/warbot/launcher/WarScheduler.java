@@ -5,7 +5,6 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameListener;
-import edu.warbot.launcher.WarMain.Shared;
 import madkit.action.KernelAction;
 import madkit.agr.LocalCommunity;
 import madkit.agr.LocalCommunity.Groups;
@@ -24,8 +23,8 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
     private WarGame game;
     private boolean isGameOver;
 
-    public WarScheduler() {
-        this.game = Shared.getGame();
+    public WarScheduler(WarGame warGame) {
+        this.game = warGame;
     }
 
     @Override

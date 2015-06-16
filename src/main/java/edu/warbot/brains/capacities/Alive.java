@@ -2,8 +2,8 @@ package edu.warbot.brains.capacities;
 
 public interface Alive extends CommonCapacities {
 
-    public int getHealth();
+    int getHealth();
 
-    public int getMaxHealth();
+    int getMaxHealth();
 
 }

@@ -7,8 +7,8 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.resources.WarFood;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
+import edu.warbot.tools.geometry.PolarCoordinates;
 import edu.warbot.tools.geometry.WarCircle;
 import madkit.kernel.Agent;
 
@@ -33,22 +33,22 @@ public class MotherNatureTeam extends Team {
 
 //	public void init() {
 //		Dimension mapSize = Game.getInstance().getMap().getBounds();
-//		ArrayList<CoordCartesian> teamsPositions = Game.getInstance().getMap().getTeamsPositions(Game.getInstance().getPlayerTeams().size());
-//		for (CoordCartesian pos : teamsPositions) {
+//		ArrayList<CartesianCoordinates> teamsPositions = Game.getInstance().getMap().getTeamsPositions(Game.getInstance().getPlayerTeams().size());
+//		for (CartesianCoordinates pos : teamsPositions) {
 //			for (int i = 0; i < WarConfig.getNbResourcesAreasPerTeam(); i++) {
-//				CoordCartesian areaPos = WarMathTools.addTwoPoints(
+//				CartesianCoordinates areaPos = WarMathTools.addTwoPoints(
 //						pos,
-//						CoordPolar.getRandomInBounds(WarConfig.getMaxDistanceOfResourcesAreasFromOwnerTeam())
+//						PolarCoordinates.getRandomInBounds(WarConfig.getMaxDistanceOfResourcesAreasFromOwnerTeam())
 //						);
 //				areaPos.normalize(0, mapSize.width, 0, mapSize.height);
 //				_resourcesAreas.add(areaPos);
 //			}
 //		}
-//		CoordCartesian center = WarMathTools.getCenterOfPoints(teamsPositions);
+//		CartesianCoordinates center = WarMathTools.getCenterOfPoints(teamsPositions);
 //		for (int i = 0; i < 2; i++) {
-//			CoordCartesian areaPos = WarMathTools.addTwoPoints(
+//			CartesianCoordinates areaPos = WarMathTools.addTwoPoints(
 //					center,
-//					new CoordPolar(90, 90 + i * 180)
+//					new PolarCoordinates(90, 90 + i * 180)
 //					);
 //			areaPos.normalize(0, mapSize.width, 0, mapSize.height);
 //			_resourcesAreas.add(areaPos);
@@ -98,9 +98,9 @@ public class MotherNatureTeam extends Team {
                 WarResource resource = instantiateNewWarResource(resourceType.toString());
                 launcher.launchAgent(resource);
                 ArrayList<WarCircle> foodPositions = map.getFoodPositions();
-                CoordCartesian newPos = WarMathTools.addTwoPoints(
+                CartesianCoordinates newPos = WarMathTools.addTwoPoints(
                         foodPositions.get(new Random().nextInt(foodPositions.size())).getCenterPosition(),
-                        CoordPolar.getRandomInBounds(AbstractWarMap.FOOD_POSITION_RADIUS).toCartesian());
+                        PolarCoordinates.getRandomInBounds(AbstractWarMap.FOOD_POSITION_RADIUS).toCartesian());
                 newPos.normalize(0, map.getWidth(), 0, map.getHeight());
                 resource.setPosition(newPos);
                 resource.moveOutOfCollision();

@@ -1,6 +1,5 @@
 package edu.warbot.launcher;
 
-import com.badlogic.gdx.Input;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
@@ -28,7 +27,6 @@ import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.*;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -225,8 +223,7 @@ public class WarMain implements WarGameListener {
 
     public void start() {
         game = new WarGame(settings);
-        Shared.game = game;
-        new WarLauncher().executeLauncher();
+        new WarLauncher(game).executeLauncher();
         game.addWarGameListener(this);
     }
 
@@ -738,6 +735,11 @@ public class WarMain implements WarGameListener {
     public void onGameStopped() {
         game.removeWarGameListener(this);
         settings.prepareForNewGame();
+        for (Team t : availableTeams.values()) {
+            t.getControllableAgents().clear();
+            t.getDyingAgents().clear();
+            t.getAllAgents().clear();
+        }
         launcherInterface.setVisible(true);
     }
 
@@ -747,13 +749,8 @@ public class WarMain implements WarGameListener {
     }
 
     static class Shared {
-        private static WarGame game;
 
         private static Map<String, Team> availableTeams;
-
-        public static WarGame getGame() {
-            return game;
-        }
 
         public static Map<String, Team> getAvailableTeams() {
             return availableTeams;

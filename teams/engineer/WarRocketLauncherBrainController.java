@@ -51,9 +51,9 @@ public abstract class WarRocketLauncherBrainController extends WarRocketLauncher
                         _baseFound = true;
                         setHeading(p.getAngle());
                         if (isReloaded()) {
-                            return WarRocketLauncher.ACTION_FIRE;
+                            return fire();
                         } else
-                            return WarRocketLauncher.ACTION_RELOAD;
+                            return beginReloadWeapon();
                     }
                     break;
                 case WarRocketLauncher:
