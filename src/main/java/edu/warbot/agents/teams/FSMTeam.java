@@ -19,6 +19,9 @@ import java.util.Map;
  */
 public final class FSMTeam extends JavaTeam {
 
+    /**
+     * Cerveau basique pour agent basé sur un cerveau FSM
+     */
     private static Map<WarAgentType, Class<? extends WarBrain>> brains;
 
     static {

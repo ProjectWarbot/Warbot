@@ -3,6 +3,9 @@ package edu.warbot.brains.capacities;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import madkit.kernel.AbstractAgent;
 
+/**
+ *
+ */
 public interface CommonCapacities {
 
     AbstractAgent.ReturnCode requestRole(String group, String role);
