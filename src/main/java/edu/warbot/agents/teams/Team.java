@@ -96,7 +96,7 @@ public abstract class Team {
             InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException;
 
     /**
-     * Créer une instance d'agent batiment
+     * Créer une instance d'agent bâtiment
      *
      * @param inGameTeam
      * @param buildingName le nom de l'agent à construire
@@ -123,10 +123,10 @@ public abstract class Team {
     public abstract void createUnit(InGameTeam inGameTeam, Creator creatorAgent, WarAgentType agentTypeToCreate);
 
     /**
-     * Réalise la création d'un batiment si son créateur a les moyens de le produire
+     * Réalise la création d'un bâtiment si son créateur a les moyens de le produire
      *
      * @param inGameTeam
-     * @param builderAgent        l'agent qui lance la création d'un batiment
+     * @param builderAgent        l'agent qui lance la création d'un bâtiment
      * @param buildingTypeToBuild le type d'unité souhaité (avec la catégorie Building)
      */
     public abstract void build(InGameTeam inGameTeam, Builder builderAgent, WarAgentType buildingTypeToBuild);

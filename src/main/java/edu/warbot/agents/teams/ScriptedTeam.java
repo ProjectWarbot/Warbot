@@ -85,6 +85,7 @@ public class ScriptedTeam extends JavaTeam {
         interpreter = scriptInterpreter;
     }
 
+    @Override
     public ControllableWarAgent instantiateControllableWarAgent(InGameTeam inGameTeam, WarAgentType warAgentType)
             throws InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException,
             IllegalAccessException {
