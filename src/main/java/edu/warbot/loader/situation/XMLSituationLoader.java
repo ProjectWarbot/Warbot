@@ -1,4 +1,4 @@
-package edu.warbot.launcher;
+package edu.warbot.loader.situation;
 
 import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.ControllableWarAgent;
@@ -7,6 +7,8 @@ import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
+import edu.warbot.launcher.WarLauncher;
+import edu.warbot.loader.SituationLoader;
 import edu.warbot.tools.WarXmlReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -26,14 +28,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class SituationLoader {
+
+/**
+ * @version 2.0
+ * @since 3.2.2
+ */
+public class XMLSituationLoader implements SituationLoader {
 
     public static final String SITUATION_FILES_EXTENSION = ".warsit";
 
-    private HashMap<String, ArrayList<HashMap<String, String>>> xmlSituationFileContent;
+    private Map<String, ArrayList<HashMap<String, String>>> xmlSituationFileContent;
 
-    public SituationLoader(File xmlSituationFile) {
+    public XMLSituationLoader(File xmlSituationFile) {
         xmlSituationFileContent = getXmlSituationFileContent(xmlSituationFile);
     }
 
@@ -44,7 +52,7 @@ public class SituationLoader {
      * Exemple : je veux la position en X du premier agent de l'équipe "Test" :
      * Double.valueOf(getXmlSituationFileContent(file).get("Test").get(0).get("xPosition"));
      */
-    private HashMap<String, ArrayList<HashMap<String, String>>> getXmlSituationFileContent(File file) {
+    private Map<String, ArrayList<HashMap<String, String>>> getXmlSituationFileContent(File file) {
         String rootPath = "/WarSituation";
         String teamsPath = rootPath + "/Teams";
         HashMap<String, ArrayList<HashMap<String, String>>> toReturn = new HashMap<>();
@@ -112,7 +120,7 @@ public class SituationLoader {
         return teamsToLoad;
     }
 
-    public void launchAllAgentsFromXmlSituationFile(WarLauncher launcher, WarGame game) {
+    private void launchAllAgentsFromXmlSituationFile(WarLauncher launcher, WarGame game) {
         ArrayList<InGameTeam> inGameTeams = game.getPlayerTeams();
         inGameTeams.add(game.getMotherNatureTeam());
 
@@ -150,5 +158,10 @@ public class SituationLoader {
             System.err.println("Erreur lors de l'instanciation des classes à partir des données XML");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void launchAllAgentsFromSituation(WarLauncher warLauncher, WarGame warGame) {
+        launchAllAgentsFromXmlSituationFile(warLauncher, warGame);
     }
 }

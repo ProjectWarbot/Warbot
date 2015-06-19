@@ -37,6 +37,12 @@ import java.util.zip.ZipFile;
 
 /**
  * Created by beugnon on 18/06/15.
+ *
+ * TeamLoader, s'occupe du chargement des équipes (par instance Team) depuis plusieurs endroits (sources, jar, dossier)
+ *
+ * @author BEUGNON Sébastien
+ *
+ * @since 3.2.3
  */
 public class TeamLoader {
 
@@ -58,6 +64,8 @@ public class TeamLoader {
     @SuppressWarnings("unchecked")
     public Map<String, Team> loadAvailableTeams() {
         Map<String, Team> loadedTeams = new HashMap<>();
+
+        //RAJOUTER A UNE FACTORY DE CHARGEMENT
         loadedTeams.putAll(getTeamsFromSourceDirectory());
 
         for (Map.Entry<String, Team> currentLoadedTeam : getTeamsFromJarDirectory(loadedTeams.keySet()).entrySet()) {
@@ -81,6 +89,7 @@ public class TeamLoader {
         for (File currentFile : filesInJarDirectory) {
             try {
 
+                //TODO METTRE UNE FACTORY DE CHARGEMENT EN FONCTION DU TYPE DE FICHIER (JAR, TAR, ZIP, DIRECTORY)
                 //Lecture depuis un jar
                 if (currentFile.getCanonicalPath().endsWith(".jar")) {
                     Team currentTeam;
@@ -141,17 +150,22 @@ public class TeamLoader {
                 System.err.println("Lecture des fichiers JAR : Lecture de fichier");
                 e.printStackTrace();
             } catch (NullPointerException e) {
-                System.err.println("Lecture des fichiers JAR : Lecture de fichier");
+                System.err.println("Lecture des fichiers JAR : Pointeur nul détecté");
                 e.printStackTrace();
             } catch (CannotCompileException e) {
+                System.err.println("Lecture des fichiers JAR : Problème de compilation de classe");
                 e.printStackTrace();
             } catch (NotFoundException e) {
+                System.err.println("Lecture des fichiers JAR : Classe non trouvée lors d'une implémentation");
                 e.printStackTrace();
             } catch (UnrecognizedScriptLanguageException e) {
+                System.err.println("Lecture des fichiers JAR : Langage de script non reconnu");
                 e.printStackTrace();
             } catch (NotFoundScriptLanguageException e) {
+                System.err.println("Lecture des fichiers JAR : Langage de script absent");
                 e.printStackTrace();
             } catch (DangerousFunctionPythonException e) {
+                System.err.println("Lecture des fichiers JAR : Problème de modificatin des fonctions python");
                 e.printStackTrace();
             }
         }
@@ -184,7 +198,7 @@ public class TeamLoader {
     }
 
     /**
-     * CHARGEMENT D'UNE EQUIPE SCRIPTEE DEPUIS UN DOSSIER
+     * Chargement d'une équipe depuis un dossier (équipe scriptée)
      *
      * @param file
      * @param excludedTeams

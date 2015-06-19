@@ -5,7 +5,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.tools.geometry.CartesianCoordinates;
 
 /**
- * Est un adaptateur pour un WarKernelMessage. Permet à un utilisateur de ne pas accéder à toutes les méthodes de madkit.kernel.Message
+ * WarMessage Est un adaptateur pour un WarKernelMessage. Permet à un utilisateur de ne pas accéder à toutes les méthodes de madkit.kernel.Message
  */
 public class WarMessage {
 

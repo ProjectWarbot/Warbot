@@ -60,10 +60,12 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
             setGVT(getGVT() + 1.0D);
 
             // Apparition de WarResource
+            //TODO devrait etre dans l'environnement
             if (getGVT() % game.getSettings().getFoodAppearanceRate() == 0) {
                 game.getMotherNatureTeam().createAndLaunchResource(game.getMap(), this, WarAgentType.WarFood);
             }
 
+            //TODO La partie est un agent (?)
             game.doAfterEachTick();
         }
     }

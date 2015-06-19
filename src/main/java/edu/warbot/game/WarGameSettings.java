@@ -4,9 +4,9 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
 import edu.warbot.agents.percepts.PerceptsGetter;
-import edu.warbot.launcher.SituationLoader;
 import edu.warbot.launcher.UserPreferences;
 import edu.warbot.launcher.WarGameConfig;
+import edu.warbot.loader.situation.XMLSituationLoader;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.maps.DefaultWarMap;
 
@@ -27,7 +27,7 @@ public class WarGameSettings {
     private Class<? extends PerceptsGetter> _perceptsGetter;
     private boolean _isEnabledEnhancedGraphism;
     private List<InGameTeam> selectedInGameTeams;
-    private SituationLoader situationLoader;
+    private XMLSituationLoader XMLSituationLoader;
     private AbstractWarMap selectedMap;
 
     public WarGameSettings() {
@@ -120,15 +120,15 @@ public class WarGameSettings {
         for (InGameTeam t : selectedInGameTeams)
             t.removeAllAgents();
         selectedInGameTeams.clear();
-        situationLoader = null;
+        XMLSituationLoader = null;
     }
 
-    public SituationLoader getSituationLoader() {
-        return situationLoader;
+    public XMLSituationLoader getXMLSituationLoader() {
+        return XMLSituationLoader;
     }
 
-    public void setSituationLoader(SituationLoader situationLoader) {
-        this.situationLoader = situationLoader;
+    public void setXMLSituationLoader(XMLSituationLoader XMLSituationLoader) {
+        this.XMLSituationLoader = XMLSituationLoader;
     }
 
     public AbstractWarMap getSelectedMap() {

@@ -62,10 +62,10 @@ public class WarLauncher extends TKLauncher {
 
         this.launchConfigTurtles();
 
-        if (settings.getSituationLoader() == null)
+        if (settings.getXMLSituationLoader() == null)
             launchAllAgents();
         else
-            settings.getSituationLoader().launchAllAgentsFromXmlSituationFile(this, warGame);
+            settings.getXMLSituationLoader().launchAllAgentsFromSituation(this, warGame);
 
         // Puis on lance la simulation
         sendMessage(getMadkitProperty(turtlekit.kernel.TurtleKit.Option.community),
@@ -82,7 +82,6 @@ public class WarLauncher extends TKLauncher {
         try {
             scheduler.setSimulationDuration((double) Integer.parseInt(this.getMadkitProperty(TurtleKit.Option.endTime)));
         } catch (NullPointerException | NumberFormatException var3) {
-            ;
         }
     }
 

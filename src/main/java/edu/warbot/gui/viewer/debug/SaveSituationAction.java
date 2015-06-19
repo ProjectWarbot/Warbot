@@ -6,7 +6,7 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.AbstractWarViewer;
-import edu.warbot.launcher.SituationLoader;
+import edu.warbot.loader.situation.XMLSituationLoader;
 import edu.warbot.tools.WarXmlWriter;
 import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
@@ -55,20 +55,20 @@ public class SaveSituationAction extends AbstractAction {
         fc.setFileFilter(new FileFilter() {
             @Override
             public String getDescription() {
-                return "*" + SituationLoader.SITUATION_FILES_EXTENSION;
+                return "*" + XMLSituationLoader.SITUATION_FILES_EXTENSION;
             }
 
             @Override
             public boolean accept(File f) {
-                return f.getName().endsWith(SituationLoader.SITUATION_FILES_EXTENSION);
+                return f.getName().endsWith(XMLSituationLoader.SITUATION_FILES_EXTENSION);
             }
         });
         int returnVal = fc.showSaveDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             String fileName = file.toString();
-            if (!fileName.endsWith(SituationLoader.SITUATION_FILES_EXTENSION))
-                file = new File(fileName + SituationLoader.SITUATION_FILES_EXTENSION);
+            if (!fileName.endsWith(XMLSituationLoader.SITUATION_FILES_EXTENSION))
+                file = new File(fileName + XMLSituationLoader.SITUATION_FILES_EXTENSION);
             if (saveSituation(file))
                 JOptionPane.showMessageDialog(null, "Situation sauvegardée dans " + file.getAbsolutePath(), "Sauvegarde effectuée", JOptionPane.INFORMATION_MESSAGE);
             else

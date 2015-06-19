@@ -7,6 +7,7 @@ import edu.warbot.game.*;
 import edu.warbot.gui.launcher.LoadingDialog;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.loader.TeamLoader;
+import edu.warbot.loader.situation.XMLSituationLoader;
 
 import javax.swing.*;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class WarMain implements WarGameListener {
+
     public static final String TEAMS_DIRECTORY_NAME = "teams";
     public static final String CMD_NAME = "java WarMain";
     public static final String CMD_HELP = "--help";
@@ -93,103 +95,111 @@ public class WarMain implements WarGameListener {
     public static void main(String[] args) {
 
         if (args.length == 0) {
+            //Lancement classique
             new WarMain();
         } else {
             try {
                 System.out.println("Command arguments = " + Arrays.asList(args));
-
-                WarGameSettings settings = new WarGameSettings();
-                ArrayList<String> selectedTeams = new ArrayList<>();
-                boolean askedForHelp = false;
-
-                for (int currentArgIndex = 0; currentArgIndex < args.length; currentArgIndex++) {
-                    String currentArg = args[currentArgIndex];
-                    if (currentArg.startsWith("-")) {
-                        String[] splitDoubleDot = currentArg.split(":");
-                        String[] splitEquals = splitDoubleDot[splitDoubleDot.length - 1].split("=");
-                        String cmdName = splitDoubleDot[0];
-                        if (splitDoubleDot.length == 1)
-                            cmdName = splitEquals[0];
-                        switch (cmdName) {
-                            case CMD_HELP:
-                                System.out.println(getCommandHelp());
-                                askedForHelp = true;
-                                break;
-                            case CMD_LOG_LEVEL:
-                                if (splitEquals.length == 2) {
-                                    try {
-                                        settings.setDefaultLogLevel(Level.parse(splitEquals[1]));
-                                    } catch (IllegalArgumentException e) {
-                                        throw new WarCommandException("Invalid log level : " + splitEquals[1]);
-                                    }
-                                } else {
-                                    throw new WarCommandException("Invalid argument syntax : " + currentArg);
-                                }
-                                break;
-                            case CMD_NB_AGENT_OF_TYPE:
-                                if (splitEquals.length == 2) {
-                                    try {
-                                        WarAgentType agentType = WarAgentType.valueOf(splitEquals[0]);
-                                        try {
-                                            int nbAgent = Integer.parseInt(splitEquals[1]);
-                                            settings.setNbAgentOfType(agentType, nbAgent);
-                                        } catch (NumberFormatException e) {
-                                            throw new WarCommandException("Invalid integer : " + splitEquals[1]);
-                                        }
-                                    } catch (IllegalArgumentException e) {
-                                        throw new WarCommandException("Unknown agent type : " + splitEquals[0]);
-                                    }
-                                } else {
-                                    throw new WarCommandException("Invalid argument syntax : " + currentArg);
-                                }
-                                break;
-                            case CMD_FOOD_APPEARANCE_RATE:
-                                if (splitEquals.length == 2) {
-                                    try {
-                                        settings.setFoodAppearanceRate(Integer.parseInt(splitEquals[1]));
-                                    } catch (NumberFormatException e) {
-                                        throw new WarCommandException("Invalid integer : " + splitEquals[1]);
-                                    }
-                                } else {
-                                    throw new WarCommandException("Invalid argument syntax : " + currentArg);
-                                }
-                                break;
-                            case CMD_GAME_MODE:
-                                if (splitEquals.length == 2) {
-                                    try {
-                                        WarGameMode gameMode = WarGameMode.valueOf(splitEquals[1]);
-                                        settings.setGameMode(gameMode);
-                                    } catch (IllegalArgumentException e) {
-                                        throw new WarCommandException("Unknown game mode : " + splitEquals[1]);
-                                    }
-                                } else {
-                                    throw new WarCommandException("Invalid argument syntax : " + currentArg);
-                                }
-                                break;
-                            default:
-                                throw new WarCommandException("Invalid argument : " + currentArg);
-                        }
-                    } else {
-                        if (currentArg.endsWith(SituationLoader.SITUATION_FILES_EXTENSION)) {
-                            settings.setSituationLoader(new SituationLoader(new File(currentArg)));
-                        } else {
-                            selectedTeams.add(currentArg);
-                        }
-                    }
-                }
-
-                if (!askedForHelp)
-                    new WarMain(settings, selectedTeams.toArray(new String[]{}));
+                commandLine(args);
             } catch (WarCommandException e) {
                 System.err.println(e.getMessage());
             }
         }
     }
 
+    private static void commandLine(String[] args) throws WarCommandException {
+
+        WarGameSettings settings = new WarGameSettings();
+        ArrayList<String> selectedTeams = new ArrayList<>();
+        boolean askedForHelp = false;
+
+        // TODO Remplacer cette vérification des arguments par une librairie JArgs / Apache CLI
+
+        for (int currentArgIndex = 0; currentArgIndex < args.length; currentArgIndex++) {
+            String currentArg = args[currentArgIndex];
+            if (currentArg.startsWith("-")) {
+                String[] splitDoubleDot = currentArg.split(":");
+                String[] splitEquals = splitDoubleDot[splitDoubleDot.length - 1].split("=");
+                String cmdName = splitDoubleDot[0];
+                if (splitDoubleDot.length == 1)
+                    cmdName = splitEquals[0];
+                switch (cmdName) {
+                    case CMD_HELP:
+                        System.out.println(getCommandHelp());
+                        askedForHelp = true;
+                        break;
+                    case CMD_LOG_LEVEL:
+                        if (splitEquals.length == 2) {
+                            try {
+                                settings.setDefaultLogLevel(Level.parse(splitEquals[1]));
+                            } catch (IllegalArgumentException e) {
+                                throw new WarCommandException("Invalid log level : " + splitEquals[1]);
+                            }
+                        } else {
+                            throw new WarCommandException("Invalid argument syntax : " + currentArg);
+                        }
+                        break;
+                    case CMD_NB_AGENT_OF_TYPE:
+                        if (splitEquals.length == 2) {
+                            try {
+                                WarAgentType agentType = WarAgentType.valueOf(splitEquals[0]);
+                                try {
+                                    int nbAgent = Integer.parseInt(splitEquals[1]);
+                                    settings.setNbAgentOfType(agentType, nbAgent);
+                                } catch (NumberFormatException e) {
+                                    throw new WarCommandException("Invalid integer : " + splitEquals[1]);
+                                }
+                            } catch (IllegalArgumentException e) {
+                                throw new WarCommandException("Unknown agent type : " + splitEquals[0]);
+                            }
+                        } else {
+                            throw new WarCommandException("Invalid argument syntax : " + currentArg);
+                        }
+                        break;
+                    case CMD_FOOD_APPEARANCE_RATE:
+                        if (splitEquals.length == 2) {
+                            try {
+                                settings.setFoodAppearanceRate(Integer.parseInt(splitEquals[1]));
+                            } catch (NumberFormatException e) {
+                                throw new WarCommandException("Invalid integer : " + splitEquals[1]);
+                            }
+                        } else {
+                            throw new WarCommandException("Invalid argument syntax : " + currentArg);
+                        }
+                        break;
+                    case CMD_GAME_MODE:
+                        if (splitEquals.length == 2) {
+                            try {
+                                WarGameMode gameMode = WarGameMode.valueOf(splitEquals[1]);
+                                settings.setGameMode(gameMode);
+                            } catch (IllegalArgumentException e) {
+                                throw new WarCommandException("Unknown game mode : " + splitEquals[1]);
+                            }
+                        } else {
+                            throw new WarCommandException("Invalid argument syntax : " + currentArg);
+                        }
+                        break;
+                    default:
+                        throw new WarCommandException("Invalid argument : " + currentArg);
+                }
+            } else {
+                if (currentArg.endsWith(XMLSituationLoader.SITUATION_FILES_EXTENSION)) {
+                    settings.setXMLSituationLoader(new XMLSituationLoader(new File(currentArg)));
+                } else {
+                    selectedTeams.add(currentArg);
+                }
+            }
+        }
+
+        if (!askedForHelp)
+            new WarMain(settings, selectedTeams.toArray(new String[]{}));
+    }
+
     private static String getCommandHelp() {
+        //TODO USE A HELPFORMATER LIKE HelpFormatter in CLI Apache
         return "Use : " + CMD_NAME + " [OPTION]... TEAM_NAME...\n" +
                 " Or : " + CMD_NAME + " WAR_SITUATION_FILE\n" +
-                "Launch a Warbot simulation or load and start a Warbot simulation from a situation file (*" + SituationLoader.SITUATION_FILES_EXTENSION + ")\n\n" +
+                "Launch a Warbot simulation or load and start a Warbot simulation from a situation file (*" + XMLSituationLoader.SITUATION_FILES_EXTENSION + ")\n\n" +
                 "Available options :\n" +
                 "\t" + CMD_LOG_LEVEL + "=LEVEL\t\tuse LEVEL as log level. LEVEL in [SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST]\n" +
                 "\t" + CMD_NB_AGENT_OF_TYPE + ":AGENT_TYPE=NB\t\tset NB as number of agents of type AGENT_TYPE created at game start. AGENT_TYPE in " + Arrays.asList(WarAgentType.values()) + "\n" +
@@ -211,7 +221,7 @@ public class WarMain implements WarGameListener {
     }
 
     public Map<String, Team> getAvailableTeams() {
-        return new HashMap<>(availableTeams);
+        return (availableTeams);
     }
 
     @Override

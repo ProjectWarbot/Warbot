@@ -174,7 +174,7 @@ public class WarLauncherInterface extends JFrame {
 
         settings.setEnabledEnhancedGraphism(cbEnhancedGraphismEnabled.isSelected());
 
-        if (settings.getSituationLoader() == null) {
+        if (settings.getXMLSituationLoader() == null) {
             // On récupère les équipes
             Team inGameTeam1 = pnlSelectionTeam1.getSelectedTeam();
             Team inGameTeam2 = pnlSelectionTeam2.getSelectedTeam();
@@ -185,7 +185,7 @@ public class WarLauncherInterface extends JFrame {
             settings.addSelectedTeam(new InGameTeam(inGameTeam1));
             settings.addSelectedTeam(new InGameTeam(inGameTeam2));
         } else {
-            for (InGameTeam t : settings.getSituationLoader().getTeamsToLoad())
+            for (InGameTeam t : settings.getXMLSituationLoader().getTeamsToLoad())
                 settings.addSelectedTeam(t);
         }
     }
