@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class TeamsDatasTableModel extends AbstractTableModel implements TeamListener {
+public class TeamsDataTableModel extends AbstractTableModel implements TeamListener {
 
     private static final String[] COLUMN_NAMES_FOR_TEAM_IDENTIFICATION = {"Couleur", "Logo", "Nom"};
     private static final WarAgentType[] AGENT_TYPES_TO_FOLLOW = WarAgentType.getAgentsOfCategories(WarAgentCategory.Building, WarAgentCategory.Soldier, WarAgentCategory.Worker);
@@ -22,7 +22,7 @@ public class TeamsDatasTableModel extends AbstractTableModel implements TeamList
     private WarGame game;
     private ArrayList<InGameTeam> playerInGameTeams;
 
-    public TeamsDatasTableModel(WarGame game) {
+    public TeamsDataTableModel(WarGame game) {
         super();
         this.game = game;
         this.playerInGameTeams = game.getPlayerTeams();

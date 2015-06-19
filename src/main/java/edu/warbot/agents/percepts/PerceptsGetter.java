@@ -27,7 +27,7 @@ public abstract class PerceptsGetter {
     private List<WarAgentPercept> alliesPercepts;
     private List<WarAgentPercept> enemiesPercepts;
     private List<WarAgentPercept> resourcesPercepts;
-    private ArrayList<WallPercept> wallsPercepts;
+    private List<WallPercept> wallsPercepts;
 
     public PerceptsGetter(ControllableWarAgent agent, WarGame game) {
         _agent = agent;
@@ -145,7 +145,7 @@ public abstract class PerceptsGetter {
         getPercepts();
     }
 
-    public ArrayList<WallPercept> getWallsPercepts() {
+    public List<WallPercept> getWallsPercepts() {
         return wallsPercepts;
     }
 

@@ -3,9 +3,11 @@ package edu.warbot.gui.viewer;
 import edu.warbot.launcher.AbstractWarViewer;
 import edu.warbot.tools.geometry.CartesianCoordinates;
 
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
-public class MapExplorationListener implements MouseMotionListener, MouseListener, MouseWheelListener {
+public class MapExplorationListener extends MouseAdapter {
 
     private static final int MAX_CELL_SIZE = 10;
     private static final int MIN_CELL_SIZE = 1;
@@ -33,21 +35,6 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
         }
     }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -55,10 +42,6 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
             oldMouseDragPosition = new CartesianCoordinates(e.getX(), e.getY());
             oldViewerPosition = new CartesianCoordinates(viewer.getMapOffsetX(), viewer.getMapOffsetY());
         }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
     }
 
     @Override

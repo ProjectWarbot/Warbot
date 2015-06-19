@@ -33,30 +33,6 @@ public class MotherNatureTeam extends InGameTeam {
         setGame(game);
     }
 
-//	public void init() {
-//		Dimension mapSize = Game.getInstance().getMap().getBounds();
-//		ArrayList<CartesianCoordinates> teamsPositions = Game.getInstance().getMap().getTeamsPositions(Game.getInstance().getPlayerTeams().size());
-//		for (CartesianCoordinates pos : teamsPositions) {
-//			for (int i = 0; i < WarConfig.getNbResourcesAreasPerTeam(); i++) {
-//				CartesianCoordinates areaPos = WarMathTools.addTwoPoints(
-//						pos,
-//						PolarCoordinates.getRandomInBounds(WarConfig.getMaxDistanceOfResourcesAreasFromOwnerTeam())
-//						);
-//				areaPos.normalize(0, mapSize.width, 0, mapSize.height);
-//				_resourcesAreas.add(areaPos);
-//			}
-//		}
-//		CartesianCoordinates center = WarMathTools.getCenterOfPoints(teamsPositions);
-//		for (int i = 0; i < 2; i++) {
-//			CartesianCoordinates areaPos = WarMathTools.addTwoPoints(
-//					center,
-//					new PolarCoordinates(90, 90 + i * 180)
-//					);
-//			areaPos.normalize(0, mapSize.width, 0, mapSize.height);
-//			_resourcesAreas.add(areaPos);
-//		}
-//	}
-
     @Override
     public void addWarAgent(WarAgent agent) {
         if (agent instanceof WarResource)
@@ -72,7 +48,7 @@ public class MotherNatureTeam extends InGameTeam {
     @Override
     public void removeWarAgent(WarAgent agent) {
         if (agent instanceof WarResource)
-            resources.remove((WarResource) agent);
+            resources.remove(agent);
         else
             super.removeWarAgent(agent);
     }
