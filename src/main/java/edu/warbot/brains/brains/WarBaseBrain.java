@@ -5,6 +5,9 @@ import edu.warbot.agents.actions.constants.CreatorActions;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Creator;
 
+/**
+ *
+ */
 public abstract class WarBaseBrain extends WarBrain implements CreatorActionsMethods, CreatorActions, Creator {
 
     @Override

@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- *
+ * Définition de la capacité Controllable donnant la possibilité de créer le comportement des agents
  */
 public interface Controllable extends Alive {
 
