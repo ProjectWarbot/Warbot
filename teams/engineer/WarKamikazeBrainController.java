@@ -14,7 +14,7 @@ public abstract class WarKamikazeBrainController extends WarKamikazeBrain {
 
     @Override
     public String action() {
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
 
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {

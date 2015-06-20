@@ -1,6 +1,6 @@
 package edu.warbot.maps;
 
-import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.WarCircle;
 
 import java.awt.*;
@@ -40,9 +40,9 @@ public abstract class AbstractWarMap {
      *
      * @param coords Coordinates of possible positions for this team
      */
-    public void addTeamPositions(CoordCartesian... coords) {
+    public void addTeamPositions(CartesianCoordinates... coords) {
         ArrayList<WarCircle> positions = new ArrayList<WarCircle>();
-        for (CoordCartesian coord : coords)
+        for (CartesianCoordinates coord : coords)
             positions.add(new WarCircle(((Double) coord.getX()).floatValue(), ((Double) coord.getY()).floatValue(), TEAM_POSITION_RADIUS));
         _teamsPositions.add(positions);
     }

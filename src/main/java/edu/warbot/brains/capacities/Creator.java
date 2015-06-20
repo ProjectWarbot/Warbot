@@ -4,10 +4,10 @@ import edu.warbot.agents.enums.WarAgentType;
 
 public interface Creator {
 
-    public WarAgentType getNextAgentToCreate();
+    WarAgentType getNextAgentToCreate();
 
-    public void setNextAgentToCreate(WarAgentType nextAgentToCreate);
+    void setNextAgentToCreate(WarAgentType nextAgentToCreate);
 
-    public boolean isAbleToCreate(WarAgentType agent);
+    boolean isAbleToCreate(WarAgentType agent);
 
 }

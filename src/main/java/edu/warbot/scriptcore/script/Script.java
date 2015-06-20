@@ -1,7 +1,7 @@
 package edu.warbot.scriptcore.script;
 
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.scriptcore.ScriptedTeam;
+import edu.warbot.agents.teams.ScriptedTeam;
 import edu.warbot.scriptcore.exceptions.DangerousFunctionPythonException;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
 

@@ -1,6 +1,6 @@
 package edu.warbot.maps;
 
-import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 
 public class OpenWorldWarMap extends AbstractWarMap {
 
@@ -13,12 +13,12 @@ public class OpenWorldWarMap extends AbstractWarMap {
         double widthQuarter = WIDTH / 4.;
         double heightThird = HEIGHT / 3.;
         addTeamPositions(
-                new CoordCartesian(widthQuarter, heightThird),
-                new CoordCartesian(widthQuarter, HEIGHT - heightThird)
+                new CartesianCoordinates(widthQuarter, heightThird),
+                new CartesianCoordinates(widthQuarter, HEIGHT - heightThird)
         );
         addTeamPositions(
-                new CoordCartesian(WIDTH - widthQuarter, heightThird),
-                new CoordCartesian(WIDTH - widthQuarter, HEIGHT - heightThird)
+                new CartesianCoordinates(WIDTH - widthQuarter, heightThird),
+                new CartesianCoordinates(WIDTH - widthQuarter, HEIGHT - heightThird)
         );
 
         addFoodPosition(getCenterX(), getCenterY() - (getCenterY() / 2.));

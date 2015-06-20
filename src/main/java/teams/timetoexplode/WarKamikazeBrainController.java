@@ -6,7 +6,7 @@ import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.brains.WarKamikazeBrain;
 import edu.warbot.communications.WarMessage;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class WarKamikazeBrainController extends WarKamikazeBrain {
 
@@ -17,7 +17,7 @@ public abstract class WarKamikazeBrainController extends WarKamikazeBrain {
     @Override
     public String action() {
 
-        ArrayList<WarMessage> msgs = getMessages();
+        List<WarMessage> msgs = getMessages();
 
         for (WarMessage msg : msgs) {
             if (msg.getMessage().equals("Enemy base on sight")) {
@@ -25,7 +25,7 @@ public abstract class WarKamikazeBrainController extends WarKamikazeBrain {
             }
         }
 
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
 
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {

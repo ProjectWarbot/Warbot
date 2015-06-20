@@ -1,14 +1,14 @@
-package edu.warbot.launcher;
+package edu.warbot.loader.situation;
 
 import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.MotherNatureTeam;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
-import edu.warbot.launcher.WarMain.Shared;
+import edu.warbot.launcher.WarLauncher;
+import edu.warbot.loader.SituationLoader;
 import edu.warbot.tools.WarXmlReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -28,14 +28,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class SituationLoader {
+
+/**
+ * @version 2.0
+ * @since 3.2.2
+ */
+public class XMLSituationLoader implements SituationLoader {
 
     public static final String SITUATION_FILES_EXTENSION = ".warsit";
 
-    private HashMap<String, ArrayList<HashMap<String, String>>> xmlSituationFileContent;
+    private Map<String, ArrayList<HashMap<String, String>>> xmlSituationFileContent;
 
-    public SituationLoader(File xmlSituationFile) {
+    public XMLSituationLoader(File xmlSituationFile) {
         xmlSituationFileContent = getXmlSituationFileContent(xmlSituationFile);
     }
 
@@ -46,7 +52,7 @@ public class SituationLoader {
      * Exemple : je veux la position en X du premier agent de l'équipe "Test" :
      * Double.valueOf(getXmlSituationFileContent(file).get("Test").get(0).get("xPosition"));
      */
-    private HashMap<String, ArrayList<HashMap<String, String>>> getXmlSituationFileContent(File file) {
+    private Map<String, ArrayList<HashMap<String, String>>> getXmlSituationFileContent(File file) {
         String rootPath = "/WarSituation";
         String teamsPath = rootPath + "/Teams";
         HashMap<String, ArrayList<HashMap<String, String>>> toReturn = new HashMap<>();
@@ -89,39 +95,37 @@ public class SituationLoader {
             System.err.println("Wrong XPath : " + teamsPath);
             e.printStackTrace();
         }
-
         return toReturn;
     }
 
-    public List<Team> getTeamsToLoad() {
-        List<Team> teamsToLoad = new ArrayList<Team>();
+    public List<InGameTeam> getTeamsToLoad() {
+        List<InGameTeam> teamsToLoad = new ArrayList<InGameTeam>();
 
-        for (String teamName : xmlSituationFileContent.keySet()) {
-            if (!teamName.equals(MotherNatureTeam.NAME)) {
-                Team currentTeam = Shared.getAvailableTeams().get(Team.getRealNameFromTeamName(teamName));
-                // On vérifie si le jar de l'équipe existe
-                if (currentTeam == null) {
-                    System.err.println("Le fichier JAR de l'équipe " + Team.getRealNameFromTeamName(teamName) + " est manquant.");
-                    System.exit(0);
-                } else {
-                    if (!teamsToLoad.contains(currentTeam))
-                        teamsToLoad.add(currentTeam);
-                    else
-                        teamsToLoad.add(currentTeam.duplicate(teamName));
-                }
-            }
-        }
+//        for (String teamName : xmlSituationFileContent.keySet()) {
+//            if (!teamName.equals(MotherNatureTeam.NAME)) {
+//                InGameTeam currentInGameTeam = Shared.getAvailableTeams().get(InGameTeam.getRealNameFromTeamName(teamName));
+//                // On vérifie si le jar de l'équipe existe
+//                if (currentInGameTeam == null) {
+//                    System.err.println("Le fichier JAR de l'équipe " + InGameTeam.getRealNameFromTeamName(teamName) + " est manquant.");
+//                    System.exit(0);
+//                } else {
+//                    if (!teamsToLoad.contains(currentInGameTeam))
+//                        teamsToLoad.add(currentInGameTeam);
+//                    else
+//                        teamsToLoad.add(currentInGameTeam.duplicate(teamName));
+//                }
+//            }
+//        }
 
         return teamsToLoad;
     }
 
-    public void launchAllAgentsFromXmlSituationFile(WarLauncher launcher) {
-        WarGame game = Shared.getGame();
-        ArrayList<Team> teams = game.getPlayerTeams();
-        teams.add(game.getMotherNatureTeam());
+    private void launchAllAgentsFromXmlSituationFile(WarLauncher launcher, WarGame game) {
+        ArrayList<InGameTeam> inGameTeams = game.getPlayerTeams();
+        inGameTeams.add(game.getMotherNatureTeam());
 
         try {
-            for (Team t : teams) {
+            for (InGameTeam t : inGameTeams) {
                 ArrayList<HashMap<String, String>> agentsOfCurrentTeam = xmlSituationFileContent.get(t.getName());
                 for (HashMap<String, String> agentDatas : agentsOfCurrentTeam) {
                     WarAgent agent;
@@ -154,5 +158,10 @@ public class SituationLoader {
             System.err.println("Erreur lors de l'instanciation des classes à partir des données XML");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void launchAllAgentsFromSituation(WarLauncher warLauncher, WarGame warGame) {
+        launchAllAgentsFromXmlSituationFile(warLauncher, warGame);
     }
 }

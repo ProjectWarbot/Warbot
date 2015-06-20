@@ -8,7 +8,7 @@ import edu.warbot.brains.brains.WarRocketLauncherBrain;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.fsm.editor.settings.EnumMessage;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class WarActionAttaquer extends WarAction<WarRocketLauncherBrain> {
 
@@ -27,7 +27,7 @@ public class WarActionAttaquer extends WarAction<WarRocketLauncherBrain> {
             return WarRocketLauncher.ACTION_RELOAD;
         }
 
-        ArrayList<WarAgentPercept> percept = getAgent().getPerceptsEnemiesByType(this.agentType);
+        List<WarAgentPercept> percept = getAgent().getPerceptsEnemiesByType(this.agentType);
 
         // Je un agentType dans le percept
         if (percept != null && percept.size() > 0) {

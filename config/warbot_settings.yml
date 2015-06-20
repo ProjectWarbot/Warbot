@@ -1,0 +1,105 @@
+# Agents' perception. Available entries are :
+# - InConePerceptsGetter : conical perception
+# - InRadiusPerceptsGetter : rounded perception
+Perception: InConePerceptsGetter
+
+# Maximal distance from an other agent needed to be able to give it resources
+MaxDistanceGive: 5
+
+# Maximal distance from a resource needed to be able to take it
+MaxDistanceTake: 5
+
+# Maximal distance from a building needed to be able to repair it
+MaxDistanceBuild: 5
+
+# Each health point lost to repair a building will give it this health amount
+RepairsMultiplier: 5
+
+# These lines describe all datas about agents.
+# Hitboxes can be ( and need ) :
+#   - Square ( SideLength )
+#   - Rectangle ( Width, Height )
+#   - Circle ( Radius )
+#   - Triangle ( Radius )
+#   - Diamond ( Radius )
+#   - Arrow ( Radius )
+WarAgents:
+    Building:
+        WarBase:
+            AngleOfView: 360.0
+            DistanceOfView: 80.0
+            Cost: 12000
+            MaxHealth: 12000
+            BagSize: 1000000
+            Hitbox: { Shape: Square, SideLength: 4.0 }
+        Wall:
+            Cost: 500
+            MaxHealth: 15000
+            Hitbox: { Shape: Rectangle, Width: 5.0, Height: 20.0 }
+    Worker:
+        WarExplorer:
+            AngleOfView: 180.0
+            DistanceOfView: 50.0
+            Cost: 3000
+            MaxHealth: 3000
+            BagSize: 4
+            Speed: 1.2
+            Hitbox: { Shape: Circle, Radius: 2.0 }
+        WarEngineer:
+            AngleOfView: 150.0
+            DistanceOfView: 30.0
+            Cost: 5000
+            MaxHealth: 3000
+            BagSize: 4
+            Speed: 1.0
+            MaxRepairsPerTick: 500
+            Hitbox: { Shape: Triangle, Radius: 2.0 }
+    Soldier:
+        WarRocketLauncher:
+            AngleOfView: 120.0
+            DistanceOfView: 20.0
+            Cost: 8000
+            MaxHealth: 8000
+            BagSize: 4
+            Speed: 0.8
+            TicksToReload: 50
+            Hitbox: { Shape: Square, SideLength: 3.0 }
+        WarKamikaze:
+            AngleOfView: 150.0
+            DistanceOfView: 20.0
+            Cost: 3000
+            MaxHealth: 3000
+            BagSize: 4
+            Speed: 1.0
+            Hitbox: { Shape: Diamond, Radius: 2.0 }
+        WarTurret:
+            AngleOfView: 180.0
+            DistanceOfView: 50.0
+            Cost: 1500
+            MaxHealth: 4000
+            BagSize: 10
+            TicksToReload: 30
+            Hitbox: { Shape: Arrow, Radius: 3.0 }
+    Projectile:
+        WarRocket:
+            Speed: 3.0
+            ExplosionRadius: 10.0
+            Autonomy: 20
+            Damage: 200
+            Hitbox: { Shape: Circle, Radius: 1.0 }
+        WarBomb:
+            Speed: 0.0
+            ExplosionRadius: 40.0
+            Autonomy: 0
+            Damage: 2000
+            Hitbox: { Shape: Circle, Radius: 1.0 }
+        WarDeathRocket:
+            Speed: 3.0
+            ExplosionRadius: 20.0
+            Autonomy: 0
+            Damage: 500
+            Hitbox: { Shape: Circle, Radius: 1.0 }
+    Resource:
+        WarFood:
+            HealthGived: 200
+            Hitbox: { Shape: Square, SideLength: 1.0 }

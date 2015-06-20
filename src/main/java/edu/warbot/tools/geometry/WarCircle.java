@@ -9,8 +9,8 @@ public class WarCircle extends Ellipse2D.Double {
         super(centerX - radius, centerY - radius, radius * 2., radius * 2.);
     }
 
-    public CoordCartesian getCenterPosition() {
-        return new CoordCartesian(getCenterX(), getCenterY());
+    public CartesianCoordinates getCenterPosition() {
+        return new CartesianCoordinates(getCenterX(), getCenterY());
     }
 
     public double getRadius() {

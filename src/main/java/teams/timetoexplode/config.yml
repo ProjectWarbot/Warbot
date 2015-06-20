@@ -3,7 +3,7 @@ IconPath: dekat.png
 SoundPath: dekat.wav
 Description: |
     Equipe de WarKamikaze très all-in
-BrainsPackage: teams.timetoexplode
+BrainsPackage: inGameTeams.timetoexplode
 AgentsBrainClasses:
     WarBase: WarBaseBrainController
     WarExplorer: WarExplorerBrainController

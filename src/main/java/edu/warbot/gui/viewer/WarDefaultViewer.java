@@ -6,25 +6,27 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.actions.MovableActionsMethods;
 import edu.warbot.agents.percepts.WallPercept;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
+import edu.warbot.game.WarGame;
 import edu.warbot.launcher.AbstractWarViewer;
-import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.GeometryTools;
 import edu.warbot.tools.geometry.WarStar;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WarDefaultViewer extends AbstractWarViewer {
 
     private static final int healthBarDefaultSize = 10;
     private static final int spaceBetweenAgentAndHealthBar = 2;
 
-    private ArrayList<WarStar> explosions;
+    private List<WarStar> explosions;
 
-    public WarDefaultViewer() {
-        super();
+    public WarDefaultViewer(WarGame warGame) {
+        super(warGame, true);
 
         explosions = new ArrayList<>();
 
@@ -47,7 +49,7 @@ public class WarDefaultViewer extends AbstractWarViewer {
         g2d.fill(GeometryTools.resize(getGame().getMap().getMapForbidArea(), cellSize));
 
         // Affichage des équipes
-        for (Team t : getGame().getAllTeams()) {
+        for (InGameTeam t : getGame().getAllTeams()) {
             paintTeam(g2d, t);
         }
 
@@ -63,21 +65,21 @@ public class WarDefaultViewer extends AbstractWarViewer {
     }
 
 
-    private void paintTeam(Graphics g, Team team) {
+    private void paintTeam(Graphics g, InGameTeam inGameTeam) {
         Graphics2D g2d = (Graphics2D) g;
 
-        Color backgroundColor = team.getColor();
+        Color backgroundColor = inGameTeam.getColor();
         Color borderColor = backgroundColor.darker();
         Color perceptsColor = new Color(backgroundColor.getRed(), backgroundColor.getGreen(),
                 backgroundColor.getBlue(), 100);
         boolean isCurrentAgentTheSelectedOne = false;
         boolean haveOneColorChanged = false;
 
-        for (WarAgent agent : team.getAllAgents()) {
+        for (WarAgent agent : inGameTeam.getAllAgents()) {
 
             // Si les couleurs ont été modifiées, on restaure les couleurs
             if (haveOneColorChanged) {
-                backgroundColor = team.getColor();
+                backgroundColor = inGameTeam.getColor();
                 borderColor = backgroundColor.darker();
                 isCurrentAgentTheSelectedOne = false;
                 haveOneColorChanged = false;
@@ -138,9 +140,9 @@ public class WarDefaultViewer extends AbstractWarViewer {
         }
 
         // Affichage des agents mourants
-        for (WarAgent a : team.getDyingAgents()) {
+        for (WarAgent a : inGameTeam.getDyingAgents()) {
             if (a instanceof WarProjectile)
-                explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile) a).getExplosionRadius() - Team.MAX_DYING_STEP + a.getDyingStep())));
+                explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile) a).getExplosionRadius() - InGameTeam.MAX_DYING_STEP + a.getDyingStep())));
             else
                 explosions.add(createExplosionShape(a.getPosition(), (int) ((a.getDyingStep() + a.getHitboxMinRadius()) * 2)));
         }
@@ -247,14 +249,14 @@ public class WarDefaultViewer extends AbstractWarViewer {
         g.setColor(previousColor);
     }
 
-    private WarStar createExplosionShape(CoordCartesian pos, int radius) {
+    private WarStar createExplosionShape(CartesianCoordinates pos, int radius) {
         int newRadius = radius * cellSize;
-        return createStar(10, new CoordCartesian(pos.getX() * cellSize, pos.getY() * cellSize), newRadius, newRadius / 2);
+        return createStar(10, new CartesianCoordinates(pos.getX() * cellSize, pos.getY() * cellSize), newRadius, newRadius / 2);
     }
 
     private void paintExplosionShape(Graphics2D g2d, WarStar s) {
         if (s.getRadiusOuterCircle() > 0) { // Erreur de source inconnue qui arrivait souvent
-            RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getCenter().getX(), s.getCenter().getY()),
+            RadialGradientPaint color = new RadialGradientPaint(new CartesianCoordinates(s.getCenter().getX(), s.getCenter().getY()),
                     (float) s.getRadiusOuterCircle(),
                     new float[]{0.0f, 0.8f},
                     new Color[]{Color.RED, Color.YELLOW});
