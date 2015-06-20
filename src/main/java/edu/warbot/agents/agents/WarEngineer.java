@@ -9,7 +9,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.brains.WarEngineerBrain;
 import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.WarGameConfig;
 
 import java.util.Map;
@@ -39,8 +39,8 @@ public class WarEngineer extends MovableWarAgent implements CreatorActionsMethod
     private WarAgentType nextBuildingToBuild;
     private int idNextBuildingToRepair;
 
-    public WarEngineer(Team team, WarEngineerBrain brain) {
-        super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarEngineer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+    public WarEngineer(InGameTeam inGameTeam, WarEngineerBrain brain) {
+        super(ACTION_IDLE, inGameTeam, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarEngineer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 
         //brain.setAgentAdapter(new WarEngineerBrain(this));
 

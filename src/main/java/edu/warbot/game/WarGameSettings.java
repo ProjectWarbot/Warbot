@@ -4,9 +4,9 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
 import edu.warbot.agents.percepts.PerceptsGetter;
-import edu.warbot.launcher.SituationLoader;
 import edu.warbot.launcher.UserPreferences;
 import edu.warbot.launcher.WarGameConfig;
+import edu.warbot.loader.situation.XMLSituationLoader;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.maps.DefaultWarMap;
 
@@ -26,13 +26,13 @@ public class WarGameSettings {
     private int _foodAppearanceRate;
     private Class<? extends PerceptsGetter> _perceptsGetter;
     private boolean _isEnabledEnhancedGraphism;
-    private List<Team> selectedTeams;
-    private SituationLoader situationLoader;
+    private List<InGameTeam> selectedInGameTeams;
+    private XMLSituationLoader XMLSituationLoader;
     private AbstractWarMap selectedMap;
 
     public WarGameSettings() {
         this._nbAgentOfEachType = new HashMap<>();
-        this.selectedTeams = new ArrayList<>();
+        this.selectedInGameTeams = new ArrayList<>();
 
         restartParameters();
     }
@@ -108,27 +108,27 @@ public class WarGameSettings {
         _isEnabledEnhancedGraphism = bool;
     }
 
-    public List<Team> getSelectedTeams() {
-        return selectedTeams;
+    public List<InGameTeam> getSelectedInGameTeams() {
+        return selectedInGameTeams;
     }
 
-    public void addSelectedTeam(Team team) {
-        selectedTeams.add(team);
+    public void addSelectedTeam(InGameTeam inGameTeam) {
+        selectedInGameTeams.add(inGameTeam);
     }
 
     public void prepareForNewGame() {
-        for (Team t : selectedTeams)
+        for (InGameTeam t : selectedInGameTeams)
             t.removeAllAgents();
-        selectedTeams.clear();
-        situationLoader = null;
+        selectedInGameTeams.clear();
+        XMLSituationLoader = null;
     }
 
-    public SituationLoader getSituationLoader() {
-        return situationLoader;
+    public XMLSituationLoader getXMLSituationLoader() {
+        return XMLSituationLoader;
     }
 
-    public void setSituationLoader(SituationLoader situationLoader) {
-        this.situationLoader = situationLoader;
+    public void setXMLSituationLoader(XMLSituationLoader XMLSituationLoader) {
+        this.XMLSituationLoader = XMLSituationLoader;
     }
 
     public AbstractWarMap getSelectedMap() {

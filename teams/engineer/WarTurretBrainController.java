@@ -25,7 +25,7 @@ public abstract class WarTurretBrainController extends WarTurretBrain {
         }
         setHeading(_sight);
 
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {
                 case WarRocketLauncher:

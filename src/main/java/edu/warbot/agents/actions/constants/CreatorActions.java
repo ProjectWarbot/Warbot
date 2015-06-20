@@ -1,8 +1,13 @@
 package edu.warbot.agents.actions.constants;
 
-
+/**
+ * Définition des actions de création d'unités
+ */
 public interface CreatorActions {
 
-    public static String ACTION_CREATE = "create";
+    /**
+     * Action "create" (ou créer) pour générer des unités
+     */
+    String ACTION_CREATE = "create";
 
 }

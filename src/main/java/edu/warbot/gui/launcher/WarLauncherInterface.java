@@ -2,7 +2,8 @@ package edu.warbot.gui.launcher;
 
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.agents.teams.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameMode;
 import edu.warbot.game.WarGameSettings;
@@ -26,16 +27,16 @@ public class WarLauncherInterface extends JFrame {
     public static final String TEXT_ADDED_TO_DUPLICATE_TEAM_NAME = "_bis";
 
     // Eléments de l'interface
-    private HashMap<WarAgentType, NbWarAgentSlider> sliderNbAgents;
-    private HashMap<WarAgentType, NbWarAgentSlider> foodCreationRates;
+    private HashMap<WarAgentType, WarAgentCountSlider> sliderNbAgents;
+    private HashMap<WarAgentType, WarAgentCountSlider> foodCreationRates;
 
-    private PnlTeamSelection pnlSelectionTeam1;
-    private PnlTeamSelection pnlSelectionTeam2;
+    private TeamSelectionPanel pnlSelectionTeam1;
+    private TeamSelectionPanel pnlSelectionTeam2;
 
     private MapMiniature currentDisplayedMapMiniature;
 
-    private JButton boutonQuitter;
-    private JButton boutonValider;
+    private JButton leaveButton;
+    private JButton validButton;
 
     private JComboBox<String> cbLogLevel;
 
@@ -81,7 +82,7 @@ public class WarLauncherInterface extends JFrame {
 
         // Controllables
         for (WarAgentType a : WarAgentType.getControllableAgentTypes()) {
-            NbWarAgentSlider slider = new NbWarAgentSlider("Nombre de " + a.toString(),
+            WarAgentCountSlider slider = new WarAgentCountSlider("Nombre de " + a.toString(),
                     0, 30, UserPreferences.getNbAgentsAtStartOfType(a.toString()), 1, 10);
             sliderNbAgents.put(a, slider);
             pnlNbUnits.add(slider);
@@ -90,7 +91,7 @@ public class WarLauncherInterface extends JFrame {
         // Ressources
         foodCreationRates = new HashMap<>();
         for (WarAgentType a : WarAgentType.getAgentsOfCategories(WarAgentCategory.Resource)) {
-            NbWarAgentSlider slider = new NbWarAgentSlider(a.toString() + " tous les x ticks",
+            WarAgentCountSlider slider = new WarAgentCountSlider(a.toString() + " tous les x ticks",
                     0, 500, 150, 1, 100);
             foodCreationRates.put(a, slider);
             pnlNbUnits.add(slider);
@@ -127,22 +128,22 @@ public class WarLauncherInterface extends JFrame {
 		/* *** Bas : Boutons *** */
         JPanel panelBas = new JPanel();
 
-        boutonValider = new JButton("Valider");
-        boutonValider.addActionListener(new ActionListener() {
+        validButton = new JButton("Valider");
+        validButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 startGame();
             }
         });
-        getRootPane().setDefaultButton(boutonValider);
-        panelBas.add(boutonValider);
+        getRootPane().setDefaultButton(validButton);
+        panelBas.add(validButton);
 
-        boutonQuitter = new JButton("Quitter");
-        boutonQuitter.addActionListener(new ActionListener() {
+        leaveButton = new JButton("Quitter");
+        leaveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(NORMAL);
             }
         });
-        panelBas.add(boutonQuitter);
+        panelBas.add(leaveButton);
 
         mainPanel.add(panelBas, BorderLayout.SOUTH);
 
@@ -163,7 +164,7 @@ public class WarLauncherInterface extends JFrame {
         settings.setDefaultLogLevel((Level.parse((String) cbLogLevel.getSelectedItem())));
 
         for (WarAgentType agent : WarAgentType.values()) {
-            NbWarAgentSlider slider = sliderNbAgents.get(agent);
+            WarAgentCountSlider slider = sliderNbAgents.get(agent);
             if (slider != null)
                 settings.setNbAgentOfType(agent, slider.getSelectedValue());
         }
@@ -173,18 +174,18 @@ public class WarLauncherInterface extends JFrame {
 
         settings.setEnabledEnhancedGraphism(cbEnhancedGraphismEnabled.isSelected());
 
-        if (settings.getSituationLoader() == null) {
+        if (settings.getXMLSituationLoader() == null) {
             // On récupère les équipes
-            Team team1 = pnlSelectionTeam1.getSelectedTeam();
-            Team team2 = pnlSelectionTeam2.getSelectedTeam();
+            Team inGameTeam1 = pnlSelectionTeam1.getSelectedTeam();
+            Team inGameTeam2 = pnlSelectionTeam2.getSelectedTeam();
             // Si c'est les mêmes équipes, on en duplique une en lui donnant un autre nom
-            if (team1.equals(team2))
-                team2 = team1.duplicate(team1.getName() + TEXT_ADDED_TO_DUPLICATE_TEAM_NAME);
+            if (inGameTeam1.equals(inGameTeam2))
+                inGameTeam2 = inGameTeam1.duplicate(inGameTeam1.getTeamName() + TEXT_ADDED_TO_DUPLICATE_TEAM_NAME);
             // On ajoute les équipes au jeu
-            settings.addSelectedTeam(team1);
-            settings.addSelectedTeam(team2);
+            settings.addSelectedTeam(new InGameTeam(inGameTeam1));
+            settings.addSelectedTeam(new InGameTeam(inGameTeam2));
         } else {
-            for (Team t : settings.getSituationLoader().getTeamsToLoad())
+            for (InGameTeam t : settings.getXMLSituationLoader().getTeamsToLoad())
                 settings.addSelectedTeam(t);
         }
     }
@@ -203,15 +204,17 @@ public class WarLauncherInterface extends JFrame {
 
         // TODO
 
+        toReturn.add(new JLabel("not installed"));
+
         return toReturn;
     }
 
     private JPanel creerPanelModeClassic() {
         JPanel toReturn = new JPanel(new GridLayout(1, 2));
 
-        pnlSelectionTeam1 = new PnlTeamSelection("Choix de l'équipe 1", warMain.getAvailableTeams());
+        pnlSelectionTeam1 = new TeamSelectionPanel("Choix de l'équipe 1", warMain.getAvailableTeams());
         toReturn.add(new JScrollPane(pnlSelectionTeam1));
-        pnlSelectionTeam2 = new PnlTeamSelection("Choix de l'équipe 2", warMain.getAvailableTeams());
+        pnlSelectionTeam2 = new TeamSelectionPanel("Choix de l'équipe 2", warMain.getAvailableTeams());
         toReturn.add(new JScrollPane(pnlSelectionTeam2));
 
         return toReturn;

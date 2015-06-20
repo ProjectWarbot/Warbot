@@ -2,7 +2,6 @@ package edu.warbot.game;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarBuilding;
-import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.mode.AbstractGameMode;
 import edu.warbot.maps.AbstractWarMap;
 
@@ -31,8 +30,8 @@ public class WarGame {
     private List<WarGameListener> listeners;
 
     private MotherNatureTeam _motherNature;
-    private List<Team> _playerTeams;
-    private List<Team> loserTeams;
+    private List<InGameTeam> playerInGameTeams;
+    private List<InGameTeam> loserInGameTeams;
     private AbstractWarMap _map;
     private WarGameSettings settings;
     private AbstractGameMode gameMode;
@@ -41,10 +40,10 @@ public class WarGame {
         this.settings = settings;
         listeners = new ArrayList<>();
         this._motherNature = new MotherNatureTeam(this);
-        this._playerTeams = settings.getSelectedTeams();
-        loserTeams = new ArrayList<>();
+        this.playerInGameTeams = settings.getSelectedInGameTeams();
+        loserInGameTeams = new ArrayList<>();
         int colorCounter = 0;
-        for (Team t : _playerTeams) {
+        for (InGameTeam t : playerInGameTeams) {
             t.setColor(TEAM_COLORS[colorCounter]);
             t.setGame(this);
             colorCounter++;
@@ -58,7 +57,7 @@ public class WarGame {
     }
 
     public void setLogLevel(Level l) {
-        for (Team t : _playerTeams) {
+        for (InGameTeam t : playerInGameTeams) {
             for (WarAgent a : t.getAllAgents()) {
                 a.setLogLevel(l);
             }
@@ -73,45 +72,45 @@ public class WarGame {
         return _motherNature;
     }
 
-    public void addPlayerTeam(Team team) {
-        Team newTeam = team.duplicate(team.getName());
-        _playerTeams.add(newTeam);
-        newTeam.setGame(this);
+    public void addPlayerTeam(InGameTeam inGameTeam) {
+        InGameTeam newInGameTeam = inGameTeam.duplicate(inGameTeam.getName());
+        playerInGameTeams.add(newInGameTeam);
+        newInGameTeam.setGame(this);
         for (WarGameListener listener : getListeners())
-            listener.onNewTeamAdded(newTeam);
+            listener.onNewTeamAdded(newInGameTeam);
     }
 
-    public void setTeamAsLost(Team team) {
-        _playerTeams.remove(team);
-        loserTeams.add(team);
-//        team.killAllAgents();
+    public void setTeamAsLost(InGameTeam inGameTeam) {
+        playerInGameTeams.remove(inGameTeam);
+        loserInGameTeams.add(inGameTeam);
+//        inGameTeam.killAllAgents();
 
         for (WarGameListener listener : getListeners())
-            listener.onTeamLost(team);
+            listener.onTeamLost(inGameTeam);
     }
 
-    public Team getPlayerTeam(String teamName) {
-        for (Team t : _playerTeams) {
+    public InGameTeam getPlayerTeam(String teamName) {
+        for (InGameTeam t : playerInGameTeams) {
             if (t.getName().equals(teamName))
                 return t;
         }
         return null;
     }
 
-    public ArrayList<Team> getPlayerTeams() {
-        return new ArrayList<>(_playerTeams);
+    public ArrayList<InGameTeam> getPlayerTeams() {
+        return new ArrayList<>(playerInGameTeams);
     }
 
-    public ArrayList<Team> getAllTeams() {
-        ArrayList<Team> teams = getPlayerTeams();
-        teams.add(getMotherNatureTeam());
-        teams.addAll(loserTeams);
-        return teams;
+    public ArrayList<InGameTeam> getAllTeams() {
+        ArrayList<InGameTeam> inGameTeams = getPlayerTeams();
+        inGameTeams.add(getMotherNatureTeam());
+        inGameTeams.addAll(loserInGameTeams);
+        return inGameTeams;
     }
 
     public ArrayList<WarAgent> getAllAgentsInRadiusOf(WarAgent a, double radius) {
         ArrayList<WarAgent> toReturn = new ArrayList<>();
-        for (Team t : getAllTeams()) {
+        for (InGameTeam t : getAllTeams()) {
             toReturn.addAll(t.getAllAgentsInRadiusOf(a, radius));
         }
         return toReturn;
@@ -119,7 +118,7 @@ public class WarGame {
 
     public ArrayList<WarAgent> getAllAgentsInRadius(double posX, double posY, double radius) {
         ArrayList<WarAgent> toReturn = new ArrayList<>();
-        for (Team t : getAllTeams()) {
+        for (InGameTeam t : getAllTeams()) {
             toReturn.addAll(t.getAllAgentsInRadius(posX, posY, radius));
         }
         return toReturn;
@@ -127,7 +126,7 @@ public class WarGame {
 
     public ArrayList<WarBuilding> getBuildingsInRadiusOf(WarAgent referenceAgent, double radius) {
         ArrayList<WarBuilding> toReturn = new ArrayList<>();
-        for (Team t : getAllTeams()) {
+        for (InGameTeam t : getAllTeams()) {
             toReturn.addAll(t.getBuildingsInRadiusOf(referenceAgent, radius));
         }
         return toReturn;
@@ -135,9 +134,9 @@ public class WarGame {
 
 
     public String[] getPlayerTeamNames() {
-        String[] toReturn = new String[_playerTeams.size()];
+        String[] toReturn = new String[playerInGameTeams.size()];
         int compteur = 0;
-        for (Team t : _playerTeams) {
+        for (InGameTeam t : playerInGameTeams) {
             toReturn[compteur] = t.getName();
             compteur++;
         }
@@ -154,12 +153,12 @@ public class WarGame {
 
     public void doAfterEachTick() {
         calculeFPS();
-        for (Team t : _playerTeams)
+        for (InGameTeam t : playerInGameTeams)
             t.doAfterEachTick();
         _motherNature.doAfterEachTick();
         gameMode.getEndCondition().doAfterEachTick();
 
-        for (Team t : loserTeams) {
+        for (InGameTeam t : loserInGameTeams) {
             if (!t.hasLost()) {
                 t.setHasLost(true);
                 t.killAllAgents();

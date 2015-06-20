@@ -2,10 +2,10 @@ package edu.warbot.agents;
 
 import edu.warbot.agents.actions.MovableActionsMethods;
 import edu.warbot.brains.capacities.Movable;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
+import edu.warbot.tools.geometry.PolarCoordinates;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -19,8 +19,8 @@ public abstract class WarProjectile extends WarAgent implements MovableActionsMe
     private WarAgent _sender;
     private int _currentAutonomy;
 
-    public WarProjectile(String firstActionToDo, Team team, Hitbox hitbox, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
-        super(firstActionToDo, team, hitbox);
+    public WarProjectile(String firstActionToDo, InGameTeam inGameTeam, Hitbox hitbox, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
+        super(firstActionToDo, inGameTeam, hitbox);
 
         this._speed = speed;
         this._explosionRadius = explosionRadius;
@@ -82,14 +82,14 @@ public abstract class WarProjectile extends WarAgent implements MovableActionsMe
                 double currentStep = 0;
                 while (currentStep < getSpeed()) {
                     if (isInCollisionWithAtPosition(
-                            WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(currentStep, getHeading())),
+                            WarMathTools.addTwoPoints(new CartesianCoordinates(getX(), getY()), new PolarCoordinates(currentStep, getHeading())),
                             a)) {
                         return true;
                     }
                     currentStep += 1.0;
                 }
                 return isInCollisionWithAtPosition(
-                        WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(getSpeed(), getHeading())),
+                        WarMathTools.addTwoPoints(new CartesianCoordinates(getX(), getY()), new PolarCoordinates(getSpeed(), getHeading())),
                         a);
             }
         }

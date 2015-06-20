@@ -1,7 +1,13 @@
 package edu.warbot.agents.actions.constants;
 
+/**
+ * Définition des actions de déplacement
+ */
 public interface MovableActions {
 
-    public static String ACTION_MOVE = "move";
+    /**
+     * Action "move" (ou se déplacer) pour aller en avant
+     */
+    String ACTION_MOVE = "move";
 
 }

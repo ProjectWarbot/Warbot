@@ -7,11 +7,11 @@ public class WarAgressiveBrainImplementation extends WarBrainImplementation impl
 
     @Override
     public boolean isReloaded() {
-        return ((Agressive) this.agent).isReloaded();
+        return ((Agressive) getAgent()).isReloaded();
     }
 
     @Override
     public boolean isReloading() {
-        return ((Agressive) this.agent).isReloading();
+        return ((Agressive) getAgent()).isReloading();
     }
 }
