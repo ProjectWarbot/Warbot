@@ -6,9 +6,13 @@ import edu.warbot.game.mode.ResourcesRunGameMode;
 import edu.warbot.game.mode.TimerGameMode;
 
 public enum WarGameMode {
+
     Duel(DuelGameMode.class),
+
     ResourcesRun(ResourcesRunGameMode.class),
+
     TimerRun(TimerGameMode.class),
+
     NumberAgentGameMode(edu.warbot.game.mode.NumberAgentGameMode.class);
 
     private Class<? extends AbstractGameMode> gameModeClass;

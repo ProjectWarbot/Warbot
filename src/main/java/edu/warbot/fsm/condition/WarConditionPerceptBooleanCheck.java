@@ -7,6 +7,7 @@ import edu.warbot.fsm.editor.settings.EnumOperand;
 import edu.warbot.fsm.editor.settings.GenericConditionSettings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WarConditionPerceptBooleanCheck<BrainType extends WarBrain> extends WarCondition<BrainType> {
 
@@ -37,7 +38,7 @@ public class WarConditionPerceptBooleanCheck<BrainType extends WarBrain> extends
     public boolean isValide() {
 
         // Recupere les percepts
-        ArrayList<WarAgentPercept> percepts = new ArrayList<>();
+        List<WarAgentPercept> percepts = new ArrayList<>();
 
         if (this.enemy) {
             if (this.agentType == null) {

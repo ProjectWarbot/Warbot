@@ -4,6 +4,6 @@ import edu.warbot.agents.ControllableWarAgent;
 
 public interface AgentBrainImplementer {
 
-    public void setAgent(ControllableWarAgent agent);
+    void setAgent(ControllableWarAgent agent);
 
 }

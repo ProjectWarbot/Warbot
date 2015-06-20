@@ -2,7 +2,7 @@ package edu.warbot.communications;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import madkit.kernel.Message;
 
 /**
@@ -15,7 +15,7 @@ public class WarKernelMessage extends Message {
     private double _ySender;
     private WarAgent sender;
     private int _idSender;
-    private Team _senderTeam;
+    private InGameTeam senderInGameTeam;
     private WarAgentType _senderType;
     private String _message;
     private String[] _content;
@@ -27,7 +27,7 @@ public class WarKernelMessage extends Message {
         _xSender = sender.getX();
         _ySender = sender.getY();
         _idSender = sender.getID();
-        _senderTeam = sender.getTeam();
+        senderInGameTeam = sender.getTeam();
         _senderType = WarAgentType.valueOf(sender.getClass().getSimpleName());
         this.sender = sender;
     }
@@ -62,10 +62,10 @@ public class WarKernelMessage extends Message {
     /**
      * Méthode renvoyant l'équipe de l'agent émetteur du message.
      *
-     * @return {@code Team} - l'équipe de l'agent émetteur du message.
+     * @return {@code InGameTeam} - l'équipe de l'agent émetteur du message.
      */
-    public Team getSenderTeam() {
-        return _senderTeam;
+    public InGameTeam getSenderTeam() {
+        return senderInGameTeam;
     }
 
     /**

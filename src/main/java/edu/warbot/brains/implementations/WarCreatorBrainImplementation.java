@@ -8,16 +8,16 @@ public class WarCreatorBrainImplementation extends WarBrainImplementation implem
 
     @Override
     public WarAgentType getNextAgentToCreate() {
-        return ((Creator) this.agent).getNextAgentToCreate();
+        return ((Creator) getAgent()).getNextAgentToCreate();
     }
 
     @Override
     public void setNextAgentToCreate(WarAgentType nextAgentToCreate) {
-        ((Creator) this.agent).setNextAgentToCreate(nextAgentToCreate);
+        ((Creator) getAgent()).setNextAgentToCreate(nextAgentToCreate);
     }
 
     @Override
     public boolean isAbleToCreate(WarAgentType agent) {
-        return ((Creator) this.agent).isAbleToCreate(agent);
+        return ((Creator) getAgent()).isAbleToCreate(agent);
     }
 }

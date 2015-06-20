@@ -2,38 +2,72 @@ package edu.warbot.agents;
 
 import edu.warbot.agents.actions.IdlerActionsMethods;
 import edu.warbot.brains.capacities.Alive;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 
 import java.util.logging.Level;
 
+/**
+ * Définition d'un agent vivant de Warbot
+ */
 public abstract class AliveWarAgent extends WarAgent implements Alive, IdlerActionsMethods {
 
+    /**
+     * Coût de l'agent
+     */
     private int _cost;
+    /**
+     * Niveau de santé courant
+     */
     private int _health;
+    /**
+     * Niveau de santé maximum
+     */
     private int _maxHealth;
 
-    public AliveWarAgent(String firstActionToDo, Team team, Hitbox hitbox, int cost, int maxHealth) {
-        super(firstActionToDo, team, hitbox);
-
+    /**
+     * @param firstActionToDo l'action à réaliser au démarrage
+     * @param inGameTeam      l'équipe de l'agent
+     * @param hitbox          la hitbox de l'agent
+     * @param cost            le coût de l'agent
+     * @param maxHealth       la vie maximum d'un agent
+     */
+    public AliveWarAgent(String firstActionToDo, InGameTeam inGameTeam, Hitbox hitbox, int cost, int maxHealth) {
+        super(firstActionToDo, inGameTeam, hitbox);
         _cost = cost;
         _maxHealth = maxHealth;
         _health = _maxHealth;
     }
 
+    /**
+     *
+     * @return le coût de l'agent
+     */
     public int getCost() {
         return _cost;
     }
 
+    /**
+     *
+     * @return le niveau de vie courant
+     */
     @Override
     public int getHealth() {
         return _health;
     }
 
+    /**
+     *
+     * @return le niveau de vie maximum
+     */
     @Override
     public int getMaxHealth() {
         return _maxHealth;
     }
 
+    /**
+     * Soigne l'agent d'une certaine quantité
+     * @param quantity quantité de points de vie restaurée
+     */
     public void heal(int quantity) {
         logger.log(Level.FINEST, this.toString() + "healed of " + quantity + "life points.");
         _health += quantity;
@@ -42,6 +76,10 @@ public abstract class AliveWarAgent extends WarAgent implements Alive, IdlerActi
         }
     }
 
+    /**
+     * Endommage l'agent d'une certaine quantité
+     * @param quantity quantité de dégâts infligés
+     */
     public void damage(int quantity) {
         logger.finest(this.toString() + "damaged of " + quantity + "life points.");
         _health -= quantity;

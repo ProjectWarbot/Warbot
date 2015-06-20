@@ -1,18 +1,18 @@
 package edu.warbot.gui.viewer.stats;
 
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameListener;
 
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class TeamsDatasTable extends JTable implements WarGameListener {
+public class TeamsDataTable extends JTable implements WarGameListener {
 
-    private TeamsDatasTableModel _model;
+    private TeamsDataTableModel _model;
     private WarGame game;
 
-    public TeamsDatasTable(WarGame game) {
+    public TeamsDataTable(WarGame game) {
         super();
         this.game = game;
 
@@ -20,7 +20,7 @@ public class TeamsDatasTable extends JTable implements WarGameListener {
         getTableHeader().setVisible(false);
         setRowHeight(20);
 
-        _model = new TeamsDatasTableModel(game);
+        _model = new TeamsDataTableModel(game);
         setModel(_model);
         getColumnModel().getColumn(0).setCellRenderer(new HeaderCellRenderer());
 
@@ -28,12 +28,12 @@ public class TeamsDatasTable extends JTable implements WarGameListener {
     }
 
     @Override
-    public void onNewTeamAdded(Team newTeam) {
+    public void onNewTeamAdded(InGameTeam newInGameTeam) {
         updateTeamsDataTable();
     }
 
     @Override
-    public void onTeamLost(Team removedTeam) {
+    public void onTeamLost(InGameTeam removedInGameTeam) {
 //        updateTeamsDataTable();
     }
 
@@ -50,7 +50,7 @@ public class TeamsDatasTable extends JTable implements WarGameListener {
     }
 
     private void updateTeamsDataTable() {
-        _model = new TeamsDatasTableModel(game);
+        _model = new TeamsDataTableModel(game);
         setModel(_model);
         getColumnModel().getColumn(0).setCellRenderer(new HeaderCellRenderer());
     }

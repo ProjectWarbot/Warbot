@@ -35,7 +35,7 @@ public abstract class WarPlan<BrainType extends WarBrain> {
         try {
             this.buildActionList();
         } catch (NullPointerException e) {
-            System.err.println("ERROR during initialisation of warPlan <" + this.nom + ">, check you have set the right attribut for this plan ");
+            System.err.println("ERROR during initializeFSM of warPlan <" + this.nom + ">, check you have set the right attribut for this plan ");
         }
 
         if (this.actions.size() < 1) {

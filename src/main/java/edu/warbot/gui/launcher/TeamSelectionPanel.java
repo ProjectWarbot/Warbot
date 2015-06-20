@@ -1,6 +1,6 @@
 package edu.warbot.gui.launcher;
 
-import edu.warbot.game.Team;
+import edu.warbot.agents.teams.Team;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 @SuppressWarnings("serial")
-public class PnlTeamSelection extends JPanel {
+public class TeamSelectionPanel extends JPanel {
 
     private ArrayList<JRadioButton> _radioButtons;
     private Map<String, Team> availableTeams;
 
-    public PnlTeamSelection(String title, Map<String, Team> availableTeams) {
+    public TeamSelectionPanel(String title, Map<String, Team> availableTeams) {
         super();
         this.availableTeams = availableTeams;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -32,14 +32,14 @@ public class PnlTeamSelection extends JPanel {
             pnlTeam.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(184, 207, 229)));
 
             JRadioButton currentRadioButton = new JRadioButton();
-            currentRadioButton.setName(t.getName());
+            currentRadioButton.setName(t.getTeamName());
             buttonGroup.add(currentRadioButton);
             _radioButtons.add(currentRadioButton);
             pnlTeam.add(currentRadioButton);
-            pnlTeam.add(new JLabel(t.getImage()));
+            pnlTeam.add(new JLabel(t.getLogo()));
             JPanel pnlRight = new JPanel();
             pnlRight.setLayout(new GridLayout(2, 1));
-            pnlRight.add(new JLabel(t.getName()));
+            pnlRight.add(new JLabel(t.getTeamName()));
             HiddenLongTextJLabel lblTeamDescription = new HiddenLongTextJLabel(t.getDescription(), 35, 2);
             lblTeamDescription.setFont(getFont().deriveFont(Font.PLAIN));
             lblTeamDescription.addMouseListener(new MouseAdapter() {

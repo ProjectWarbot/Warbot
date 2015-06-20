@@ -3,7 +3,7 @@ package edu.warbot.gui.viewer.debug;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.gui.viewer.debug.eventlisteners.AddToolMouseListener;
 import edu.warbot.gui.viewer.debug.eventlisteners.DeleteToolMouseListener;
 import edu.warbot.gui.viewer.debug.eventlisteners.InfosToolMouseListener;
@@ -22,7 +22,7 @@ public class DebugToolsPnl extends JPanel {
     private WarAgent _selectedAgent;
 
     private WarAgentType _selectedWarAgentTypeToCreate;
-    private Team selectedTeamForNextCreatedAgent;
+    private InGameTeam selectedInGameTeamForNextCreatedAgent;
 
     private DebugToolOnOffBtn _infoTool;
     private DebugToolOnOffBtn _addTool;
@@ -85,8 +85,8 @@ public class DebugToolsPnl extends JPanel {
         JPanel pnlSelectTeam = new JPanel();
         pnlSelectTeam.setLayout(new FlowLayout());
         ButtonGroup groupSelectTeam = new ButtonGroup();
-        for (Team team : _debugToolBar.getViewer().getGame().getPlayerTeams()) {
-            WarTeamSelectButton teamSelectButton = new WarTeamSelectButton(team, _debugToolBar);
+        for (InGameTeam inGameTeam : _debugToolBar.getViewer().getGame().getPlayerTeams()) {
+            WarTeamSelectButton teamSelectButton = new WarTeamSelectButton(inGameTeam, _debugToolBar);
             pnlSelectTeam.add(teamSelectButton);
             groupSelectTeam.add(teamSelectButton);
         }
@@ -136,12 +136,12 @@ public class DebugToolsPnl extends JPanel {
         _selectedWarAgentTypeToCreate = agentType;
     }
 
-    public Team getSelectedTeamForNextCreatedAgent() {
-        return selectedTeamForNextCreatedAgent;
+    public InGameTeam getSelectedInGameTeamForNextCreatedAgent() {
+        return selectedInGameTeamForNextCreatedAgent;
     }
 
-    public void setSelectedTeamForNextCreatedAgent(Team selectedTeamForNextCreatedAgent) {
-        this.selectedTeamForNextCreatedAgent = selectedTeamForNextCreatedAgent;
+    public void setSelectedInGameTeamForNextCreatedAgent(InGameTeam selectedInGameTeamForNextCreatedAgent) {
+        this.selectedInGameTeamForNextCreatedAgent = selectedInGameTeamForNextCreatedAgent;
     }
 
     public DebugToolOnOffBtn getInfoToolBtn() {

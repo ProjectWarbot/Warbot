@@ -3,7 +3,7 @@ IconPath: dekat.png
 SoundPath: dekat.wav
 Description: |
     Equipe d'ingénieur défensif un peu plus intelligent
-BrainsPackage: teams.engineer
+BrainsPackage: inGameTeams.engineer
 AgentsBrainClasses:
     WarBase: WarBaseBrainController
     WarExplorer: WarExplorerBrainController

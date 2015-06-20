@@ -6,7 +6,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.projectiles.WarBomb;
 import edu.warbot.brains.brains.WarKamikazeBrain;
 import edu.warbot.brains.capacities.Agressive;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.WarGameConfig;
 
 import java.util.Map;
@@ -31,8 +31,8 @@ public class WarKamikaze extends MovableWarAgent implements AgressiveActionsMeth
         SPEED = (double) data.get(WarGameConfig.AGENT_CONFIG_SPEED);
     }
 
-    public WarKamikaze(Team team, WarKamikazeBrain brain) {
-        super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarKamikaze), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+    public WarKamikaze(InGameTeam inGameTeam, WarKamikazeBrain brain) {
+        super(ACTION_IDLE, inGameTeam, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarKamikaze), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 
 //		brain.setAgentAdapter(new WarKamikazeBrain(this));
     }

@@ -2,7 +2,7 @@ package edu.warbot.agents.buildings;
 
 import edu.warbot.agents.WarBuilding;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.WarGameConfig;
 
 import java.util.Map;
@@ -18,11 +18,15 @@ public class Wall extends WarBuilding {
         MAX_HEALTH = (int) data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH);
     }
 
-    public Wall(Team team) {
-        super(team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.Wall), COST, MAX_HEALTH);
+    public Wall(InGameTeam inGameTeam) {
+        super(inGameTeam, WarGameConfig.getHitboxOfWarAgent(WarAgentType.Wall), COST, MAX_HEALTH);
     }
 
     public WarAgentType getType() {
         return WarAgentType.Wall;
+    }
+
+    public final String action() {
+        return idle();
     }
 }

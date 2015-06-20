@@ -7,11 +7,11 @@ public class WarMovableBrainImplementation extends WarBrainImplementation implem
 
     @Override
     public boolean isBlocked() {
-        return ((Movable) this.agent).isBlocked();
+        return ((Movable) getAgent()).isBlocked();
     }
 
     @Override
     public double getSpeed() {
-        return ((Movable) this.agent).getSpeed();
+        return ((Movable) getAgent()).getSpeed();
     }
 }

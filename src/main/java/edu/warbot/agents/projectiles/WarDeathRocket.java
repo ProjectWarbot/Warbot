@@ -3,7 +3,7 @@ package edu.warbot.agents.projectiles;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.WarGameConfig;
 
 import java.util.Map;
@@ -26,8 +26,8 @@ public class WarDeathRocket extends WarProjectile {
     }
 
 
-    public WarDeathRocket(Team team, WarAgent sender) {
-        super(ACTION_MOVE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarDeathRocket), sender, SPEED, EXPLOSION_RADIUS, DAMAGE, AUTONOMY);
+    public WarDeathRocket(InGameTeam inGameTeam, WarAgent sender) {
+        super(ACTION_MOVE, inGameTeam, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarDeathRocket), sender, SPEED, EXPLOSION_RADIUS, DAMAGE, AUTONOMY);
     }
 
     public WarAgentType getType() {

@@ -1,6 +1,6 @@
 package edu.warbot.gui.viewer.debug;
 
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,18 +10,18 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class WarTeamSelectButton extends JToggleButton implements ActionListener {
 
-    private Team team;
+    private InGameTeam inGameTeam;
     private DebugModePanel toolBar;
 
     // TODO Ajout d'une image des agents
-    public WarTeamSelectButton(Team team, DebugModePanel toolBar) {
+    public WarTeamSelectButton(InGameTeam inGameTeam, DebugModePanel toolBar) {
         super();
-        this.team = team;
+        this.inGameTeam = inGameTeam;
         this.toolBar = toolBar;
 
-        setBackground(team.getColor());
-        setIcon(team.getImage());
-        setText(team.getName());
+        setBackground(inGameTeam.getColor());
+        setIcon(inGameTeam.getImage());
+        setText(inGameTeam.getName());
         setFont(new Font("Arial", Font.PLAIN, 10));
 //		setPreferredSize(new Dimension(125, 50));
 
@@ -30,7 +30,7 @@ public class WarTeamSelectButton extends JToggleButton implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        toolBar.getDebugTools().setSelectedTeamForNextCreatedAgent(team);
+        toolBar.getDebugTools().setSelectedInGameTeamForNextCreatedAgent(inGameTeam);
     }
 
 }
