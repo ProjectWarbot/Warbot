@@ -8,26 +8,26 @@ public class WarBuilderBrainImplementation extends WarBrainImplementation implem
 
     @Override
     public WarAgentType getNextBuildingToBuild() {
-        return ((Builder) this.agent).getNextBuildingToBuild();
+        return ((Builder) getAgent()).getNextBuildingToBuild();
     }
 
     @Override
     public void setNextBuildingToBuild(WarAgentType nextBuildingToBuild) {
-        ((Builder) this.agent).setNextBuildingToBuild(nextBuildingToBuild);
+        ((Builder) getAgent()).setNextBuildingToBuild(nextBuildingToBuild);
     }
 
     @Override
     public boolean isAbleToBuild(WarAgentType building) {
-        return ((Builder) this.agent).isAbleToBuild(building);
+        return ((Builder) getAgent()).isAbleToBuild(building);
     }
 
     @Override
     public int getIdNextBuildingToRepair() {
-        return ((Builder) this.agent).getIdNextBuildingToRepair();
+        return ((Builder) getAgent()).getIdNextBuildingToRepair();
     }
 
     @Override
     public void setIdNextBuildingToRepair(int idNextBuildingToRepair) {
-        ((Builder) this.agent).setIdNextBuildingToRepair(idNextBuildingToRepair);
+        ((Builder) getAgent()).setIdNextBuildingToRepair(idNextBuildingToRepair);
     }
 }

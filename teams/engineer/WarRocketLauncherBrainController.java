@@ -35,7 +35,7 @@ public abstract class WarRocketLauncherBrainController extends WarRocketLauncher
         if (getHealth() <= (WarRocketLauncher.MAX_HEALTH / 5))
             return WarRocketLauncher.ACTION_EAT;
 
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {
                 case WarFood:
@@ -51,9 +51,9 @@ public abstract class WarRocketLauncherBrainController extends WarRocketLauncher
                         _baseFound = true;
                         setHeading(p.getAngle());
                         if (isReloaded()) {
-                            return WarRocketLauncher.ACTION_FIRE;
+                            return fire();
                         } else
-                            return WarRocketLauncher.ACTION_RELOAD;
+                            return beginReloadWeapon();
                     }
                     break;
                 case WarRocketLauncher:
@@ -70,7 +70,7 @@ public abstract class WarRocketLauncherBrainController extends WarRocketLauncher
             }
         }
 
-        ArrayList<WarMessage> msgs = getMessages();
+        List<WarMessage> msgs = getMessages();
         for (WarMessage msg : msgs) {
             if (msg.getMessage().equals("Enemy base on sight") && !_inDanger) {
                 setHeading(msg.getAngle());

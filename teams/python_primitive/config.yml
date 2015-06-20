@@ -3,7 +3,7 @@ IconPath: dekat.png
 SoundPath: dekat.wav
 Description: |
     Equipe de super Python avec des primitives
-BrainsPackage: teams.python_primitive
+BrainsPackage: inGameTeams.python_primitive
 ScriptImplementation: python
 AgentsBrainClasses:
     WarBase: WarBase.py

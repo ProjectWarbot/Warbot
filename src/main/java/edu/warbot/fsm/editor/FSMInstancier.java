@@ -96,9 +96,9 @@ public class FSMInstancier<BrainType extends WarBrain> {
             }
         }
 
-        System.out.println("FSMInstancier : lancement de l'initialisation de la fsm");
+        System.out.println("FSMInstancier : lancement de l'initializeFSM de la fsm");
         fsm.initFSM();
-        System.out.println("FSMInstancier : initialisation terminé avec succes");
+        System.out.println("FSMInstancier : initializeFSM terminé avec succes");
 
         return fsm;
     }

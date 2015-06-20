@@ -36,6 +36,6 @@ public class PaintablePanel extends JPanel {
     }
 
     public interface Painter {
-        public void paint(Graphics2D g, int paintingID);
+        void paint(Graphics2D g, int paintingID);
     }
 }

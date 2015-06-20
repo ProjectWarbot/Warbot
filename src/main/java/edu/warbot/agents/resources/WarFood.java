@@ -2,7 +2,7 @@ package edu.warbot.agents.resources;
 
 import edu.warbot.agents.WarResource;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.WarGameConfig;
 
 import java.util.Map;
@@ -16,8 +16,8 @@ public class WarFood extends WarResource {
         HEALTH_GIVEN = (int) data.get(WarGameConfig.RESOURCE_WARFOOD_CONFIG_HEALTH_GIVEN);
     }
 
-    public WarFood(Team team) {
-        super(WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarFood), team);
+    public WarFood(InGameTeam inGameTeam) {
+        super(WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarFood), inGameTeam);
     }
 
     public WarAgentType getType() {

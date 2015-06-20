@@ -10,6 +10,7 @@ import edu.warbot.communications.WarMessage;
 import edu.warbot.fsm.editor.settings.EnumMessage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Va chercher de la nouriture
@@ -33,9 +34,9 @@ public class WarActionChercherNouriture<BrainType extends WarBrain & Movable> ex
         if (getAgent().isBlocked())
             getAgent().setRandomHeading();
 
-        ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+        List<WarAgentPercept> percepts = getAgent().getPercepts();
 
-        ArrayList<WarAgentPercept> foodPercepts = new ArrayList<>();
+        List<WarAgentPercept> foodPercepts = new ArrayList<>();
 
         for (WarAgentPercept p : percepts) {
             if (p.getType().equals(WarAgentType.WarFood))

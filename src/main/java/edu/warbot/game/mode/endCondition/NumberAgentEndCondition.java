@@ -58,7 +58,7 @@ public class NumberAgentEndCondition extends AbstractEndCondition implements Tea
     @Override
     public void onAgentAdded(WarAgent newAgent) {
         for (WarCollectionNumberAgentByTeam collection : collectionAgentByTeam) {
-            if (newAgent.getTeam().equals(collection.getTeam())) {
+            if (newAgent.getTeam().equals(collection.getInGameTeam())) {
                 if (collection.isInCollectionOfAgent(newAgent)) {
                     collection.incrementNumberOfAgent(newAgent);
                 } else {
@@ -71,7 +71,7 @@ public class NumberAgentEndCondition extends AbstractEndCondition implements Tea
     @Override
     public void onAgentRemoved(WarAgent removedAgent) {
         for (WarCollectionNumberAgentByTeam collection : collectionAgentByTeam) {
-            if (removedAgent.getTeam().equals(collection.getTeam())) {
+            if (removedAgent.getTeam().equals(collection.getInGameTeam())) {
                 if (collection.isInCollectionOfAgent(removedAgent)) {
                     collection.decrementNumberOfAgent(removedAgent);
                 }

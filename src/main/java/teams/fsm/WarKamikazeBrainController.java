@@ -1,35 +1,27 @@
 package teams.fsm;
 
-import edu.warbot.agents.agents.WarExplorer;
-import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.brains.WarKamikazeBrain;
-
-import java.util.ArrayList;
+import edu.warbot.fsm.WarFSM;
 
 public abstract class WarKamikazeBrainController extends WarKamikazeBrain {
+
+    private WarFSM<WarKamikazeBrain> fsm;
 
     public WarKamikazeBrainController() {
         super();
     }
 
     @Override
-    public String action() {
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+    public final void activate() {
+        fsm = initialisation();
+    }
 
-        for (WarAgentPercept p : percepts) {
-            switch (p.getType()) {
-                case WarBase:
-                    if (isEnemy(p)) {
-                        broadcastMessageToAll("Ennemi Base Found", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
+    @Override
+    public final String action() {
+        return fsm.executeFSM();
+    }
 
-        if (isBlocked())
-            setRandomHeading();
-        return WarExplorer.ACTION_MOVE;
+    protected WarFSM<WarKamikazeBrain> initialisation() {
+        return new WarFSM<>();
     }
 }

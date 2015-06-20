@@ -4,7 +4,7 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.viewer.debug.DebugModePanel;
-import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -41,7 +41,7 @@ public class MoveToolMouseListener implements MouseListener, MouseMotionListener
             _debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
 
             // On sélectionne l'agent sous le clique de souris
-            CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+            CartesianCoordinates mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
             ArrayList<WarAgent> agents = game.getAllAgentsInRadius(mouseClickPosition.getX(), mouseClickPosition.getY(), 3);
             if (agents.size() > 0) {
                 _currentSelectedAgent = agents.get(0);
@@ -60,7 +60,7 @@ public class MoveToolMouseListener implements MouseListener, MouseMotionListener
     @Override
     public void mouseDragged(MouseEvent e) {
         if (_currentSelectedAgent != null) {
-            CoordCartesian newPos = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+            CartesianCoordinates newPos = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
             newPos.normalize(0, game.getMap().getWidth() - 1, 0, game.getMap().getHeight() - 1);
             _currentSelectedAgent.setPosition(newPos);
             _currentSelectedAgent.moveOutOfCollision();

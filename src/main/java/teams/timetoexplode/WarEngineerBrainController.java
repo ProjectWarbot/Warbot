@@ -11,7 +11,6 @@ public abstract class WarEngineerBrainController extends WarEngineerBrain {
 
     @Override
     public String action() {
-
         return WarEngineer.ACTION_IDLE;
     }
 }

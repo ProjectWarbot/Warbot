@@ -45,7 +45,7 @@ public abstract class WarEngineerBrainController extends WarEngineerBrain {
             return WarEngineer.ACTION_EAT;
         }
 
-        ArrayList<WarMessage> msgs = getMessages();
+        List<WarMessage> msgs = getMessages();
         for (WarMessage msg : msgs) {
             if (msg.getMessage().equals("I am the base and here is my ID")) {
                 String[] content = msg.getContent();

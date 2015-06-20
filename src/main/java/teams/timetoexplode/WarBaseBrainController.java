@@ -8,7 +8,7 @@ import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.brains.WarBaseBrain;
 import edu.warbot.communications.WarMessage;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class WarBaseBrainController extends WarBaseBrain {
 
@@ -35,7 +35,7 @@ public abstract class WarBaseBrainController extends WarBaseBrain {
             return WarBase.ACTION_CREATE;
         }
 
-        ArrayList<WarMessage> msgs = getMessages();
+        List<WarMessage> msgs = getMessages();
         for (WarMessage msg : msgs) {
             if (msg.getMessage().equals("Give me your ID base")) {
                 reply(msg, "I am the base and here is my ID", Integer.toString(getID()));
@@ -49,7 +49,7 @@ public abstract class WarBaseBrainController extends WarBaseBrain {
             }
         }
 
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
 
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {
@@ -75,7 +75,7 @@ public abstract class WarBaseBrainController extends WarBaseBrain {
         }
 
         if (_inDanger) {
-            ArrayList<WarAgentPercept> enemies = getPerceptsEnemies();
+            List<WarAgentPercept> enemies = getPerceptsEnemies();
             if (enemies.isEmpty()) {
                 _inDanger = false;
                 broadcastMessageToAll("I am the danger", "");

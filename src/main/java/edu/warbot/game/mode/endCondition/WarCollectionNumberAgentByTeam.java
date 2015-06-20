@@ -1,7 +1,7 @@
 package edu.warbot.game.mode.endCondition;
 
 import edu.warbot.agents.WarAgent;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,21 +10,21 @@ import java.util.Map.Entry;
 
 public class WarCollectionNumberAgentByTeam {
 
-    private Team team;
+    private InGameTeam inGameTeam;
 
     //Le nom de la class de l'agent et de son nombre d'unité
     private Map<String, Long> agentsTeam;
 
-    public WarCollectionNumberAgentByTeam(Team team) {
+    public WarCollectionNumberAgentByTeam(InGameTeam inGameTeam) {
         super();
-        this.team = team;
+        this.inGameTeam = inGameTeam;
         this.agentsTeam = new HashMap<String, Long>();
         // TODO mettre les agents déjà crée à la création de la simulati
     }
 
 
-    public Team getTeam() {
-        return team;
+    public InGameTeam getInGameTeam() {
+        return inGameTeam;
     }
 
     public Long getNumberOfAgent(WarAgent agent) {
@@ -90,8 +90,8 @@ public class WarCollectionNumberAgentByTeam {
         return false;
     }
 
-    public boolean isCollectionOfThisTeam(Team team) {
-        return this.team.equals(team);
+    public boolean isCollectionOfThisTeam(InGameTeam inGameTeam) {
+        return this.inGameTeam.equals(inGameTeam);
     }
 
     public boolean equalAgent(String name, WarAgent agent) {

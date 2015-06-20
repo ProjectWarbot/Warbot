@@ -7,7 +7,7 @@ import edu.warbot.agents.resources.WarFood;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Movable;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class WarActionHealAlly<BrainType extends WarBrain & Movable> extends WarAction<BrainType> {
 
@@ -25,7 +25,7 @@ public class WarActionHealAlly<BrainType extends WarBrain & Movable> extends War
             return MovableWarAgent.ACTION_IDLE;
         }
 
-        ArrayList<WarAgentPercept> percept = getAgent().getPerceptsAllies();
+        List<WarAgentPercept> percept = getAgent().getPerceptsAllies();
 
         for (WarAgentPercept p : percept) {
 

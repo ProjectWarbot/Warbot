@@ -1,6 +1,6 @@
 package edu.warbot.maps;
 
-import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.GeometryTools;
 import edu.warbot.tools.geometry.WarStar;
 
@@ -23,7 +23,7 @@ public class ForestWarMap extends AbstractWarMap {
     static {
         availableTrees = new WarStar[TREE_MAX_ARMS - TREE_MIN_ARMS + 1];
         int tabIndex = 0;
-        CoordCartesian initialPosition = new CoordCartesian(0, 0);
+        CartesianCoordinates initialPosition = new CartesianCoordinates(0, 0);
         for (int nbArms = TREE_MIN_ARMS; nbArms <= TREE_MAX_ARMS; nbArms++) {
             availableTrees[tabIndex] = new WarStar(nbArms, initialPosition, TREE_OUTER_RADIUS, TREE_INNER_RADIUS);
             tabIndex++;
@@ -51,14 +51,14 @@ public class ForestWarMap extends AbstractWarMap {
         }
 
         addTeamPositions(
-                new CoordCartesian(TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
-                new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() / 2),
-                new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
+                new CartesianCoordinates(TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
+                new CartesianCoordinates(TEAM_POSITION_RADIUS, getHeight() / 2),
+                new CartesianCoordinates(TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
         );
         addTeamPositions(
-                new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
-                new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() / 2),
-                new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
+                new CartesianCoordinates(getWidth() - TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
+                new CartesianCoordinates(getWidth() - TEAM_POSITION_RADIUS, getHeight() / 2),
+                new CartesianCoordinates(getWidth() - TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
         );
 
         addFoodPosition(getCenterX(), getCenterY() - (getCenterY() / 2.));

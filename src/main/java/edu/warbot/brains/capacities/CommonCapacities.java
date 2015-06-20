@@ -3,27 +3,81 @@ package edu.warbot.brains.capacities;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import madkit.kernel.AbstractAgent;
 
+/**
+ *  * Définition des capacités communes aux agents Warbot
+
+ */
 public interface CommonCapacities {
 
-    public AbstractAgent.ReturnCode requestRole(String group, String role);
+    /**
+     * @param group
+     * @param role
+     * @return
+     */
+    AbstractAgent.ReturnCode requestRole(String group, String role);
 
-    public AbstractAgent.ReturnCode leaveRole(String group, String role);
+    /**
+     *
+     * @param group
+     * @param role
+     * @return
+     */
+    AbstractAgent.ReturnCode leaveRole(String group, String role);
 
-    public AbstractAgent.ReturnCode leaveGroup(String group);
+    /**
+     *
+     * @param group
+     * @return
+     */
+    AbstractAgent.ReturnCode leaveGroup(String group);
 
-    public int getNumberOfAgentsInRole(String group, String role);
+    /**
+     *
+     * @param group
+     * @param role
+     * @return
+     */
+    int getNumberOfAgentsInRole(String group, String role);
 
-    public double getHeading();
+    /**
+     *
+     * @return la direction de l'agent en degrés
+     */
+    double getHeading();
 
-    public void setHeading(double angle);
+    /**
+     * Change la direction de l'agent en degrés
+     * @param angle le nouvel angle de l'agent
+     */
+    void setHeading(double angle);
 
-    public void setRandomHeading();
+    /**
+     * Mets une direction aléatoire à l'agent
+     */
+    void setRandomHeading();
 
-    public void setRandomHeading(int range);
+    /**
+     * Mets une direction alétoire à l'agent dans un intervalle
+     * @param range l'intervalle pour l'angle aléatoire
+     */
+    void setRandomHeading(int range);
 
-    public String getTeamName();
+    /**
+     *
+     * @return le nom de l'équipe
+     */
+    String getTeamName();
 
-    public boolean isEnemy(WarAgentPercept percept);
+    /**
+     *
+     * @param percept la perception d'un agent
+     * @return Vrai si et seulement si l'agent perçu est un ennemi
+     */
+    boolean isEnemy(WarAgentPercept percept);
 
-    public int getID();
+    /**
+     *
+     * @return l'identifiant d'un agent
+     */
+    int getID();
 }
