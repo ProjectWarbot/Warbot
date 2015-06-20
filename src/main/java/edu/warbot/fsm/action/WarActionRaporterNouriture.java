@@ -9,6 +9,7 @@ import edu.warbot.communications.WarMessage;
 import edu.warbot.fsm.editor.settings.EnumMessage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Raporte la nouriture
@@ -31,9 +32,9 @@ public class WarActionRaporterNouriture<BrainType extends WarBrain & Movable> ex
         if (getAgent().isBlocked())
             getAgent().setRandomHeading();
 
-        ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+        List<WarAgentPercept> percepts = getAgent().getPercepts();
 
-        ArrayList<WarAgentPercept> basePercepts = new ArrayList<>();
+        List<WarAgentPercept> basePercepts = new ArrayList<>();
 
         for (WarAgentPercept p : percepts) {
             if (p.getType().equals(WarAgentType.WarBase) & p.getTeamName().equals(getAgent().getTeamName()))

@@ -5,8 +5,8 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.InConePerceptsGetter;
 import edu.warbot.agents.percepts.PerceptsGetter;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
+import edu.warbot.tools.geometry.PolarCoordinates;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.swing.*;
@@ -130,7 +130,7 @@ public class WarGameConfig {
     private static Hitbox createHitboxFromData(Map<String, Object> shapeData) {
         Hitbox hitbox = null;
         double radius;
-        CoordCartesian position, leftPosition, rightPosition, firstPosition, centerPosition;
+        CartesianCoordinates position, leftPosition, rightPosition, firstPosition, centerPosition;
         switch ((String) shapeData.get("Shape")) {
             case "Square":
                 double sideLength = (double) shapeData.get("SideLength");
@@ -148,12 +148,12 @@ public class WarGameConfig {
             case "Triangle":
                 radius = (double) shapeData.get("Radius");
                 Path2D.Double triangle = new Path2D.Double();
-                centerPosition = new CoordCartesian(radius, radius);
-                firstPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 0));
+                centerPosition = new CartesianCoordinates(radius, radius);
+                firstPosition = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 0));
                 triangle.moveTo(firstPosition.getX(), firstPosition.getY());
-                leftPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 220));
+                leftPosition = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 220));
                 triangle.lineTo(leftPosition.getX(), leftPosition.getY());
-                rightPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 140));
+                rightPosition = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 140));
                 triangle.lineTo(rightPosition.getX(), rightPosition.getY());
                 triangle.lineTo(firstPosition.getX(), firstPosition.getY());
                 hitbox = new Hitbox(triangle, rightPosition.getX() - leftPosition.getX(), rightPosition.getY() - firstPosition.getY());
@@ -161,14 +161,14 @@ public class WarGameConfig {
             case "Diamond":
                 radius = (double) shapeData.get("Radius");
                 Path2D.Double diamond = new Path2D.Double();
-                centerPosition = new CoordCartesian(radius, radius);
-                firstPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 270));
+                centerPosition = new CartesianCoordinates(radius, radius);
+                firstPosition = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 270));
                 diamond.moveTo(firstPosition.getX(), firstPosition.getY());
-                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 0));
+                position = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 0));
                 diamond.lineTo(position.getX(), position.getY());
-                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 90));
+                position = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 90));
                 diamond.lineTo(position.getX(), position.getY());
-                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 180));
+                position = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 180));
                 diamond.lineTo(position.getX(), position.getY());
                 diamond.lineTo(firstPosition.getX(), firstPosition.getY());
                 hitbox = new Hitbox(diamond, radius * 2., radius * 2.);
@@ -176,13 +176,13 @@ public class WarGameConfig {
             case "Arrow":
                 radius = (double) shapeData.get("Radius");
                 Path2D.Double arrow = new Path2D.Double();
-                centerPosition = new CoordCartesian(radius, radius);
-                firstPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 0));
+                centerPosition = new CartesianCoordinates(radius, radius);
+                firstPosition = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 0));
                 arrow.moveTo(firstPosition.getX(), firstPosition.getY());
-                leftPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 220));
+                leftPosition = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 220));
                 arrow.lineTo(leftPosition.getX(), leftPosition.getY());
                 arrow.lineTo(centerPosition.getX(), centerPosition.getY());
-                rightPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 140));
+                rightPosition = WarMathTools.addTwoPoints(centerPosition, new PolarCoordinates(radius, 140));
                 arrow.lineTo(rightPosition.getX(), rightPosition.getY());
                 arrow.lineTo(firstPosition.getX(), firstPosition.getY());
                 hitbox = new Hitbox(arrow, rightPosition.getX() - leftPosition.getX(), rightPosition.getY() - firstPosition.getY());

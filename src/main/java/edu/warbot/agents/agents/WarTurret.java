@@ -6,7 +6,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.projectiles.WarDeathRocket;
 import edu.warbot.brains.brains.WarTurretBrain;
 import edu.warbot.brains.capacities.Agressive;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.WarGameConfig;
 
 import java.util.Map;
@@ -35,8 +35,8 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActionsM
     private boolean _reloading;
     private int _tickLeftBeforeReloaded;
 
-    public WarTurret(Team team, WarTurretBrain brain) {
-        super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarTurret), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
+    public WarTurret(InGameTeam inGameTeam, WarTurretBrain brain) {
+        super(ACTION_IDLE, inGameTeam, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarTurret), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
 
 //		brain.setAgentAdapter(new WarTurretAdapter(this));
         _tickLeftBeforeReloaded = TICKS_TO_RELOAD;

@@ -11,17 +11,21 @@ import edu.warbot.brains.capacities.Controllable;
 import edu.warbot.brains.implementations.AgentBrainImplementer;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.communications.WarMessage;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
+import edu.warbot.tools.geometry.PolarCoordinates;
 import madkit.kernel.Message;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 
+/**
+ *
+ */
 public abstract class ControllableWarAgent extends AliveWarAgent implements ControllableActionsMethods, Controllable {
 
     private double _angleOfView;
@@ -35,10 +39,10 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
     private String _debugString;
     private Color _debugStringColor;
     private Shape debugShape;
-    private ArrayList<WarMessage> thisTickMessages;
+    private List<WarMessage> thisTickMessages;
 
-    public ControllableWarAgent(String firstActionToDo, Team team, Hitbox hitbox, WarBrain brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
-        super(firstActionToDo, team, hitbox, cost, maxHealth);
+    public ControllableWarAgent(String firstActionToDo, InGameTeam inGameTeam, Hitbox hitbox, WarBrain brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
+        super(firstActionToDo, inGameTeam, hitbox, cost, maxHealth);
 
         _distanceOfView = distanceOfView;
         _angleOfView = angleOfView;
@@ -123,7 +127,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
         if (agent != null) {
             logger.finer(this.toString() + " send message to " + agent.toString());
             logger.finest("This message is : [" + message + "] " + content);
-            return sendMessage(agent.getAgentAddressIn(getTeam().getName(), Team.DEFAULT_GROUP_NAME, agent.getClass().getSimpleName()), new WarKernelMessage(this, message, content));
+            return sendMessage(agent.getAgentAddressIn(getTeam().getName(), InGameTeam.DEFAULT_GROUP_NAME, agent.getClass().getSimpleName()), new WarKernelMessage(this, message, content));
         }
         return ReturnCode.INVALID_AGENT_ADDRESS;
     }
@@ -132,7 +136,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
     public ReturnCode broadcastMessageToAgentType(WarAgentType agentType, String message, String... content) {
         logger.finer(this.toString() + " send message to default role agents : " + agentType);
         logger.finest("This message is : [" + message + "] " + content);
-        return sendMessage(getTeam().getName(), Team.DEFAULT_GROUP_NAME, agentType.toString(), new WarKernelMessage(this, message, content));
+        return sendMessage(getTeam().getName(), InGameTeam.DEFAULT_GROUP_NAME, agentType.toString(), new WarKernelMessage(this, message, content));
     }
 
     @Override
@@ -157,7 +161,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
     }
 
     @Override
-    public ArrayList<WarMessage> getMessages() {
+    public java.util.List<WarMessage> getMessages() {
         if (thisTickMessages == null) {
             thisTickMessages = new ArrayList<>();
             Message msg;
@@ -221,45 +225,45 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
     }
 
     @Override
-    public ArrayList<WarAgentPercept> getPercepts() {
+    public List<WarAgentPercept> getPercepts() {
         return _perceptsGetter.getPercepts();
     }
 
-    public ArrayList<WarAgentPercept> getPercepts(boolean ally) {
+    public List<WarAgentPercept> getPercepts(boolean ally) {
         return _perceptsGetter.getWarAgentsPercepts(ally);
     }
 
     @Override
-    public ArrayList<WarAgentPercept> getPerceptsAllies() {
+    public List<WarAgentPercept> getPerceptsAllies() {
         return getPercepts(true);
     }
 
     @Override
-    public ArrayList<WarAgentPercept> getPerceptsEnemies() {
+    public List<WarAgentPercept> getPerceptsEnemies() {
         return getPercepts(false);
     }
 
     @Override
-    public ArrayList<WarAgentPercept> getPerceptsResources() {
+    public List<WarAgentPercept> getPerceptsResources() {
         return _perceptsGetter.getResourcesPercepts();
     }
 
-    public ArrayList<WarAgentPercept> getPerceptsByAgentType(WarAgentType agentType, boolean ally) {
+    public List<WarAgentPercept> getPerceptsByAgentType(WarAgentType agentType, boolean ally) {
         return _perceptsGetter.getPerceptsByType(agentType, ally);
     }
 
     @Override
-    public ArrayList<WarAgentPercept> getPerceptsAlliesByType(WarAgentType agentType) {
+    public List<WarAgentPercept> getPerceptsAlliesByType(WarAgentType agentType) {
         return getPerceptsByAgentType(agentType, true);
     }
 
     @Override
-    public ArrayList<WarAgentPercept> getPerceptsEnemiesByType(WarAgentType agentType) {
+    public List<WarAgentPercept> getPerceptsEnemiesByType(WarAgentType agentType) {
         return getPerceptsByAgentType(agentType, false);
     }
 
     @Override
-    public ArrayList<WallPercept> getWallPercepts() {
+    public List<WallPercept> getWallPercepts() {
         return _perceptsGetter.getWallsPercepts();
     }
 
@@ -279,22 +283,22 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
      * @return Coordonnee polaire de l'agent ennemi perçu indirectement
      */
     @Override
-    public CoordPolar getIndirectPositionOfAgentWithMessage(WarMessage message) {
+    public PolarCoordinates getIndirectPositionOfAgentWithMessage(WarMessage message) {
         if (message.getContent().length != 2) {
             System.out.println("ATTENTION vous devez envoyer un message avec des informations corrects dans getSecondPositionAgent");
             return null;
         }
 
-        CoordPolar positionAllie = new CoordPolar(message.getDistance(), message.getAngle());
-        CoordPolar positionEnnemi = new CoordPolar(Double.valueOf(message.getContent()[0]), Double.valueOf(message.getContent()[1]));
+        PolarCoordinates positionAllie = new PolarCoordinates(message.getDistance(), message.getAngle());
+        PolarCoordinates positionEnnemi = new PolarCoordinates(Double.valueOf(message.getContent()[0]), Double.valueOf(message.getContent()[1]));
 
-        CoordCartesian vecteurPositionAllie = positionAllie.toCartesian();
-        CoordCartesian vecteurPositionEnemie = positionEnnemi.toCartesian();
+        CartesianCoordinates vecteurPositionAllie = positionAllie.toCartesian();
+        CartesianCoordinates vecteurPositionEnemie = positionEnnemi.toCartesian();
 
-        CoordCartesian positionfinal = new CoordCartesian(vecteurPositionAllie.getX() + vecteurPositionEnemie.getX(),
+        CartesianCoordinates positionfinal = new CartesianCoordinates(vecteurPositionAllie.getX() + vecteurPositionEnemie.getX(),
                 vecteurPositionAllie.getY() + vecteurPositionEnemie.getY());
 
-        CoordPolar polaireFinal = positionfinal.toPolar();
+        PolarCoordinates polaireFinal = positionfinal.toPolar();
 
         return polaireFinal;
     }
@@ -307,36 +311,36 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
      * @return Coordonnee polaire de la position moyenne du groupe ou null si aucune unite
      */
     @Override
-    public CoordPolar getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
-        ArrayList<WarAgentPercept> listPercept = this.getPerceptsByAgentType(agentType, ally);
+    public PolarCoordinates getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
+        List<WarAgentPercept> listPercept = this.getPerceptsByAgentType(agentType, ally);
 
         if (listPercept.size() == 0)
             return null;
 
-        int nbEnemie = listPercept.size();
-        CoordPolar listePolaireEnemie[] = new CoordPolar[nbEnemie];
-        CoordCartesian listeVecteurEnemie[] = new CoordCartesian[nbEnemie];
+        int enemyCount = listPercept.size();
+        PolarCoordinates enemyPolarList[] = new PolarCoordinates[enemyCount];
+        CartesianCoordinates enemyList[] = new CartesianCoordinates[enemyCount];
 
-        double sommeX = 0, sommeY = 0;
+        double sumX = 0, sumY = 0;
 
-        for (int i = 0; i < nbEnemie; i++) {
-            listeVecteurEnemie[i] = listePolaireEnemie[i].toCartesian();
+        for (int i = 0; i < enemyCount; i++) {
+            enemyList[i] = enemyPolarList[i].toCartesian();
 
-            sommeX += listeVecteurEnemie[i].getX();
-            sommeY += listeVecteurEnemie[i].getY();
+            sumX += enemyList[i].getX();
+            sumY += enemyList[i].getY();
         }
 
-        CoordCartesian baricentre = new CoordCartesian(sommeX / nbEnemie, sommeY / nbEnemie);
+        CartesianCoordinates barycenter = new CartesianCoordinates(sumX / enemyCount, sumY / enemyCount);
 
-        CoordPolar baricentrePolaire = baricentre.toPolar();
+        PolarCoordinates polarBarycenter = barycenter.toPolar();
 
-        return baricentrePolaire;
+        return polarBarycenter;
     }
 
     @Override
-    public CoordPolar getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget) {
-        return WarMathTools.addTwoPoints(new CoordPolar(distanceFromAlly, angleToAlly),
-                new CoordPolar(distanceBetweenAllyAndTarget, angleFromAllyToTarget));
+    public PolarCoordinates getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget) {
+        return WarMathTools.addTwoPoints(new PolarCoordinates(distanceFromAlly, angleToAlly),
+                new PolarCoordinates(distanceBetweenAllyAndTarget, angleFromAllyToTarget));
     }
 
     @Override

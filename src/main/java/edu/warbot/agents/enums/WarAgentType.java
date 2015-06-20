@@ -2,6 +2,9 @@ package edu.warbot.agents.enums;
 
 import java.util.ArrayList;
 
+/**
+ * Définition de la liste des agents Warbot
+ */
 public enum WarAgentType {
     // Unités non agressives
     WarExplorer(WarAgentCategory.Worker, true),
@@ -27,7 +30,7 @@ public enum WarAgentType {
     private final WarAgentCategory _category;
     private final boolean isControllable;
 
-    private WarAgentType(WarAgentCategory category, boolean isControllable) {
+    WarAgentType(WarAgentCategory category, boolean isControllable) {
         _category = category;
         this.isControllable = isControllable;
     }

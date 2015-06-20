@@ -7,7 +7,7 @@ import edu.warbot.agents.resources.WarFood;
 import edu.warbot.brains.brains.WarExplorerBrain;
 import edu.warbot.communications.WarMessage;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class WarExplorerBrainController extends WarExplorerBrain {
 
@@ -21,7 +21,7 @@ public abstract class WarExplorerBrainController extends WarExplorerBrain {
 
     @Override
     public String action() {
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
 
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {
@@ -56,7 +56,7 @@ public abstract class WarExplorerBrainController extends WarExplorerBrain {
             }
         }
 
-        ArrayList<WarMessage> msgs = getMessages();
+        List<WarMessage> msgs = getMessages();
         for (WarMessage msg : msgs) {
             if (msg.getMessage().equals("Need food")) {
                 if (!isBagEmpty()) {

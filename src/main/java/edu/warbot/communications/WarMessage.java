@@ -2,10 +2,10 @@ package edu.warbot.communications;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 
 /**
- * Est un adaptateur pour un WarKernelMessage. Permet à un utilisateur de ne pas accéder à toutes les méthodes de madkit.kernel.Message
+ * WarMessage Est un adaptateur pour un WarKernelMessage. Permet à un utilisateur de ne pas accéder à toutes les méthodes de madkit.kernel.Message
  */
 public class WarMessage {
 
@@ -15,7 +15,7 @@ public class WarMessage {
 
     public WarMessage(WarKernelMessage kernelMsg, WarAgent receiver) {
         _kernelMessage = kernelMsg;
-        _angle = receiver.getPosition().getAngleToPoint(new CoordCartesian(kernelMsg.getXSender(), kernelMsg.getYsender()));
+        _angle = receiver.getPosition().getAngleToPoint(new CartesianCoordinates(kernelMsg.getXSender(), kernelMsg.getYsender()));
         _distance = receiver.getAverageDistanceFrom(kernelMsg.getMessageSender());
     }
 

@@ -4,7 +4,7 @@ import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.brains.WarKamikazeBrain;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class WarKamikazeBrainController extends WarKamikazeBrain {
 
@@ -14,7 +14,7 @@ public abstract class WarKamikazeBrainController extends WarKamikazeBrain {
 
     @Override
     public String action() {
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
 
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {

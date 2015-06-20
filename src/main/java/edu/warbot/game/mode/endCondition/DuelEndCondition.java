@@ -2,7 +2,7 @@ package edu.warbot.game.mode.endCondition;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.TeamListener;
 import edu.warbot.game.WarGame;
 
@@ -10,14 +10,14 @@ public class DuelEndCondition extends AbstractEndCondition implements TeamListen
 
     public DuelEndCondition(WarGame game) {
         super(game);
-        for (Team t : getGame().getPlayerTeams()) {
+        for (InGameTeam t : getGame().getPlayerTeams()) {
             t.addTeamListener(this);
         }
     }
 
     @Override
     public void doAfterEachTick() {
-//        for (Team t : getGame().getPlayerTeams()) {
+//        for (InGameTeam t : getGame().getPlayerTeams()) {
 //            if (t.getNbUnitsLeftOfType(WarAgentType.WarBase) == 0) {
 //                getGame().setTeamAsLost(t);
 //            }
@@ -27,7 +27,7 @@ public class DuelEndCondition extends AbstractEndCondition implements TeamListen
     @Override
     public boolean isGameEnded() {
 //        int nbTeamsWithoutBase = 0;
-//        for (Team t : getGame().getPlayerTeams()) {
+//        for (InGameTeam t : getGame().getPlayerTeams()) {
 //            if (t.getNbUnitsLeftOfType(WarAgentType.WarBase) == 0) {
 //                nbTeamsWithoutBase++;
 //            }

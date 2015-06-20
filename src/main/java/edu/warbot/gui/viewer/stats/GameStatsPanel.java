@@ -13,7 +13,7 @@ public class GameStatsPanel extends JPanel {
     private WarGame game;
 
     private JToggleButton btnStatsToolBar;
-    private TeamsDatasTable teamsDatasTable;
+    private TeamsDataTable teamsDataTable;
 
     public GameStatsPanel(WarGame game) {
         super();
@@ -23,9 +23,9 @@ public class GameStatsPanel extends JPanel {
         setPreferredSize(new Dimension(400, getPreferredSize().height));
         setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Color.BLACK));
 
-        teamsDatasTable = new TeamsDatasTable(game);
-        teamsDatasTable.setPreferredSize(new Dimension(getPreferredSize().width - 10, teamsDatasTable.getPreferredSize().height));
-        add(teamsDatasTable);
+        teamsDataTable = new TeamsDataTable(game);
+        teamsDataTable.setPreferredSize(new Dimension(getPreferredSize().width - 10, teamsDataTable.getPreferredSize().height));
+        add(teamsDataTable);
     }
 
     public void init(JFrame frame) {

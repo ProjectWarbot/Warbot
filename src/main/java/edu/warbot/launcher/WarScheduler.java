@@ -2,10 +2,9 @@ package edu.warbot.launcher;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameListener;
-import edu.warbot.launcher.WarMain.Shared;
 import madkit.action.KernelAction;
 import madkit.agr.LocalCommunity;
 import madkit.agr.LocalCommunity.Groups;
@@ -24,8 +23,8 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
     private WarGame game;
     private boolean isGameOver;
 
-    public WarScheduler() {
-        this.game = Shared.getGame();
+    public WarScheduler(WarGame warGame) {
+        this.game = warGame;
     }
 
     @Override
@@ -61,10 +60,12 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
             setGVT(getGVT() + 1.0D);
 
             // Apparition de WarResource
+            //TODO devrait etre dans l'environnement
             if (getGVT() % game.getSettings().getFoodAppearanceRate() == 0) {
-                game.getMotherNatureTeam().createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);
+                game.getMotherNatureTeam().createAndLaunchResource(game.getMap(), this, WarAgentType.WarFood);
             }
 
+            //TODO La partie est un agent (?)
             game.doAfterEachTick();
         }
     }
@@ -74,11 +75,11 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
     }
 
     @Override
-    public void onNewTeamAdded(Team newTeam) {
+    public void onNewTeamAdded(InGameTeam newInGameTeam) {
     }
 
     @Override
-    public void onTeamLost(Team removedTeam) {
+    public void onTeamLost(InGameTeam removedInGameTeam) {
     }
 
     @Override

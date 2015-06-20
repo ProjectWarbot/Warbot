@@ -5,9 +5,9 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.WarGame;
 import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.GeometryTools;
+import edu.warbot.tools.geometry.PolarCoordinates;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -23,11 +23,11 @@ public abstract class PerceptsGetter {
 
     private Area thisTickPerceptionArea;
     private boolean perceptsAlreadyGetThisTick;
-    private ArrayList<WarAgentPercept> allPercepts;
-    private ArrayList<WarAgentPercept> alliesPercepts;
-    private ArrayList<WarAgentPercept> enemiesPercepts;
-    private ArrayList<WarAgentPercept> resourcesPercepts;
-    private ArrayList<WallPercept> wallsPercepts;
+    private List<WarAgentPercept> allPercepts;
+    private List<WarAgentPercept> alliesPercepts;
+    private List<WarAgentPercept> enemiesPercepts;
+    private List<WarAgentPercept> resourcesPercepts;
+    private List<WallPercept> wallsPercepts;
 
     public PerceptsGetter(ControllableWarAgent agent, WarGame game) {
         _agent = agent;
@@ -47,7 +47,7 @@ public abstract class PerceptsGetter {
         return game;
     }
 
-    public ArrayList<WarAgentPercept> getPercepts() {
+    public List<WarAgentPercept> getPercepts() {
         if (!perceptsAlreadyGetThisTick) {
             allPercepts = getAgentPercepts();
             for (WarAgentPercept percept : allPercepts) {
@@ -68,8 +68,8 @@ public abstract class PerceptsGetter {
         return allPercepts;
     }
 
-    private ArrayList<WarAgentPercept> getAgentPercepts() {
-        ArrayList<WarAgentPercept> percepts = new ArrayList<WarAgentPercept>();
+    private List<WarAgentPercept> getAgentPercepts() {
+        List<WarAgentPercept> percepts = new ArrayList<WarAgentPercept>();
 
         Area visibleArea = getPerceptionArea();
         for (WarAgent agentToTestVisible : getGame().getAllAgentsInRadiusOf(getAgent(), getAgent().getDistanceOfView())) {
@@ -92,7 +92,7 @@ public abstract class PerceptsGetter {
 
     protected abstract Shape getPerceptionAreaShape();
 
-    public ArrayList<WarAgentPercept> getWarAgentsPercepts(boolean ally) {
+    public List<WarAgentPercept> getWarAgentsPercepts(boolean ally) {
         if (!perceptsAlreadyGetThisTick)
             getPercepts();
 
@@ -102,19 +102,19 @@ public abstract class PerceptsGetter {
             return enemiesPercepts;
     }
 
-    public ArrayList<WarAgentPercept> getResourcesPercepts() {
+    public List<WarAgentPercept> getResourcesPercepts() {
         if (!perceptsAlreadyGetThisTick)
             getPercepts();
 
         return resourcesPercepts;
     }
 
-    public ArrayList<WarAgentPercept> getPerceptsByType(WarAgentType agentType, boolean ally) {
+    public List<WarAgentPercept> getPerceptsByType(WarAgentType agentType, boolean ally) {
         if (!perceptsAlreadyGetThisTick)
             getPercepts();
 
-        ArrayList<WarAgentPercept> perceptsToReturn = new ArrayList<>();
-        ArrayList<WarAgentPercept> perceptsToLoop;
+        List<WarAgentPercept> perceptsToReturn = new ArrayList<>();
+        List<WarAgentPercept> perceptsToLoop;
 
         if (ally)
             perceptsToLoop = alliesPercepts;
@@ -145,7 +145,7 @@ public abstract class PerceptsGetter {
         getPercepts();
     }
 
-    public ArrayList<WallPercept> getWallsPercepts() {
+    public List<WallPercept> getWallsPercepts() {
         return wallsPercepts;
     }
 
@@ -232,10 +232,10 @@ public abstract class PerceptsGetter {
         for (Line2D.Double wallSegment : seenWallsSegments) {
             Path2D.Double currentShadow = new Path2D.Double();
 
-            CoordCartesian srcPoint = new CoordCartesian(wallSegment.getP1().getX(), wallSegment.getP1().getY());
-            CoordCartesian destPoint = new CoordCartesian(wallSegment.getP2().getX(), wallSegment.getP2().getY());
-            CoordCartesian srcShadowPoint = WarMathTools.addTwoPoints(srcPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(srcPoint)));
-            CoordCartesian destShadowPoint = WarMathTools.addTwoPoints(destPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(destPoint)));
+            CartesianCoordinates srcPoint = new CartesianCoordinates(wallSegment.getP1().getX(), wallSegment.getP1().getY());
+            CartesianCoordinates destPoint = new CartesianCoordinates(wallSegment.getP2().getX(), wallSegment.getP2().getY());
+            CartesianCoordinates srcShadowPoint = WarMathTools.addTwoPoints(srcPoint, new PolarCoordinates(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(srcPoint)));
+            CartesianCoordinates destShadowPoint = WarMathTools.addTwoPoints(destPoint, new PolarCoordinates(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(destPoint)));
 
             currentShadow.moveTo(srcPoint.getX(), srcPoint.getY());
             currentShadow.lineTo(destPoint.getX(), destPoint.getY());
