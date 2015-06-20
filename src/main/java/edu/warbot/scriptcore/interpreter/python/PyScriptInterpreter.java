@@ -135,7 +135,7 @@ public class PyScriptInterpreter extends PythonInterpreter implements ScriptInte
                 throw new NotFoundConfigurationException(nameFilePython.getNameFile());
 
         } catch (NotFoundConfigurationException e) {
-            System.out.println("Team file " + e.getMessage());
+            System.out.println("InGameTeam file " + e.getMessage());
             e.printStackTrace();
         }
 

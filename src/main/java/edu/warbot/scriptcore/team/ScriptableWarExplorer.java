@@ -10,17 +10,11 @@ public abstract class ScriptableWarExplorer extends WarExplorerBrain implements 
 
     public ScriptableWarExplorer() {
         super();
-
     }
 
-    @Override
-    public void activate() {
-
-    }
 
     @Override
-    public String action() {
-        //System.out.println((broadcastMessageToAgentType(WarAgentType.WarBase, "whereAreYou", " d ")));
+    public final String action() {
         return getScriptAgent().action();
     }
 

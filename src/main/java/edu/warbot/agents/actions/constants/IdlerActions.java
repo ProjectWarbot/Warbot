@@ -1,7 +1,14 @@
 package edu.warbot.agents.actions.constants;
 
+
+/**
+ * Définition des actions de base
+ */
 public interface IdlerActions {
 
-    public static final String ACTION_IDLE = "idle";
+    /**
+     * Action "idle" (ou ne rien faire)
+     */
+    String ACTION_IDLE = "idle";
 
 }

@@ -6,12 +6,12 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-public class NbWarAgentSlider extends JPanel {
+public class WarAgentCountSlider extends JPanel {
 
     private JSpinner _nbUnitSpinner;
     private JSlider _nbUnitSlider;
 
-    public NbWarAgentSlider(String title, int valMin, int valMax, int valInit, int step, int displayStep) {
+    public WarAgentCountSlider(String title, int valMin, int valMax, int valInit, int step, int displayStep) {
         super();
 
         setLayout(new GridLayout(2, 1));

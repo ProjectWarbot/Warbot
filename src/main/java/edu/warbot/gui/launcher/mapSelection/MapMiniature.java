@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+/**
+ * @since 3.2.2
+ */
 public class MapMiniature extends JPanel {
 
     public static final double SIZE_SMALL = 0.5;

@@ -8,7 +8,7 @@ import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Movable;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description de l'action
@@ -28,7 +28,7 @@ public class WarActionFuire<BrainType extends WarBrain & Movable> extends WarAct
             getAgent().setRandomHeading();
 
         //Si je n'ai pas denemie autour de moi j'ai terminé
-        ArrayList<WarAgentPercept> percept = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
+        List<WarAgentPercept> percept = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
 
         // si il y a des enemy je fuis
         if (percept.size() > 0) {

@@ -1,6 +1,6 @@
 package edu.warbot.gui.launcher;
 
-import edu.warbot.game.Team;
+import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameListener;
 
@@ -28,7 +28,7 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
 
         JPanel pnlResult = new JPanel(new BorderLayout());
         JPanel pnlWinners = new JPanel(new FlowLayout());
-        for (Team t : game.getPlayerTeams())
+        for (InGameTeam t : game.getPlayerTeams())
             pnlWinners.add(new JLabel(t.getName(), t.getImage(), JLabel.CENTER));
         pnlResult.add(pnlWinners, BorderLayout.CENTER);
         // Cas où il y n'y a plus qu'une équipe en jeu
@@ -84,11 +84,11 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
     }
 
     @Override
-    public void onNewTeamAdded(Team newTeam) {
+    public void onNewTeamAdded(InGameTeam newInGameTeam) {
     }
 
     @Override
-    public void onTeamLost(Team removedTeam) {
+    public void onTeamLost(InGameTeam removedInGameTeam) {
     }
 
     @Override

@@ -4,7 +4,7 @@ import edu.warbot.agents.agents.WarTurret;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.brains.WarTurretBrain;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class WarTurretBrainController extends WarTurretBrain {
 
@@ -25,7 +25,7 @@ public abstract class WarTurretBrainController extends WarTurretBrain {
         }
         setHeading(_sight);
 
-        ArrayList<WarAgentPercept> percepts = getPercepts();
+        List<WarAgentPercept> percepts = getPercepts();
         for (WarAgentPercept p : percepts) {
             switch (p.getType()) {
                 case WarRocketLauncher:
