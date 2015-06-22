@@ -1,8 +1,8 @@
-package edu.warbot.game.mode;
+package edu.warbot.game.modes;
 
 import edu.warbot.game.WarGame;
-import edu.warbot.game.mode.endCondition.NumberAgentEndCondition;
-import edu.warbot.game.mode.endCondition.WarNumberAgent;
+import edu.warbot.game.modes.endCondition.NumberAgentEndCondition;
+import edu.warbot.game.modes.endCondition.WarNumberAgent;
 
 import java.util.ArrayList;
 import java.util.List;

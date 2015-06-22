@@ -1,7 +1,7 @@
-package edu.warbot.game.mode;
+package edu.warbot.game.modes;
 
 import edu.warbot.game.WarGame;
-import edu.warbot.game.mode.endCondition.TimerEndCondition;
+import edu.warbot.game.modes.endCondition.TimerEndCondition;
 
 public class TimerGameMode extends AbstractGameMode {
 

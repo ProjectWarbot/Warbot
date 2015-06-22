@@ -3,7 +3,11 @@ package edu.warbot.launcher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.teams.Team;
 import edu.warbot.exceptions.WarCommandException;
-import edu.warbot.game.*;
+import edu.warbot.game.InGameTeam;
+import edu.warbot.game.WarGame;
+import edu.warbot.game.WarGameMode;
+import edu.warbot.game.WarGameSettings;
+import edu.warbot.game.listeners.WarGameListener;
 import edu.warbot.gui.launcher.LoadingDialog;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.loader.TeamLoader;
@@ -16,21 +20,25 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WarMain implements WarGameListener {
 
     public static final String TEAMS_DIRECTORY_NAME = "teams";
     public static final String CMD_NAME = "java WarMain";
     public static final String CMD_HELP = "--help";
+    private static final Logger logger = Logger.getLogger(WarMain.class.getCanonicalName());
     private static final String CMD_LOG_LEVEL = "--loglevel";
     private static final String CMD_NB_AGENT_OF_TYPE = "--nb";
     private static final String CMD_FOOD_APPEARANCE_RATE = "--foodrate";
     private static final String CMD_GAME_MODE = "--gamemode";
+
     private LoadingDialog loadingDialog;
     private WarGame game;
     private WarGameSettings settings;
     private WarLauncherInterface launcherInterface;
     private Map<String, Team> availableTeams;
+
 
     public WarMain() {
         availableTeams = new HashMap<>();
@@ -44,8 +52,6 @@ public class WarMain implements WarGameListener {
 
         // On initialise la liste des équipes existantes dans le dossier "teams"
         availableTeams = tl.loadAvailableTeams();
-        Shared.availableTeams = new HashMap<>(availableTeams);
-
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
             // On lance la launcher interface
@@ -70,7 +76,6 @@ public class WarMain implements WarGameListener {
         TeamLoader tl = new TeamLoader();
         // On initialise la liste des équipes existantes dans le dossier "teams"
         availableTeams = tl.loadAvailableTeams();
-        Shared.availableTeams = new HashMap<>(availableTeams);
 
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
@@ -79,7 +84,7 @@ public class WarMain implements WarGameListener {
             if (selectedTeamsName.length > 1) {
                 for (String teamName : selectedTeamsName) {
                     if (availableTeams.containsKey(teamName))
-                        settings.addSelectedTeam(new InGameTeam(availableTeams.get(teamName)));
+                        settings.addSelectedTeam(availableTeams.get(teamName));
                     else
                         throw new WarCommandException("InGameTeam \"" + teamName + "\" does not exists. Available teams are : " + availableTeams.keySet());
                 }
@@ -99,10 +104,11 @@ public class WarMain implements WarGameListener {
             new WarMain();
         } else {
             try {
-                System.out.println("Command arguments = " + Arrays.asList(args));
+                logger.log(Level.FINE, "Command arguments = " + Arrays.asList(args));
                 commandLine(args);
             } catch (WarCommandException e) {
-                System.err.println(e.getMessage());
+                logger.log(Level.SEVERE, "WarCommand error", e);
+
             }
         }
     }
@@ -246,9 +252,9 @@ public class WarMain implements WarGameListener {
             }
             finalTeams = finalTeams.substring(0, finalTeams.length() - 2);
             if (game.getPlayerTeams().size() == 1) {
-                System.out.println("Victoire de : " + finalTeams);
+                logger.log(Level.INFO, "Victoire de : " + finalTeams);
             } else {
-                System.out.println("Ex-Aequo entre les équipes : " + finalTeams);
+                logger.log(Level.INFO, "Ex-Aequo entre les équipes : " + finalTeams);
             }
             game.stopGame();
         }
@@ -258,6 +264,7 @@ public class WarMain implements WarGameListener {
     public void onGameStopped() {
         game.removeWarGameListener(this);
         settings.prepareForNewGame();
+        logger.log(Level.INFO, "Reset settings");
         launcherInterface.setVisible(true);
     }
 
@@ -266,14 +273,6 @@ public class WarMain implements WarGameListener {
         loadingDialog.dispose();
     }
 
-    static class Shared {
-
-        private static Map<String, Team> availableTeams;
-
-        public static Map<String, Team> getAvailableTeams() {
-            return availableTeams;
-        }
-    }
 
 
 

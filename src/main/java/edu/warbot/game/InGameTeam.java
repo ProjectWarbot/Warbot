@@ -10,6 +10,7 @@ import edu.warbot.agents.teams.Team;
 import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.communications.WarKernelMessage;
+import edu.warbot.game.listeners.TeamListener;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
 
@@ -171,7 +172,7 @@ public class InGameTeam {
         if (team instanceof InGameTeam)
             return this.getName().equals(((InGameTeam) team).getName());
         else if (team instanceof String)
-            return this.getName().equals((String) team);
+            return this.getName().equals(team);
         else
             return false;
     }

@@ -37,8 +37,7 @@ public class WarLauncher extends TKLauncher {
         setMadkitProperty("GPU_gradients", "true");
     }
 
-    @Override
-    protected void createSimulationInstance() {
+    protected void initProperties() {
         WarGameSettings settings = warGame.getSettings();
         setLogLevel(settings.getLogLevel());
         setMadkitProperty(Madkit.LevelOption.agentLogLevel, settings.getLogLevel().toString());
@@ -46,22 +45,28 @@ public class WarLauncher extends TKLauncher {
         setMadkitProperty(Madkit.LevelOption.kernelLogLevel, settings.getLogLevel().toString());
         setMadkitProperty(Madkit.LevelOption.madkitLogLevel, settings.getLogLevel().toString());
         setMadkitProperty(Madkit.LevelOption.networkLogLevel, settings.getLogLevel().toString());
-
-        initProperties();
+        super.initProperties();
         setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Double) warGame.getMap().getWidth()).intValue()));
         setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Double) warGame.getMap().getHeight()).intValue()));
 
         setMadkitProperty(TurtleKit.Option.viewers, WarDefaultViewer.class.getName());
         setMadkitProperty(TurtleKit.Option.scheduler, WarScheduler.class.getName());
         setMadkitProperty(TurtleKit.Option.environment, WarEnvironment.class.getName());
+    }
+
+    @Override
+    protected void createSimulationInstance() {
+        initProperties();
 
 //        super.createSimulationInstance();
         launchAgent(this.getMadkitProperty(TurtleKit.Option.environment));
+
         launchScheduler();
+
         launchViewers();
 
         this.launchConfigTurtles();
-
+        WarGameSettings settings = warGame.getSettings();
         if (settings.getSituationLoader() == null)
             launchAllAgents();
         else
@@ -78,10 +83,11 @@ public class WarLauncher extends TKLauncher {
     @Override
     protected void launchScheduler() {
         WarScheduler scheduler = new WarScheduler(warGame);
-        this.launchAgent(scheduler);
         try {
-            scheduler.setSimulationDuration((double) Integer.parseInt(this.getMadkitProperty(TurtleKit.Option.endTime)));
+            this.launchAgent(scheduler);
+//            scheduler.setSimulationDuration((double) Integer.parseInt(this.getMadkitProperty(TurtleKit.Option.endTime)));
         } catch (NullPointerException | NumberFormatException var3) {
+            var3.printStackTrace();
         }
     }
 

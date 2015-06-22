@@ -1,4 +1,4 @@
-package edu.warbot.game.mode.endCondition;
+package edu.warbot.game.modes.endCondition;
 
 public class IncoherenceNumberAgentException extends Exception {
 

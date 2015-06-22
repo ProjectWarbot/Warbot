@@ -1,4 +1,4 @@
-package edu.warbot.launcher;
+package edu.warbot.gui;
 
 import madkit.kernel.AbstractAgent;
 

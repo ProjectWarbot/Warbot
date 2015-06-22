@@ -1,4 +1,6 @@
-package edu.warbot.game;
+package edu.warbot.game.listeners;
+
+import edu.warbot.game.InGameTeam;
 
 public interface WarGameListener {
 
