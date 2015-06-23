@@ -6,6 +6,7 @@ import edu.warbot.brains.implementations.WarBrainImplementation;
 import javassist.*;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -39,8 +40,14 @@ public class ImplementationProducer {
         //Chargement d'une pool par défaut
         ClassPool classPool = ClassPool.getDefault();
 
+
         //Récupération de l'implémentation de WarBrain commune
         CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
+
+
+        if (brainImplementationClass.isFrozen())
+            brainImplementationClass.defrost();
+
         if (!brainImplementationClass.isFrozen()) {
 
             //Modification totale
@@ -50,7 +57,8 @@ public class ImplementationProducer {
 
             //Récupération de la classe demandée (WarExplorer, WarBase avec une méthode action modifiée)
             CtClass brainClass = classPool.get(brainClassName);
-
+            if (brainClass.isFrozen())
+                brainClass.defrost();
 
             //Rajoute l'implémentation des capacités de la classe
             brainImplementationClass = produceImplementedBrain(classPool, brainImplementationClass, brainClass);
@@ -116,12 +124,20 @@ public class ImplementationProducer {
         //
         CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
 
+
+        if (brainImplementationClass.isFrozen()) {
+            brainImplementationClass.defrost();
+            logger.log(Level.FINE, "DEFROSTING");
+        }
+
         if (!brainImplementationClass.isFrozen()) {
 
             brainImplementationClass.setName(brainClassName + "BrainImplementation");
             brainImplementationClass.setModifiers(java.lang.reflect.Modifier.PUBLIC);
 
             CtClass brainClass = classPool.get(brainClassName);
+            if (brainClass.isFrozen())
+                brainClass.defrost();
             classPool.find(brainClassName);
 
             brainImplementationClass = produceImplementedBrain(classPool, brainImplementationClass, brainClass);

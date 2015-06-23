@@ -4,6 +4,7 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
 import edu.warbot.agents.percepts.PerceptsGetter;
+import edu.warbot.agents.teams.Team;
 import edu.warbot.launcher.UserPreferences;
 import edu.warbot.launcher.WarGameConfig;
 import edu.warbot.loader.SituationLoader;
@@ -113,8 +114,8 @@ public class WarGameSettings {
         return selectedInGameTeams;
     }
 
-    public void addSelectedTeam(InGameTeam inGameTeam) {
-        selectedInGameTeams.add(inGameTeam);
+    public void addSelectedTeam(Team team) {
+        selectedInGameTeams.add(new InGameTeam(team));
     }
 
     public void prepareForNewGame() {

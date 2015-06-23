@@ -2,35 +2,46 @@ package edu.warbot.launcher;
 
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.teams.Team;
+import edu.warbot.cli.WarbotOptions;
 import edu.warbot.exceptions.WarCommandException;
-import edu.warbot.game.*;
+import edu.warbot.game.InGameTeam;
+import edu.warbot.game.WarGame;
+import edu.warbot.game.WarGameMode;
+import edu.warbot.game.WarGameSettings;
+import edu.warbot.game.listeners.WarGameListener;
 import edu.warbot.gui.launcher.LoadingDialog;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.loader.TeamLoader;
-import edu.warbot.loader.situation.XMLSituationLoader;
+import org.apache.commons.cli.*;
 
 import javax.swing.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WarMain implements WarGameListener {
+
 
     public static final String TEAMS_DIRECTORY_NAME = "teams";
     public static final String CMD_NAME = "java WarMain";
     public static final String CMD_HELP = "--help";
+    private static final Logger logger = Logger.getLogger(WarMain.class.getCanonicalName());
     private static final String CMD_LOG_LEVEL = "--loglevel";
     private static final String CMD_NB_AGENT_OF_TYPE = "--nb";
     private static final String CMD_FOOD_APPEARANCE_RATE = "--foodrate";
     private static final String CMD_GAME_MODE = "--gamemode";
+
     private LoadingDialog loadingDialog;
+
     private WarGame game;
     private WarGameSettings settings;
+
     private WarLauncherInterface launcherInterface;
     private Map<String, Team> availableTeams;
+
 
     public WarMain() {
         availableTeams = new HashMap<>();
@@ -44,8 +55,6 @@ public class WarMain implements WarGameListener {
 
         // On initialise la liste des équipes existantes dans le dossier "teams"
         availableTeams = tl.loadAvailableTeams();
-        Shared.availableTeams = new HashMap<>(availableTeams);
-
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
             // On lance la launcher interface
@@ -70,7 +79,6 @@ public class WarMain implements WarGameListener {
         TeamLoader tl = new TeamLoader();
         // On initialise la liste des équipes existantes dans le dossier "teams"
         availableTeams = tl.loadAvailableTeams();
-        Shared.availableTeams = new HashMap<>(availableTeams);
 
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
@@ -79,7 +87,7 @@ public class WarMain implements WarGameListener {
             if (selectedTeamsName.length > 1) {
                 for (String teamName : selectedTeamsName) {
                     if (availableTeams.containsKey(teamName))
-                        settings.addSelectedTeam(new InGameTeam(availableTeams.get(teamName)));
+                        settings.addSelectedTeam(availableTeams.get(teamName));
                     else
                         throw new WarCommandException("InGameTeam \"" + teamName + "\" does not exists. Available teams are : " + availableTeams.keySet());
                 }
@@ -99,10 +107,11 @@ public class WarMain implements WarGameListener {
             new WarMain();
         } else {
             try {
-                System.out.println("Command arguments = " + Arrays.asList(args));
+                logger.log(Level.FINE, "Command arguments = " + Arrays.asList(args));
                 commandLine(args);
             } catch (WarCommandException e) {
-                System.err.println(e.getMessage());
+                logger.log(Level.SEVERE, "WarCommand error", e);
+
             }
         }
     }
@@ -111,101 +120,63 @@ public class WarMain implements WarGameListener {
 
         WarGameSettings settings = new WarGameSettings();
         ArrayList<String> selectedTeams = new ArrayList<>();
-        boolean askedForHelp = false;
 
-        // TODO Remplacer cette vérification des arguments par une librairie JArgs / Apache CLI
 
-        for (int currentArgIndex = 0; currentArgIndex < args.length; currentArgIndex++) {
-            String currentArg = args[currentArgIndex];
-            if (currentArg.startsWith("-")) {
-                String[] splitDoubleDot = currentArg.split(":");
-                String[] splitEquals = splitDoubleDot[splitDoubleDot.length - 1].split("=");
-                String cmdName = splitDoubleDot[0];
-                if (splitDoubleDot.length == 1)
-                    cmdName = splitEquals[0];
-                switch (cmdName) {
-                    case CMD_HELP:
-                        System.out.println(getCommandHelp());
-                        askedForHelp = true;
-                        break;
-                    case CMD_LOG_LEVEL:
-                        if (splitEquals.length == 2) {
-                            try {
-                                settings.setDefaultLogLevel(Level.parse(splitEquals[1]));
-                            } catch (IllegalArgumentException e) {
-                                throw new WarCommandException("Invalid log level : " + splitEquals[1]);
-                            }
-                        } else {
-                            throw new WarCommandException("Invalid argument syntax : " + currentArg);
-                        }
-                        break;
-                    case CMD_NB_AGENT_OF_TYPE:
-                        if (splitEquals.length == 2) {
-                            try {
-                                WarAgentType agentType = WarAgentType.valueOf(splitEquals[0]);
-                                try {
-                                    int nbAgent = Integer.parseInt(splitEquals[1]);
-                                    settings.setNbAgentOfType(agentType, nbAgent);
-                                } catch (NumberFormatException e) {
-                                    throw new WarCommandException("Invalid integer : " + splitEquals[1]);
-                                }
-                            } catch (IllegalArgumentException e) {
-                                throw new WarCommandException("Unknown agent type : " + splitEquals[0]);
-                            }
-                        } else {
-                            throw new WarCommandException("Invalid argument syntax : " + currentArg);
-                        }
-                        break;
-                    case CMD_FOOD_APPEARANCE_RATE:
-                        if (splitEquals.length == 2) {
-                            try {
-                                settings.setFoodAppearanceRate(Integer.parseInt(splitEquals[1]));
-                            } catch (NumberFormatException e) {
-                                throw new WarCommandException("Invalid integer : " + splitEquals[1]);
-                            }
-                        } else {
-                            throw new WarCommandException("Invalid argument syntax : " + currentArg);
-                        }
-                        break;
-                    case CMD_GAME_MODE:
-                        if (splitEquals.length == 2) {
-                            try {
-                                WarGameMode gameMode = WarGameMode.valueOf(splitEquals[1]);
-                                settings.setGameMode(gameMode);
-                            } catch (IllegalArgumentException e) {
-                                throw new WarCommandException("Unknown game mode : " + splitEquals[1]);
-                            }
-                        } else {
-                            throw new WarCommandException("Invalid argument syntax : " + currentArg);
-                        }
-                        break;
-                    default:
-                        throw new WarCommandException("Invalid argument : " + currentArg);
-                }
-            } else {
-                if (currentArg.endsWith(XMLSituationLoader.SITUATION_FILES_EXTENSION)) {
-                    settings.setSituationLoader(new XMLSituationLoader(new File(currentArg)));
-                } else {
-                    selectedTeams.add(currentArg);
+        WarbotOptions wo = new WarbotOptions();
+
+        CommandLineParser parser = new DefaultParser();
+
+        try {
+            CommandLine line = parser.parse(wo, args);
+            if (line.hasOption(WarbotOptions.HELP)) {
+                HelpFormatter helpFormatter = new HelpFormatter();
+                helpFormatter.printHelp("warbot", wo);
+                return;
+            }
+            if (line.hasOption(WarbotOptions.GAMEMODE)) {
+                try {
+                    logger.info("Setting mode in : " + line.getOptionValue(WarbotOptions.GAMEMODE));
+                    WarGameMode gameMode = WarGameMode.valueOf(line.getOptionValue(WarbotOptions.GAMEMODE));
+                    settings.setGameMode(gameMode);
+                } catch (IllegalArgumentException e) {
+                    throw new WarCommandException("Unknown game mode : " + line.getOptionValue(WarbotOptions.GAMEMODE));
                 }
             }
+            if (line.hasOption("l")) {
+                try {
+                    settings.setDefaultLogLevel(Level.parse(line.getOptionValue("l")));
+                } catch (IllegalArgumentException e) {
+                    throw new WarCommandException("Invalid log level : " + line.getOptionValue("l"));
+                }
+            }
+
+            if (line.hasOption("nb")) {
+
+                String[] values = line.getOptionValues("nb");
+                for (int i = 0; i < values.length; i += 2) {
+                    logger.info(values[i].toString() + ":" + values[i + 1].toString());
+                    try {
+                        WarAgentType wat = WarAgentType.valueOf(values[i]);
+                        int nb = Integer.parseInt(values[i + 1]);
+                        settings.setNbAgentOfType(wat, nb);
+                    } catch (IllegalArgumentException e) {
+                        throw new WarCommandException("Error when parsing " + values);
+                    }
+                }
+            }
+
+            if (line.hasOption("t")) {
+                String[] values = line.getOptionValues("t");
+                for (int i = 0; i < values.length; ++i) {
+                    selectedTeams.add(values[i]);
+                }
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-
-        if (!askedForHelp)
-            new WarMain(settings, selectedTeams.toArray(new String[]{}));
-    }
-
-    private static String getCommandHelp() {
-        //TODO USE A HELPFORMATER LIKE HelpFormatter in CLI Apache
-        return "Use : " + CMD_NAME + " [OPTION]... TEAM_NAME...\n" +
-                " Or : " + CMD_NAME + " WAR_SITUATION_FILE\n" +
-                "Launch a Warbot simulation or load and start a Warbot simulation from a situation file (*" + XMLSituationLoader.SITUATION_FILES_EXTENSION + ")\n\n" +
-                "Available options :\n" +
-                "\t" + CMD_LOG_LEVEL + "=LEVEL\t\tuse LEVEL as log level. LEVEL in [SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST]\n" +
-                "\t" + CMD_NB_AGENT_OF_TYPE + ":AGENT_TYPE=NB\t\tset NB as number of agents of type AGENT_TYPE created at game start. AGENT_TYPE in " + Arrays.asList(WarAgentType.values()) + "\n" +
-                "\t" + CMD_FOOD_APPEARANCE_RATE + "=RATE\t\t\tnew food will appear every RATE ticks\n" +
-                "\t" + CMD_GAME_MODE + "=MODE\t\t\tset MODE as game mode. MODE in " + Arrays.asList(WarGameMode.values()) + "\n" +
-                "\t" + CMD_HELP + "\t\t\t\t\tdisplay this help\n";
+        new WarMain(settings, selectedTeams.toArray(new String[]{}));
     }
 
     public void startGame() {
@@ -246,9 +217,9 @@ public class WarMain implements WarGameListener {
             }
             finalTeams = finalTeams.substring(0, finalTeams.length() - 2);
             if (game.getPlayerTeams().size() == 1) {
-                System.out.println("Victoire de : " + finalTeams);
+                logger.log(Level.INFO, "Victoire de : " + finalTeams);
             } else {
-                System.out.println("Ex-Aequo entre les équipes : " + finalTeams);
+                logger.log(Level.INFO, "Ex-Aequo entre les équipes : " + finalTeams);
             }
             game.stopGame();
         }
@@ -258,6 +229,7 @@ public class WarMain implements WarGameListener {
     public void onGameStopped() {
         game.removeWarGameListener(this);
         settings.prepareForNewGame();
+        logger.log(Level.INFO, "Reset settings");
         launcherInterface.setVisible(true);
     }
 
@@ -266,14 +238,6 @@ public class WarMain implements WarGameListener {
         loadingDialog.dispose();
     }
 
-    static class Shared {
-
-        private static Map<String, Team> availableTeams;
-
-        public static Map<String, Team> getAvailableTeams() {
-            return availableTeams;
-        }
-    }
 
 
 

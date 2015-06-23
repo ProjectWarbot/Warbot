@@ -4,7 +4,7 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
-import edu.warbot.game.WarGameListener;
+import edu.warbot.game.listeners.WarGameListener;
 import madkit.action.KernelAction;
 import madkit.agr.LocalCommunity;
 import madkit.agr.LocalCommunity.Groups;
@@ -20,7 +20,9 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
     public static final int INITIAL_DELAY = 10;
 
     private GenericBehaviorActivator<WarAgent> _warAgentDoBeforeEachTickActivator;
+
     private WarGame game;
+
     private boolean isGameOver;
 
     public WarScheduler(WarGame warGame) {
@@ -30,7 +32,6 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
     @Override
     protected void activate() {
         super.activate();
-
         _warAgentDoBeforeEachTickActivator = new GenericBehaviorActivator<>(community, TKOrganization.TURTLES_GROUP, TKOrganization.TURTLE_ROLE, "doBeforeEachTick");
         addActivator(_warAgentDoBeforeEachTickActivator);
 

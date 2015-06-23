@@ -120,9 +120,6 @@ public class TeamConfigReader {
     }
 
 
-    /**
-     * @author BEUGNON (Fairbot)
-     */
 
     /**
      * Méthode indiquant si l'équipe est scriptée.

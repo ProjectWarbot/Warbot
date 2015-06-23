@@ -126,5 +126,12 @@ public class ScriptedTeam extends JavaTeam {
         }
     }
 
+    @Override
+    public Team duplicate(String newName) {
+        ScriptedTeam st = new ScriptedTeam(newName, getDescription(), getLogo());
+        st.setInterpreter(getInterpreter());
+        return st;
+    }
+
 
 }

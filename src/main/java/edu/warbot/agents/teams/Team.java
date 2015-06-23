@@ -133,7 +133,7 @@ public abstract class Team {
 
 
     /**
-     * @param newName
+     * @param newName nouveau de l'équipe dupliquée
      * @return l'équipe dupliquée
      */
     public abstract Team duplicate(String newName);
