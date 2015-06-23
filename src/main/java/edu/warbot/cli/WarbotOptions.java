@@ -5,6 +5,13 @@ import org.apache.commons.cli.Options;
 
 /**
  * Created by beugnon on 22/06/15.
+ *
+ * WarbotOptions. contient les options utilisables lors d'une utilisation de Warbot par CLI.
+ *
+ * @author beugnon
+ *
+ * @Version 1.0
+ * @since 3.2.3
  */
 public class WarbotOptions extends Options {
 
