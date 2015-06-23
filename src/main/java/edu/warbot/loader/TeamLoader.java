@@ -183,7 +183,7 @@ public class TeamLoader {
         });
 
         ImageIcon teamLogo = null;
-        if (logo.length == 1) {
+        if (logo != null && logo.length == 1) {
 
             try {
                 FileInputStream fis = new FileInputStream(logo[0]);
@@ -194,7 +194,7 @@ public class TeamLoader {
                 e.printStackTrace();
             }
         }
-        return scaleTeamLogo(teamLogo);
+        return (teamLogo != null) ? scaleTeamLogo(teamLogo) : null;
     }
 
     /**

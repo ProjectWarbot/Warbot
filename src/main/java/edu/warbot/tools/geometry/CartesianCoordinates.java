@@ -6,6 +6,7 @@ import java.util.Random;
 
 /**
  *
+ * @since 1.0.0
  */
 public class CartesianCoordinates extends Point2D.Double {
 
@@ -35,8 +36,8 @@ public class CartesianCoordinates extends Point2D.Double {
 
     /**
      * Donne des coordonnées cartésiennes aléatoires
-     * @param x
-     * @param y
+     * @param x coordonnée X
+     * @param y coordonnée Y
      * @param width la largeur de la zone
      * @param height la hauteur de la zone
      * @return

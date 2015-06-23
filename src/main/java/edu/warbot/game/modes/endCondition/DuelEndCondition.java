@@ -1,10 +1,10 @@
-package edu.warbot.game.mode.endCondition;
+package edu.warbot.game.modes.endCondition;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.InGameTeam;
-import edu.warbot.game.TeamListener;
 import edu.warbot.game.WarGame;
+import edu.warbot.game.listeners.TeamListener;
 
 public class DuelEndCondition extends AbstractEndCondition implements TeamListener {
 

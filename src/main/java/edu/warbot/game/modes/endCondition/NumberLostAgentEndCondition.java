@@ -1,11 +1,11 @@
-package edu.warbot.game.mode.endCondition;
+package edu.warbot.game.modes.endCondition;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.InGameTeam;
 import edu.warbot.game.MotherNatureTeam;
-import edu.warbot.game.TeamListener;
 import edu.warbot.game.WarGame;
+import edu.warbot.game.listeners.TeamListener;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,7 +69,7 @@ public class NumberLostAgentEndCondition extends AbstractEndCondition implements
             Iterator<Entry<InGameTeam, Long>> entries = lostAgentByTeam.entrySet().iterator();
 
             while (entries.hasNext()) {
-                Entry<InGameTeam, Long> thisEntry = (Entry<InGameTeam, Long>) entries.next();
+                Entry<InGameTeam, Long> thisEntry = entries.next();
 
                 Long newNumberLost = thisEntry.getValue() + 1;
 
