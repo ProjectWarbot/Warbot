@@ -161,7 +161,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
     }
 
     @Override
-    public java.util.List<WarMessage> getMessages() {
+    public List<WarMessage> getMessages() {
         if (thisTickMessages == null) {
             thisTickMessages = new ArrayList<>();
             Message msg;
