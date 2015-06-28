@@ -29,10 +29,6 @@ public class WarMain implements WarGameListener {
     public static final String CMD_NAME = "java WarMain";
     public static final String CMD_HELP = "--help";
     private static final Logger logger = Logger.getLogger(WarMain.class.getCanonicalName());
-    private static final String CMD_LOG_LEVEL = "--loglevel";
-    private static final String CMD_NB_AGENT_OF_TYPE = "--nb";
-    private static final String CMD_FOOD_APPEARANCE_RATE = "--foodrate";
-    private static final String CMD_GAME_MODE = "--gamemode";
 
     private LoadingDialog loadingDialog;
 
