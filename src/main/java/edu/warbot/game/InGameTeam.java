@@ -320,4 +320,9 @@ public class InGameTeam {
         for (TeamListener listener : getListeners())
             listener.onAgentAdded(agent);
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

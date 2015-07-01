@@ -114,7 +114,11 @@ public class WarGameSettings {
     }
 
     public void addSelectedTeam(Team team) {
-        selectedInGameTeams.add(new InGameTeam(team));
+        Team t = team;
+        if (selectedInGameTeams.contains(new InGameTeam(t))) {
+            t = team.duplicate(team.getTeamName() + "_bis");
+        }
+        selectedInGameTeams.add(new InGameTeam(t));
     }
 
     public void prepareForNewGame() {

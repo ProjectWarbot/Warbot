@@ -2,6 +2,7 @@ package edu.warbot.launcher;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.observer.AGRObserver;
 import edu.warbot.game.InGameTeam;
 import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.WarGame;
@@ -95,6 +96,7 @@ public class WarLauncher extends TKLauncher {
     protected void launchViewers() {
         WarDefaultViewer viewer = new WarDefaultViewer(warGame);
         this.launchAgent(viewer, viewer.isRenderable());
+        launchAgent(new AGRObserver(), true);
     }
 
     public void executeLauncher(String... args) {
