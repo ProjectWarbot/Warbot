@@ -50,7 +50,7 @@ public class WarMain implements WarGameListener {
         TeamLoader tl = new TeamLoader();
 
         // On initialise la liste des équipes existantes dans le dossier "teams"
-        availableTeams = tl.loadAvailableTeams();
+        availableTeams = tl.loadAllAvailableTeams();
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
             // On lance la launcher interface
@@ -74,7 +74,7 @@ public class WarMain implements WarGameListener {
 
         TeamLoader tl = new TeamLoader();
         // On initialise la liste des équipes existantes dans le dossier "teams"
-        availableTeams = tl.loadAvailableTeams();
+        availableTeams = tl.loadAllAvailableTeams();
 
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
