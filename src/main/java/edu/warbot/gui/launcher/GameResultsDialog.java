@@ -2,29 +2,43 @@ package edu.warbot.gui.launcher;
 
 import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
-import edu.warbot.game.WarGameListener;
+import edu.warbot.game.listeners.WarGameAdapter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
-public class GameResultsDialog extends JFrame implements ActionListener, WindowListener, WarGameListener {
+public class GameResultsDialog extends JFrame {
 
     private WarGame game;
 
-    public GameResultsDialog(WarGame game) {
+    public GameResultsDialog(final WarGame game) {
         super("Fin du jeu !");
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
-        addWindowListener(this);
+
 
         this.game = game;
-        game.addWarGameListener(this);
+        //Game Listener
+        game.addWarGameListener(new WarGameAdapter() {
+            @Override
+            public void onGameStopped() {
+                dispose();
+            }
+        });
+        //Window Listener
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                super.windowClosed(windowEvent);
+                game.stopGame();
+            }
+        });
 
         JPanel pnlResult = new JPanel(new BorderLayout());
         JPanel pnlWinners = new JPanel(new FlowLayout());
@@ -43,64 +57,18 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
 
         JButton btnOk = new JButton("Ok");
         add(btnOk, BorderLayout.SOUTH);
-        btnOk.addActionListener(this);
+        //Button Listener
+        btnOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dispose();
+            }
+        });
 
         pack();
         setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        dispose();
-    }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
-    }
 
-    @Override
-    public void windowClosing(WindowEvent e) {
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-        game.stopGame();
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-    }
-
-    @Override
-    public void onNewTeamAdded(InGameTeam newInGameTeam) {
-    }
-
-    @Override
-    public void onTeamLost(InGameTeam removedInGameTeam) {
-    }
-
-    @Override
-    public void onGameOver() {
-    }
-
-    @Override
-    public void onGameStopped() {
-        dispose();
-    }
-
-    @Override
-    public void onGameStarted() {
-    }
 }

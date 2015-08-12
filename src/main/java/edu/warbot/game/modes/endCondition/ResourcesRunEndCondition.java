@@ -1,4 +1,4 @@
-package edu.warbot.game.mode.endCondition;
+package edu.warbot.game.modes.endCondition;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.agents.WarBase;

@@ -184,6 +184,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         super.setXY(a, b);
     }
 
+    //TODO TRY TO FOUND A SOLUTION FOR THIS ENDLESS LOOP
     public void moveOutOfCollision() {
         boolean isPositionChanged = false;
 

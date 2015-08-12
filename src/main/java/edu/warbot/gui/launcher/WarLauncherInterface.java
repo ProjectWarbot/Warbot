@@ -3,7 +3,6 @@ package edu.warbot.gui.launcher;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.teams.Team;
-import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameMode;
 import edu.warbot.game.WarGameSettings;
@@ -179,11 +178,11 @@ public class WarLauncherInterface extends JFrame {
             Team inGameTeam1 = pnlSelectionTeam1.getSelectedTeam();
             Team inGameTeam2 = pnlSelectionTeam2.getSelectedTeam();
             // Si c'est les mêmes équipes, on en duplique une en lui donnant un autre nom
-            if (inGameTeam1.equals(inGameTeam2))
-                inGameTeam2 = inGameTeam1.duplicate(inGameTeam1.getTeamName() + TEXT_ADDED_TO_DUPLICATE_TEAM_NAME);
+//            if (inGameTeam1.equals(inGameTeam2))
+//                inGameTeam2 = inGameTeam1.duplicate(inGameTeam1.getTeamName() + TEXT_ADDED_TO_DUPLICATE_TEAM_NAME);
             // On ajoute les équipes au jeu
-            settings.addSelectedTeam(new InGameTeam(inGameTeam1));
-            settings.addSelectedTeam(new InGameTeam(inGameTeam2));
+            settings.addSelectedTeam(inGameTeam1);
+            settings.addSelectedTeam(inGameTeam2);
         } else {
 
         }

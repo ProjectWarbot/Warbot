@@ -128,7 +128,7 @@ public class JavaTeam extends Team {
 
     @Override
     public Team duplicate(String newName) {
-        return new JavaTeam(getTeamName(), getDescription(), getLogo(), getBrains());
+        return new JavaTeam(newName, getDescription(), getLogo(), getBrains());
     }
 
 

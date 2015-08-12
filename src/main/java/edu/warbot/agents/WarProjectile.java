@@ -10,6 +10,9 @@ import edu.warbot.tools.geometry.PolarCoordinates;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * Définition d'un agent Warbot de type projectile (ou explosif)
+ */
 public abstract class WarProjectile extends WarAgent implements MovableActionsMethods, Movable {
 
     private double _speed;

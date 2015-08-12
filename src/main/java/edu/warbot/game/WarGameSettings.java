@@ -4,10 +4,10 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
 import edu.warbot.agents.percepts.PerceptsGetter;
+import edu.warbot.agents.teams.Team;
 import edu.warbot.launcher.UserPreferences;
 import edu.warbot.launcher.WarGameConfig;
 import edu.warbot.loader.SituationLoader;
-import edu.warbot.loader.situation.XMLSituationLoader;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.maps.DefaultWarMap;
 
@@ -113,8 +113,12 @@ public class WarGameSettings {
         return selectedInGameTeams;
     }
 
-    public void addSelectedTeam(InGameTeam inGameTeam) {
-        selectedInGameTeams.add(inGameTeam);
+    public void addSelectedTeam(Team team) {
+        Team t = team;
+        if (selectedInGameTeams.contains(new InGameTeam(t))) {
+            t = team.duplicate(team.getTeamName() + "_bis");
+        }
+        selectedInGameTeams.add(new InGameTeam(t));
     }
 
     public void prepareForNewGame() {
@@ -128,7 +132,7 @@ public class WarGameSettings {
         return situationLoader;
     }
 
-    public void setSituationLoader(XMLSituationLoader situationLoader) {
+    public void setSituationLoader(SituationLoader situationLoader) {
         this.situationLoader = situationLoader;
     }
 
