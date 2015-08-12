@@ -6,7 +6,6 @@ import edu.warbot.brains.implementations.WarBrainImplementation;
 import javassist.*;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -65,6 +64,7 @@ public class ImplementationProducer {
 
             //Récupération de la classe demandée (WarExplorer, WarBase avec une méthode action modifiée)
             CtClass brainClass = classPool.get(brainClassName);
+
             if (brainClass.isFrozen())
                 brainClass.defrost();
 

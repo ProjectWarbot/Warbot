@@ -4,7 +4,7 @@
 
     <groupId>edu</groupId>
     <artifactId>warbot</artifactId>
-    <version>3.2.2</version>
+    <version>3.2.3</version>
     <packaging>jar</packaging>
 
     <name>warbot</name>
@@ -57,8 +57,18 @@
         </dependency>
         <dependency>
             <groupId>edu</groupId>
+            <artifactId>madkit</artifactId>
+            <version>5.0.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.19</version>
+        </dependency>
+        <dependency>
+            <groupId>edu</groupId>
             <artifactId>TurtleKit</artifactId>
-            <version>3.0.0.4c</version>
+            <version>3.0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.jdom</groupId>
@@ -75,6 +85,12 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>${org.yaml.snakeyaml-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.10</version>
         </dependency>
 
         <dependency>
