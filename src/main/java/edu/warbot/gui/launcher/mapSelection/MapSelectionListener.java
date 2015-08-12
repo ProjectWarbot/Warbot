@@ -16,7 +16,9 @@ public class MapSelectionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("MapSelectionListener:event");
         selectionDialog = new MapSelectionDialog(warLauncherInterface);
         selectionDialog.setVisible(true);
+        System.out.println("MapSelectionListener:event-setvisible");
     }
 }

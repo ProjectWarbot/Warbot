@@ -5,10 +5,12 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.actions.MovableActionsMethods;
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.launcher.AbstractWarViewer;
+import edu.warbot.launcher.WarGameConfig;
 import edu.warbot.tools.geometry.CartesianCoordinates;
 import edu.warbot.tools.geometry.GeometryTools;
 import edu.warbot.tools.geometry.WarStar;
@@ -16,7 +18,9 @@ import edu.warbot.tools.geometry.WarStar;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WarDefaultViewer extends AbstractWarViewer {
 
@@ -25,11 +29,15 @@ public class WarDefaultViewer extends AbstractWarViewer {
 
     private List<WarStar> explosions;
 
+    private Map<WarAgentType, Shape> spriteByAgents;
+
     public WarDefaultViewer(WarGame warGame) {
         super(warGame, true);
 
         explosions = new ArrayList<>();
-
+        spriteByAgents = new HashMap<>();
+        for (WarAgentType warAgentType : WarAgentType.values())
+            spriteByAgents.put(warAgentType, WarGameConfig.getHitboxOfWarAgent(warAgentType).getShape());
     }
 
     @Override
@@ -114,7 +122,11 @@ public class WarDefaultViewer extends AbstractWarViewer {
                     paintDebugShape(g2d, ((ControllableWarAgent) agent).getDebugShape());
             }
 
-            Shape agentShape = GeometryTools.resize(agent.getActualForm(), cellSize);
+
+            //TODO CHANGE THIS FOR SPRITE
+//            Rectangle.Double r = new Rectangle.Double(agent.getX()-agent.getHitboxMinRadius(),agent.getY()-agent.getHitboxMinRadius(),10.0,10.0);
+            Shape s = GeometryTools.moveToAndRotateShape(spriteByAgents.get(agent.getType()), agent.getX() - agent.getHitboxMinRadius(), agent.getY() - agent.getHitboxMinRadius(), agent.getHeading());
+            Shape agentShape = GeometryTools.resize(s, cellSize);
             g2d.setColor(backgroundColor);
             g2d.fill(agentShape);
             g2d.setColor(borderColor);

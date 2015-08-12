@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Observable;
 
 @SuppressWarnings("serial")
 public class TeamsDataTableModel extends AbstractTableModel implements TeamListener {
@@ -53,39 +54,41 @@ public class TeamsDataTableModel extends AbstractTableModel implements TeamListe
         if (columnIndex == 0)
             return getRowName(rowIndex);
         else {
-//            ArrayList<InGameTeam> teams = game.getPlayerTeams();
-//            int teamPosInListTeams = columnIndex - 1;
-//            boolean isIndexOutOfBounds = teamPosInListTeams >= teams.size();
-//            if (isIndexOutOfBounds)
-//                return new Object();
+            ArrayList<InGameTeam> teams = game.getPlayerTeams();
+            int teamPosInListTeams = columnIndex - 1;
+            boolean isIndexOutOfBounds = teamPosInListTeams >= teams.size();
+            if (isIndexOutOfBounds)
+                return new Object();
             InGameTeam inGameTeam = playerInGameTeams.get(columnIndex - 1);
-//            if (!isIndexOutOfBounds)
-//                inGameTeam = teams.get(teamPosInListTeams);
+            if (!isIndexOutOfBounds)
+                inGameTeam = teams.get(teamPosInListTeams);
             Object toReturn;
             switch (rowIndex) {
                 case 0:
-//                    if (isIndexOutOfBounds)
-//                        toReturn = Color.WHITE;
-//                    else
-                    toReturn = inGameTeam.getColor();
+                    if (isIndexOutOfBounds)
+                        toReturn = Color.WHITE;
+                    else
+                        toReturn = inGameTeam.getColor();
                     break;
                 case 1:
-//                    if (isIndexOutOfBounds)
-//                        toReturn = new ImageIcon();
-//                    else
-                    toReturn = new ImageIcon(inGameTeam.getImage().getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+                    if (isIndexOutOfBounds)
+                        toReturn = new ImageIcon();
+                    else if (inGameTeam.getImage() != null)
+                        toReturn = new ImageIcon(inGameTeam.getImage().getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+                    else
+                        toReturn = "";
                     break;
                 case 2:
-//                    if (isIndexOutOfBounds)
-//                        toReturn = "";
-//                    else
-                    toReturn = inGameTeam.getName();
+                    if (isIndexOutOfBounds)
+                        toReturn = "";
+                    else
+                        toReturn = inGameTeam.getName();
                     break;
                 default:
-//                    if (isIndexOutOfBounds)
-//                        toReturn = 0;
-//                    else
-                    toReturn = inGameTeam.getNbUnitsLeftOfType(AGENT_TYPES_TO_FOLLOW[rowIndex - COLUMN_NAMES_FOR_TEAM_IDENTIFICATION.length]);
+                    if (isIndexOutOfBounds)
+                        toReturn = 0;
+                    else
+                        toReturn = inGameTeam.getNbUnitsLeftOfType(AGENT_TYPES_TO_FOLLOW[rowIndex - COLUMN_NAMES_FOR_TEAM_IDENTIFICATION.length]);
                     break;
             }
 
@@ -101,10 +104,10 @@ public class TeamsDataTableModel extends AbstractTableModel implements TeamListe
         }
     }
 
-//	@Override
-//	public void update(Observable o, Object arg) {
-//		fireTableDataChanged();
-//	}
+
+    public void update(Observable o, Object arg) {
+        fireTableDataChanged();
+    }
 
     @Override
     public void onAgentAdded(WarAgent newAgent) {

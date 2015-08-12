@@ -3,7 +3,7 @@ package edu.warbot.gui.launcher.mapSelection;
 import edu.warbot.gui.GuiIconsLoader;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.maps.AbstractWarMap;
-import edu.warbot.tools.ClassFinder;
+import org.reflections.Reflections;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -11,6 +11,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 import java.util.Vector;
 
 public class MapSelectionDialog extends JFrame implements ActionListener, ListSelectionListener {
@@ -36,19 +37,23 @@ public class MapSelectionDialog extends JFrame implements ActionListener, ListSe
         // Map list
         MapMiniature selectedMapMiniature = null;
         mapMiniaturesList = new Vector<>();
-        for (Class mapClass : ClassFinder.find(AbstractWarMap.class.getPackage().getName())) {
-            if (mapClass.getSuperclass().equals(AbstractWarMap.class)) {
-                try {
-                    MapMiniature currentMapMiniature = new MapMiniature((AbstractWarMap) mapClass.newInstance(), MapMiniature.SIZE_SMALL);
-                    mapMiniaturesList.add(currentMapMiniature);
-                    if (currentMapMiniature.getMap().getName().equals(warLauncherInterface.getGameSettings().getSelectedMap().getName()))
-                        selectedMapMiniature = currentMapMiniature;
-                } catch (InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+        Reflections reflections = new Reflections(AbstractWarMap.class.getPackage().getName());
+        Set<Class<? extends AbstractWarMap>> allClasses =
+                reflections.getSubTypesOf(AbstractWarMap.class);
+        for (Class<? extends AbstractWarMap> mapClass : allClasses) {
+
+            try {
+                MapMiniature currentMapMiniature = new MapMiniature(mapClass.newInstance(), MapMiniature.SIZE_SMALL);
+                mapMiniaturesList.add(currentMapMiniature);
+                if (currentMapMiniature.getMap().getName().equals(warLauncherInterface.getGameSettings().getSelectedMap().getName()))
+                    selectedMapMiniature = currentMapMiniature;
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
             }
+
         }
         mapMiniaturesJList = new JList(mapMiniaturesList);
+
         if (selectedMapMiniature != null)
             mapMiniaturesJList.setSelectedValue(selectedMapMiniature, true);
         else
@@ -58,10 +63,13 @@ public class MapSelectionDialog extends JFrame implements ActionListener, ListSe
         mapMiniaturesJList.addListSelectionListener(this);
         add(new JScrollPane(mapMiniaturesJList), BorderLayout.WEST);
 
+
         // Selected map
-        selectedMapMiniature = new MapMiniature(((MapMiniature) mapMiniaturesJList.getSelectedValue()).getMap(), MapMiniature.SIZE_VERY_LARGE);
-        mapMiniaturePanel = new MapMiniaturePanel(selectedMapMiniature);
-        add(mapMiniaturePanel, BorderLayout.CENTER);
+        if (!mapMiniaturesJList.isSelectionEmpty()) {
+            selectedMapMiniature = new MapMiniature(((MapMiniature) mapMiniaturesJList.getSelectedValue()).getMap(), MapMiniature.SIZE_VERY_LARGE);
+            mapMiniaturePanel = new MapMiniaturePanel(selectedMapMiniature);
+            add(mapMiniaturePanel, BorderLayout.CENTER);
+        }
 
         // Map key
         JPanel pnlKey = new JPanel(new BorderLayout());

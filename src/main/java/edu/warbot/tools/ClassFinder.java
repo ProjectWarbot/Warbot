@@ -33,18 +33,25 @@ public class ClassFinder {
         }
         File scannedDir = new File(scannedUrl.getFile());
         List<Class<?>> classes = new ArrayList<Class<?>>();
-        for (File file : scannedDir.listFiles()) {
-            classes.addAll(find(file, scannedPackage));
+        File[] scannedFiles = scannedDir.listFiles();
+        if (scannedFiles != null) {
+            for (File file : scannedFiles) {
+                classes.addAll(find(file, scannedPackage));
+            }
         }
         return classes;
     }
+
 
     private static List<Class<?>> find(File file, String scannedPackage) {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         String resource = scannedPackage + DOT + file.getName();
         if (file.isDirectory()) {
-            for (File child : file.listFiles()) {
-                classes.addAll(find(child, resource));
+            File[] scannedFiles = file.listFiles();
+            if (scannedFiles != null) {
+                for (File child : scannedFiles) {
+                    classes.addAll(find(child, resource));
+                }
             }
         } else if (resource.endsWith(CLASS_SUFFIX)) {
             int endIndex = resource.length() - CLASS_SUFFIX.length();

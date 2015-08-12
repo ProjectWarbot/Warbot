@@ -5,6 +5,7 @@ import edu.warbot.agents.teams.FSMTeam;
 import edu.warbot.agents.teams.JavaTeam;
 import edu.warbot.agents.teams.ScriptedTeam;
 import edu.warbot.agents.teams.Team;
+import edu.warbot.brains.GhostBrain;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.exceptions.TeamAlreadyExistsException;
 import edu.warbot.fsm.editor.FSMModelRebuilder;
@@ -19,8 +20,8 @@ import edu.warbot.scriptcore.interpreter.ScriptInterpreterFactory;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
 import edu.warbot.tools.WarIOTools;
 import javassist.CannotCompileException;
-import javassist.ClassPath;
 import javassist.ClassPool;
+import javassist.CtClass;
 import javassist.NotFoundException;
 
 import javax.swing.*;
@@ -29,6 +30,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -185,7 +187,6 @@ public class TeamLoader {
                 return name.equals(teamConfigReader.getIconPath());
             }
         });
-
         ImageIcon teamLogo = null;
         if (logo != null && logo.length == 1) {
 
@@ -253,7 +254,7 @@ public class TeamLoader {
         Team currentTeam;
 
         // On analyse le fichier YML
-        BufferedInputStream input = new BufferedInputStream(jarFile.getInputStream(jarEntries.get("config.yml")));
+        BufferedInputStream input = new BufferedInputStream(jarFile.getInputStream(jarEntries.get(TeamConfigReader.FILE_NAME)));
         TeamConfigReader teamConfigReader = new TeamConfigReader();
         teamConfigReader.load(input);
         input.close();
@@ -268,24 +269,47 @@ public class TeamLoader {
             // On recherche les classes de type Brain
             String urlName = file.getCanonicalPath();
             ClassPool classPool = ClassPool.getDefault();
-            ClassPath cp = classPool.insertClassPath(urlName);
+            classPool.insertClassPath(urlName);
+            ImplementationProducer ip = new ImplementationProducer(classPool);
 
-            URL url = cp.find("myteam.WarBaseBrainController");
-            try {
-                System.out.println(url.toURI().toString());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
+            String name = teamConfigReader.getBrainsPackageName() + "."
+                    + teamConfigReader.getBrainControllersClassesNameOfEachAgentType().get(WarAgentType.WarExplorer.toString());
+            URL[] urls = {new URL("jar:file:" + file.getPath() + "!/")};
+            URLClassLoader child = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());
+            Enumeration e = jarFile.entries();
+            Thread.currentThread().setContextClassLoader(child);
+            while (e.hasMoreElements()) {
+                JarEntry je = (JarEntry) e.nextElement();
+                if (je.isDirectory() || !je.getName().endsWith(".class")) {
+                    continue;
+                }
+                // -6 because of .class
+                String className = je.getName().substring(0, je.getName().length() - 6);
+                className = className.replace('/', '.');
+                Class c = child.loadClass(className);
             }
+            try {
+                CtClass klass = classPool.get(name);
+            } catch (NotFoundException e2) {
+                e2.printStackTrace();
+            }
+
             // Vérifie si l'équipe est une fsm (on regarde dans le fichier de configuration)
             Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
 
             Map<WarAgentType, Class<? extends WarBrain>> brains = new HashMap<>();
 
             for (String agentName : brainControllersClassesName.keySet()) {
-                brains.put(WarAgentType.valueOf(agentName),
-                        getImplementationProducer().createWarBrainImplementationClass
-                                (teamConfigReader.getBrainsPackageName() + "." +
-                                                brainControllersClassesName.get(agentName)));
+                name = teamConfigReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName);
+                try {
+                    brains.put(WarAgentType.valueOf(agentName),
+                            ip.createWarBrainImplementationClass
+                                    (name));
+                } catch (CannotCompileException e2) {
+                    e2.printStackTrace();
+                    System.err.println("TeamLoader: use GhostBrain for " + agentName + " in " + teamConfigReader.getTeamName());
+                    brains.put(WarAgentType.valueOf(agentName), GhostBrain.class);
+                }
             }
             currentTeam = new JavaTeam(teamConfigReader.getTeamName(),
                     teamConfigReader.getTeamDescription().trim(), logo, brains);
@@ -405,7 +429,15 @@ public class TeamLoader {
         URL url = getClass().getClassLoader().getResource(teamsSourcesFolders.get(teamConfigReader.getTeamName()));
         File teamDirectory = new File(url.getFile());
         ImageIcon logo = loadLogo(teamDirectory, teamConfigReader);
-
+        if (logo == null) {
+            InputStream is = getClass().getClassLoader().getResourceAsStream(teamConfigReader.getBrainsPackageName().replace(".", "/") + "/" + teamConfigReader.getIconPath());
+            if (is != null) {
+                logo = scaleTeamLogo(new ImageIcon(WarIOTools.toByteArray(is)));
+                is.close();
+            } else {
+                System.err.println("not found image");
+            }
+        }
         if (teamConfigReader.isFSMTeam()) {
             File fileFSMConfig = new File(teamDirectory.getAbsolutePath() + File.separatorChar +
                     teamConfigReader.getFSMConfigurationFileName());
@@ -426,7 +458,7 @@ public class TeamLoader {
                 brains.put(WarAgentType.valueOf(agentName),
                         implementationProducer.createWarBrainImplementationClass
                                 (teamConfigReader.getBrainsPackageName() + "." +
-                                                brainControllersClassesName.get(agentName)));
+                                        brainControllersClassesName.get(agentName)));
             }
             currentTeam = new JavaTeam(teamConfigReader.getTeamName(), teamConfigReader.getTeamDescription().trim(), logo,
                     brains);
