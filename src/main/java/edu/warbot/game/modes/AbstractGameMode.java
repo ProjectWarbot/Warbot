@@ -1,6 +1,6 @@
-package edu.warbot.game.mode;
+package edu.warbot.game.modes;
 
-import edu.warbot.game.mode.endCondition.AbstractEndCondition;
+import edu.warbot.game.modes.endCondition.AbstractEndCondition;
 
 public abstract class AbstractGameMode {
 

@@ -21,7 +21,8 @@
     </properties>
 
     <dependencies>
-        <dependency>
+
+    <dependency>
             <groupId>org.mozilla</groupId>
             <artifactId>rhino</artifactId>
             <version>1.7.6</version>

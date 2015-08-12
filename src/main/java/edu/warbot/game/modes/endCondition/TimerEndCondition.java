@@ -1,4 +1,4 @@
-package edu.warbot.game.mode.endCondition;
+package edu.warbot.game.modes.endCondition;
 
 import edu.warbot.game.WarGame;
 
@@ -20,10 +20,8 @@ public class TimerEndCondition extends AbstractEndCondition {
 
     @Override
     public boolean isGameEnded() {
-        if (curentTick >= lastTick)
-            return true;
+        return curentTick >= lastTick;
 
-        return false;
     }
 
     public void incrementCurentTick() {

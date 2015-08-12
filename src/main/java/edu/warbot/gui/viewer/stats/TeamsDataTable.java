@@ -2,7 +2,7 @@ package edu.warbot.gui.viewer.stats;
 
 import edu.warbot.game.InGameTeam;
 import edu.warbot.game.WarGame;
-import edu.warbot.game.WarGameListener;
+import edu.warbot.game.listeners.WarGameListener;
 
 import javax.swing.*;
 

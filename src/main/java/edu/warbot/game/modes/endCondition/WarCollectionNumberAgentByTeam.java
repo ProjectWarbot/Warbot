@@ -1,4 +1,4 @@
-package edu.warbot.game.mode.endCondition;
+package edu.warbot.game.modes.endCondition;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.InGameTeam;

@@ -6,6 +6,7 @@ import edu.warbot.brains.implementations.WarBrainImplementation;
 import javassist.*;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -20,10 +21,21 @@ import java.util.logging.Logger;
  */
 public class ImplementationProducer {
 
+    private final ClassPool classPool;
     /**
      * logger
      */
     private Logger logger = Logger.getLogger(ImplementationProducer.class.getCanonicalName());
+
+
+
+    public ImplementationProducer() {
+        classPool = ClassPool.getDefault();
+    }
+
+    public ImplementationProducer(ClassPool classPool) {
+        this.classPool = classPool;
+    }
 
     /**
      * Méthode produisant une implémentation d'un cerveau d'agent avec ses capacités à partir d'une autre classe
@@ -36,11 +48,14 @@ public class ImplementationProducer {
      */
     public Class<? extends WarBrain> createWarBrainImplementationClass(String brainClassName)
             throws NotFoundException, CannotCompileException, IOException {
-        //Chargement d'une pool par défaut
-        ClassPool classPool = ClassPool.getDefault();
 
         //Récupération de l'implémentation de WarBrain commune
         CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
+
+
+        if (brainImplementationClass.isFrozen())
+            brainImplementationClass.defrost();
+
         if (!brainImplementationClass.isFrozen()) {
 
             //Modification totale
@@ -50,10 +65,11 @@ public class ImplementationProducer {
 
             //Récupération de la classe demandée (WarExplorer, WarBase avec une méthode action modifiée)
             CtClass brainClass = classPool.get(brainClassName);
-
+            if (brainClass.isFrozen())
+                brainClass.defrost();
 
             //Rajoute l'implémentation des capacités de la classe
-            brainImplementationClass = produceImplementedBrain(classPool, brainImplementationClass, brainClass);
+            brainImplementationClass = produceImplementedBrain(brainImplementationClass, brainClass);
 
             brainImplementationClass.setSuperclass(brainClass);
 
@@ -67,14 +83,13 @@ public class ImplementationProducer {
     /**
      * Rajoute les implémentations des capacités à la classe du cerveau en cours
      *
-     * @param classPool                une JavassistPool avec des classes préchargées
      * @param brainImplementationClass la classe à laquelle on rajoute les implémentations de capacités
      * @param brainClass               la classe contenant les catacités à récupérer
      * @return la classe avec les ajouts d'implémentations
      * @throws NotFoundException
      * @throws CannotCompileException
      */
-    protected CtClass produceImplementedBrain(ClassPool classPool, CtClass brainImplementationClass, CtClass brainClass)
+    protected CtClass produceImplementedBrain(CtClass brainImplementationClass, CtClass brainClass)
             throws NotFoundException, CannotCompileException {
         //Récupération du chemin du package des capacités
         String capacitiesPackageName = Agressive.class.getPackage().getName();
@@ -102,39 +117,10 @@ public class ImplementationProducer {
         return brainImplementationClass;
     }
 
-    /**
-     *
-     * @param classPool
-     * @param brainClassName
-     * @return
-     * @throws NotFoundException
-     * @throws CannotCompileException
-     * @throws IOException
-     */
-    public Class<? extends WarBrain> createWarBrainImplementationClass(ClassPool classPool, String brainClassName)
+
+
+    public Class<? extends WarBrain> createWarBrainImplementationClass(Class<?> brainClassN)
             throws NotFoundException, CannotCompileException, IOException {
-        //
-        CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
-
-        if (!brainImplementationClass.isFrozen()) {
-
-            brainImplementationClass.setName(brainClassName + "BrainImplementation");
-            brainImplementationClass.setModifiers(java.lang.reflect.Modifier.PUBLIC);
-
-            CtClass brainClass = classPool.get(brainClassName);
-            classPool.find(brainClassName);
-
-            brainImplementationClass = produceImplementedBrain(classPool, brainImplementationClass, brainClass);
-            brainImplementationClass.setSuperclass(brainClass);
-
-            return brainImplementationClass.toClass().asSubclass(WarBrain.class);
-        } else {
-            return null;
-        }
-    }
-
-    public Class<? extends WarBrain> createWarBrainImplementationClass(ClassPool classPool, Class<?> brainClassN)
-            throws NotFoundException, CannotCompileException, IOException {
-        return createWarBrainImplementationClass(classPool, brainClassN.getCanonicalName());
+        return createWarBrainImplementationClass(brainClassN.getCanonicalName());
     }
 }

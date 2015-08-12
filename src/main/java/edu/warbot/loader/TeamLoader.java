@@ -56,13 +56,17 @@ public class TeamLoader {
         implementationProducer = new ImplementationProducer();
     }
 
+    public TeamLoader(ClassPool cp) {
+        implementationProducer = new ImplementationProducer(cp);
+    }
+
     public ImplementationProducer getImplementationProducer() {
         return implementationProducer;
     }
 
 
     @SuppressWarnings("unchecked")
-    public Map<String, Team> loadAvailableTeams() {
+    public Map<String, Team> loadAllAvailableTeams() {
         Map<String, Team> loadedTeams = new HashMap<>();
 
         //RAJOUTER A UNE FACTORY DE CHARGEMENT
@@ -74,7 +78,7 @@ public class TeamLoader {
         return loadedTeams;
     }
 
-    private Map<String, Team> getTeamsFromJarDirectory(Set<String> excludedTeams) {
+    public Map<String, Team> getTeamsFromJarDirectory(Set<String> excludedTeams) {
         Map<String, Team> teamsLoaded = new HashMap<>();
 
         String jarDirectoryPath = TEAMS_DIRECTORY_NAME + File.separator;
@@ -183,7 +187,7 @@ public class TeamLoader {
         });
 
         ImageIcon teamLogo = null;
-        if (logo.length == 1) {
+        if (logo != null && logo.length == 1) {
 
             try {
                 FileInputStream fis = new FileInputStream(logo[0]);
@@ -194,7 +198,7 @@ public class TeamLoader {
                 e.printStackTrace();
             }
         }
-        return scaleTeamLogo(teamLogo);
+        return (teamLogo != null) ? scaleTeamLogo(teamLogo) : null;
     }
 
     /**
@@ -209,7 +213,7 @@ public class TeamLoader {
      * @throws CannotCompileException
      * @throws TeamAlreadyExistsException
      */
-    private Team loadTeamFromDirectory(File file, Set<String> excludedTeams) throws IOException, ClassNotFoundException, NotFoundException, CannotCompileException, TeamAlreadyExistsException, UnrecognizedScriptLanguageException, NotFoundScriptLanguageException, DangerousFunctionPythonException {
+    public Team loadTeamFromDirectory(File file, Set<String> excludedTeams) throws IOException, ClassNotFoundException, NotFoundException, CannotCompileException, TeamAlreadyExistsException, UnrecognizedScriptLanguageException, NotFoundScriptLanguageException, DangerousFunctionPythonException {
         Team currentTeam;
 
         File[] config = file.listFiles(new FilenameFilter() {
@@ -280,8 +284,7 @@ public class TeamLoader {
             for (String agentName : brainControllersClassesName.keySet()) {
                 brains.put(WarAgentType.valueOf(agentName),
                         getImplementationProducer().createWarBrainImplementationClass
-                                (classPool,
-                                        teamConfigReader.getBrainsPackageName() + "." +
+                                (teamConfigReader.getBrainsPackageName() + "." +
                                                 brainControllersClassesName.get(agentName)));
             }
             currentTeam = new JavaTeam(teamConfigReader.getTeamName(),
@@ -303,7 +306,7 @@ public class TeamLoader {
         return currentTeam;
     }
 
-    private Map<String, Team> getTeamsFromSourceDirectory() {
+    public Map<String, Team> getTeamsFromSourceDirectory() {
         Map<String, Team> teamsLoaded = new HashMap<>();
 
         Map<String, String> teamsSourcesFolders = UserPreferences.getTeamsSourcesFolders();
@@ -422,8 +425,7 @@ public class TeamLoader {
 
                 brains.put(WarAgentType.valueOf(agentName),
                         implementationProducer.createWarBrainImplementationClass
-                                (defaultClassPool,
-                                        teamConfigReader.getBrainsPackageName() + "." +
+                                (teamConfigReader.getBrainsPackageName() + "." +
                                                 brainControllersClassesName.get(agentName)));
             }
             currentTeam = new JavaTeam(teamConfigReader.getTeamName(), teamConfigReader.getTeamDescription().trim(), logo,
@@ -444,18 +446,6 @@ public class TeamLoader {
         }
         // TODO set general logo if no image found
         // On change sa taille
-        return scaleTeamLogo(teamLogo);
-    }
-
-    private ImageIcon getTeamLogoFromFile(File file) {
-        ImageIcon teamLogo = null;
-        try {
-            teamLogo = new ImageIcon(WarIOTools.toByteArray(new FileInputStream(file)));
-        } catch (IOException e) {
-            System.err.println("ERROR loading file " + file.getName() + " inside directory " + file.getParentFile().getName());
-            e.printStackTrace();
-        }
-        // TODO set general logo if no image found
         return scaleTeamLogo(teamLogo);
     }
 

@@ -1,7 +1,7 @@
-package edu.warbot.game.mode;
+package edu.warbot.game.modes;
 
 import edu.warbot.game.WarGame;
-import edu.warbot.game.mode.endCondition.ResourcesRunEndCondition;
+import edu.warbot.game.modes.endCondition.ResourcesRunEndCondition;
 
 public class ResourcesRunGameMode extends AbstractGameMode {
 
