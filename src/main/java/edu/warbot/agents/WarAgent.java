@@ -144,11 +144,17 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         return false;
     }
 
-    protected boolean isInCollisionWith(WarAgent agent) {
+    @Deprecated
+    protected boolean isInCollisionWith2(WarAgent agent) {
         Area currentAgentArea = new Area(getActualForm());
         Area agentArea = new Area(agent.getActualForm());
         agentArea.intersect(currentAgentArea);
         return !agentArea.isEmpty();
+
+    }
+
+    protected boolean isInCollisionWith(WarAgent agent) {
+        return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), agent.getX(), agent.getY()) < getHitboxMaxRadius() * 1.5;
     }
 
     protected boolean isInCollisionWithAtPosition(CartesianCoordinates pos, WarAgent agent) {
@@ -186,7 +192,6 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 
     //TODO TRY TO FOUND A SOLUTION FOR THIS ENDLESS LOOP
     public void moveOutOfCollision() {
-        boolean isPositionChanged = false;
 
         // Test si l'agent est hors carte
         CartesianCoordinates agentPosition = getPosition();
@@ -197,7 +202,6 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
                 agentPosition.add(moveToMapCenter.toCartesian());
             } while (!map.getMapAccessibleArea().contains(agentPosition.getX(), agentPosition.getY()));
             setPosition(agentPosition);
-            isPositionChanged = true;
         }
 
         // Test de collision avec un autre agent
@@ -213,14 +217,9 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
                     while (isInCollisionWithAtPosition(agentPosition, a)); // On boucle tant que l'agent est en collision avec l'autre agent
                     // Une fois que l'agent hors collision, on lui assigne sa nouvelle position
                     setPosition(agentPosition);
-                    isPositionChanged = true;
                 }
             }
         }
-
-        // Pour finir, s'il y a eu une correction de la position, on rappelle la fonction pour être bien sûr qu'il n'y a plus de collision
-        if (isPositionChanged)
-            moveOutOfCollision();
     }
 
     /**

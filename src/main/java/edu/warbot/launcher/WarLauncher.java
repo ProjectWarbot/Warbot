@@ -2,7 +2,6 @@ package edu.warbot.launcher;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.agents.observer.AGRObserver;
 import edu.warbot.game.InGameTeam;
 import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.WarGame;
@@ -46,19 +45,19 @@ public class WarLauncher extends TKLauncher {
         setMadkitProperty(Madkit.LevelOption.kernelLogLevel, settings.getLogLevel().toString());
         setMadkitProperty(Madkit.LevelOption.madkitLogLevel, settings.getLogLevel().toString());
         setMadkitProperty(Madkit.LevelOption.networkLogLevel, settings.getLogLevel().toString());
-        super.initProperties();
+
         setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Double) warGame.getMap().getWidth()).intValue()));
         setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Double) warGame.getMap().getHeight()).intValue()));
+        setMadkitProperty(TurtleKit.Option.envDimension, getMadkitProperty(TurtleKit.Option.envWidth) + "," + getMadkitProperty(TurtleKit.Option.envHeight));
+        super.initProperties();
 
-        setMadkitProperty(TurtleKit.Option.viewers, WarDefaultViewer.class.getName());
+        setMadkitProperty(TurtleKit.Option.viewers, "null");
         setMadkitProperty(TurtleKit.Option.scheduler, WarScheduler.class.getName());
         setMadkitProperty(TurtleKit.Option.environment, WarEnvironment.class.getName());
     }
 
     @Override
     protected void createSimulationInstance() {
-        initProperties();
-
 //        super.createSimulationInstance();
         launchAgent(this.getMadkitProperty(TurtleKit.Option.environment));
 
@@ -95,8 +94,8 @@ public class WarLauncher extends TKLauncher {
     @Override
     protected void launchViewers() {
         WarDefaultViewer viewer = new WarDefaultViewer(warGame);
-        this.launchAgent(viewer, viewer.isRenderable());
-        launchAgent(new AGRObserver(), true);
+        launchAgent(viewer, viewer.isRenderable());
+//        launchAgent(new AGRObserver(), true);
     }
 
     public void executeLauncher(String... args) {

@@ -8,6 +8,7 @@ import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.buildings.Wall;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.brains.GhostBrain;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
@@ -44,9 +45,16 @@ public class JavaTeam extends Team {
     public ControllableWarAgent instantiateControllableWarAgent(InGameTeam inGameTeam, WarAgentType agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
         String agentToCreateClassName = WarBase.class.getPackage().getName() + "." + agentName;
         Class<? extends WarBrain> brainClass = getBrainOf(agentName);
+
+        WarBrain brain;
+        if (brainClass == null)
+            brain = new GhostBrain("Not defined brain");
+        else
+            brain = brainClass.newInstance();
+
         ControllableWarAgent a = (ControllableWarAgent) Class.forName(agentToCreateClassName)
-                .getConstructor(InGameTeam.class, brainClass.getSuperclass().getSuperclass())
-                .newInstance(inGameTeam, brainClass.newInstance());
+                .getConstructor(InGameTeam.class, WarBrain.class)
+                .newInstance(inGameTeam, brain);
         return a;
     }
 

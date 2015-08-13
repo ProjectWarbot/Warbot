@@ -243,7 +243,11 @@ public class InGameTeam {
         for (int i = 0; i < dyingAgents.size(); i++) {
             WarAgent a = dyingAgents.get(i);
             if (a.getDyingStep() == 0)
-                a.killAgent(a);
+                try {
+                    a.killAgent(a);
+                } catch (Exception e) {
+
+                }
             a.incrementDyingStep();
             if (a.getDyingStep() > MAX_DYING_STEP) {
                 dyingAgents.remove(i);

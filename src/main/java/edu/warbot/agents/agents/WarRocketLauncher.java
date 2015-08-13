@@ -4,7 +4,7 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.actions.AgressiveActionsMethods;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.projectiles.WarRocket;
-import edu.warbot.brains.brains.WarRocketLauncherBrain;
+import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.InGameTeam;
 import edu.warbot.launcher.WarGameConfig;
@@ -37,7 +37,7 @@ public class WarRocketLauncher extends MovableWarAgent implements AgressiveActio
     private boolean _reloading;
     private int _tickLeftBeforeReloaded; // Retient le tick global quand le reload a commencé
 
-    public WarRocketLauncher(InGameTeam inGameTeam, WarRocketLauncherBrain brain) {
+    public WarRocketLauncher(InGameTeam inGameTeam, WarBrain brain) {
         super(ACTION_IDLE, inGameTeam, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarRocketLauncher), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 
 //		brain.setAgentAdapter(new WarRocketLauncherBrain(this));

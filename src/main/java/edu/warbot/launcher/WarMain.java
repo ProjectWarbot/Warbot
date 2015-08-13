@@ -224,6 +224,10 @@ public class WarMain implements WarGameListener {
     @Override
     public void onGameStopped() {
         game.removeWarGameListener(this);
+        for (int i = 0; i < game.getAllTeams().size(); ++i) {
+            game.getAllTeams().get(i).removeAllAgents();
+        }
+        game.getPlayerTeams().clear();
         settings.prepareForNewGame();
         logger.log(Level.INFO, "Reset settings");
         launcherInterface.setVisible(true);
