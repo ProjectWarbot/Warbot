@@ -2,6 +2,8 @@ package edu.warbot.agents.teams;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.brains.DyingBrain;
+import edu.warbot.brains.GhostBrain;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.implementations.AgentBrainImplementer;
 import edu.warbot.brains.implementations.WarBrainImplementation;
@@ -11,12 +13,12 @@ import edu.warbot.scriptcore.exceptions.NotFoundConfigurationException;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 import edu.warbot.scriptcore.team.*;
+import edu.warbot.tools.StringOutputStream;
 import javassist.*;
 import teams.fsm.WarExplorerBrainController;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
@@ -106,9 +108,24 @@ public class ScriptedTeam extends JavaTeam {
             throws InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException,
             IllegalAccessException {
         ControllableWarAgent a = super.instantiateControllableWarAgent(inGameTeam, warAgentType);
-        ScriptAgent sa = getInterpreter().giveScriptAgent(warAgentType);
-        ((Scriptable) a.getBrain()).setScriptAgent(sa);
-        sa.link(a.getBrain());
+        try {
+            ScriptAgent sa = getInterpreter().giveScriptAgent(warAgentType);
+            ((Scriptable) a.getBrain()).setScriptAgent(sa);
+            sa.link(a.getBrain());
+        }catch (Exception e) {
+            StringOutputStream out = new StringOutputStream();
+            e.printStackTrace(new PrintStream(out));
+            WarBrainImplementation brain = new DyingBrain("Erreur à la compilation\n : ".concat(out.getString()));
+
+            try {
+                out.close();
+            }
+            catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            a.setBrain(brain);
+            brain.setAgent(a);
+        }
         return a;
     }
 

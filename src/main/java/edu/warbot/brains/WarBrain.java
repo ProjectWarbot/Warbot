@@ -52,4 +52,5 @@ public abstract class WarBrain implements ControllableActions, Controllable, Con
         return ACTION_EAT;
     }
 
+    public String die() { return "die"; }
 }
