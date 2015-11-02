@@ -95,7 +95,6 @@ public class WarLauncher extends TKLauncher {
     protected void launchViewers() {
         WarDefaultViewer viewer = new WarDefaultViewer(warGame);
         launchAgent(viewer, viewer.isRenderable());
-//        launchAgent(new AGRObserver(), true);
     }
 
     public void executeLauncher(String... args) {
