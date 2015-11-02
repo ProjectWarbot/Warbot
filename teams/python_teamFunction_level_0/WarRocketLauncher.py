@@ -1,5 +1,5 @@
 
-def actionRocketLauncher():
+def actionWarRocketLauncher():
 
 	percepts = getPercepts();
 

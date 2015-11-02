@@ -1,5 +1,5 @@
 
-def actionExplorer():
+def actionWarExplorer():
 
     percepts = getPercepts();
 
