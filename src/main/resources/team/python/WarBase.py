@@ -5,6 +5,6 @@ class WarBase(PyWarBase):
     def action(self):
         global WA
         WA = self;
-        return actionBase();
+        return actionWarBase();
 
 

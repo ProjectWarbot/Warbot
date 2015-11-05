@@ -6,5 +6,5 @@ class WarEngineer(PyWarEngineer):
     def action(self):
         global WA
         WA = self;
-        return actionEngineer();
+        return actionWarEngineer();
 
