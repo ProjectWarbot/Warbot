@@ -1,16 +1,18 @@
 
 def actionWarExplorer():
+    if getPerceptsEnemiesWarBase():
+        broadcastMessageToAll("EnemyBase","")
 
 
-
-    for percept in getPerceptsFood() :
+    for percept in getPerceptsFood():
+        sendMessageToExplorers("FoodFound","")
         setDebugString("View Food");
         if(pickableFood(percept) and isNotBagFull()):
-            setDebugString("Take food");
-            followTarget(percept);
-            return take();
+            setDebugString("Take food")
+            followTarget(percept)
+            return take()
         elif (isNotBagFull()):
-            followTarget(percept);
+            followTarget(percept)
 
     if(isBagFull()):
         setDebugString("Bag full return base");
@@ -20,9 +22,9 @@ def actionWarExplorer():
         if(haveNoTargets(__percept)):
             for message in getMessages():
                 if(isMessageOfWarBase(message)):
-                    followTarget(message);
+                    followTarget(message)
 
-            sendMessageToBases("whereAreYou", "");
+            sendMessageToBases("whereAreYouBase", "");
 
         else :
             __base = __percept[0];
@@ -33,8 +35,8 @@ def actionWarExplorer():
             else:
                 followTarget(__base);
                 return move();
-    else :
-        setDebugString("Chercher food");
+    else:
+        setDebugString("Look for food");
 
     if (isBlocked()) :
         RandomHeading()

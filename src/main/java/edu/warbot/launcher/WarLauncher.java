@@ -95,6 +95,7 @@ public class WarLauncher extends TKLauncher {
     protected void launchViewers() {
         WarDefaultViewer viewer = new WarDefaultViewer(warGame);
         launchAgent(viewer, viewer.isRenderable());
+        viewer.moveMapOffsetTo(100, 100);
     }
 
     public void executeLauncher(String... args) {
