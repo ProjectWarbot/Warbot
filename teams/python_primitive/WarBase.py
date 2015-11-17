@@ -18,4 +18,5 @@ def actionWarBase():
 
 	if not isBagEmpty() and (getHealth() + getFoodHealthGiven()) < getMaxHealth():
 		return eat()
+
 	return BaseAction.ACTION_IDLE
