@@ -16,4 +16,6 @@ public interface ControllableActionsMethods extends IdlerActionsMethods, Control
     String give();
 
     String eat();
+
+    String die();
 }

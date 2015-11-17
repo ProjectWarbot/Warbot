@@ -1,3 +1,3 @@
 
-def actionBase():
+def actionWarBase():
 		return idle();

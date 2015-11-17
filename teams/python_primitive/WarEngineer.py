@@ -1,8 +1,18 @@
 
-def actionEngineer():
+def actionWarEngineer():
+	percepts = getPercepts()
 
-	if(getHealth() > 1000):
+	if getPerceptsEnemiesWarBase():
+		broadcastMessageToAll("EnemyBase","")
+
+	if getPerceptsFood() and isNotBagFull():
+		take()
+
+	if isNotBagFull() and getHealth() < 0.75 * getMaxHealth():
+		eat()
+
+	if(getHealth() > 0.75 * getMaxHealth()):
 		setDebugString("Creating tower")
-		return createWall()
+		return createTurret()
 
 	return move();

@@ -6,5 +6,5 @@ class WarKamikaze(PyWarKamikaze):
     def action(self):
         global WA
         WA = self;
-        return actionKamikaze();
+        return actionWarKamikaze();
 

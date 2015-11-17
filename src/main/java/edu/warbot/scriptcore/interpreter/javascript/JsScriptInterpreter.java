@@ -34,6 +34,7 @@ public class JsScriptInterpreter implements ScriptInterpreter {
         this.scripts = new HashMap<WarAgentType, Script>();
         ScriptEngineManager manager = new ScriptEngineManager();
         this.engine = manager.getEngineByName("rhino");
+
         if (!initConfiguration) {
             InputStream jsClassExtend = getFileJavascript("scripts/javascript/ClassExtend.js");
 

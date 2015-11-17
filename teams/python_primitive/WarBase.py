@@ -1,11 +1,22 @@
 
-def actionBase():
+def actionWarBase():
+	#Messages
+	messages = getMessages()
+	if messages:
+		for message in messages:
+			if(message.getMessage() == "whereAreYouBase"):
+				reply(message, "here","")
 
-	messages = getMessages();
+	enemies = getPerceptsEnemiesByType(WarAgentType.WarRocket)
+	if enemies:
+		broadcastAll("Enemies near base","")
 
-	for message in messages:
-		if(message.getMessage() == "whereAreYou"):
-			setDebugString("I'm here base PY");
-			sendMessage(message.getSenderID(), "here", "");
 
-	return idle();
+	if getHealth() >= 0.75 * getMaxHealth():
+		return createRocketLauncher()
+
+
+	if not isBagEmpty() and (getHealth() + getFoodHealthGiven()) < getMaxHealth():
+		return eat()
+
+	return BaseAction.ACTION_IDLE

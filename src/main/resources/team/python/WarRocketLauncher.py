@@ -6,6 +6,6 @@ class WarRocketLauncher(PyWarRocketLauncher):
     def action(self):
         global WA
         WA = self;
-        return actionRocketLauncher();
+        return actionWarRocketLauncher();
 
 

@@ -3,6 +3,8 @@ package edu.warbot.scriptcore.team;
 import edu.warbot.brains.brains.WarEngineerBrain;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 
+import java.awt.*;
+
 public abstract class ScriptableWarEngineer extends WarEngineerBrain implements Scriptable {
 
     private ScriptAgent script;
@@ -19,7 +21,16 @@ public abstract class ScriptableWarEngineer extends WarEngineerBrain implements 
 
     @Override
     public String action() {
-        return getScriptAgent().action();
+        String act = null;
+        try {
+            act = getScriptAgent().action();
+        } catch (Exception e) {
+            setDebugStringColor(Color.RED);
+            setDebugString("Erreur à l'interprétation");
+            e.printStackTrace();
+        }
+
+        return act;
     }
 
     public ScriptAgent getScriptAgent() {
