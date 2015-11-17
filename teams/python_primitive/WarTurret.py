@@ -1,3 +1,3 @@
 
-def actionTurret():
+def actionWarTurret():
 	return idle();

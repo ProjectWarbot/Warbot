@@ -375,4 +375,9 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
         super.init(health);
         _nbElementsInBag = nbElementsInBag;
     }
+
+    public String die() {
+        kill();
+        return getBrain().action();
+    }
 }

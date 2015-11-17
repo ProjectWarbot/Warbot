@@ -6,7 +6,7 @@ class WarTurret(PyWarTurret):
     def action(self):
         global WA
         WA = self;
-        return actionTurret();
+        return actionWarTurret();
 
 
 

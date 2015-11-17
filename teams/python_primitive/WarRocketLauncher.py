@@ -1,27 +1,32 @@
 
-def actionRocketLauncher(	)	:
+def actionWarRocketLauncher():
 
-	for percept in getPerceptsEnemiesWarRocketLauncher():
+	percepts = getPerceptsEnemiesWarRocketLauncher()
+	if percepts:
+		for percept in percepts:
+			setDebugString("Mode hunter rocket launcher")
+			followTarget(percept)
+			return shootTarget()
 
-		setDebugString("Mode hunter rocket launcher")
-
-		followTarget(percept)
-
-		return shootTarget();
-
-	for percept in getPerceptsEnemiesWarBase():
-
-		setDebugString("Mode hunter base")
-
-		followTarget(percept)
-
-		return shootTarget()	;
+	percepts = getPerceptsEnemiesWarBase()
+	if percepts:
+		for percept in percepts:
+			broadcastMessageToAll("EnemyBase","")
+			setDebugString("Mode hunter base")
+			followTarget(percept)
+			return shootTarget()
 
 	if (haveNoTarget()):
-		setDebugString("No cible				vggcg")
+		setDebugString("No target")
+
+	messages = getMessages()
+	if messages:
+		for m in messages:
+			if m.getMessage() == "EnemyBase":
+				setHeading(m.getAngle())
 
 	if (haveTarget()):
-		setDebugString("Cible")
+		setDebugString("Target")
 
 	if (isBlocked()):
 		RandomHeading()

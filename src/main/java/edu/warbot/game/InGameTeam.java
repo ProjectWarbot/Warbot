@@ -17,11 +17,10 @@ import edu.warbot.tools.WarMathTools;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class InGameTeam {
@@ -225,7 +224,11 @@ public class InGameTeam {
 
     public void killAllAgents() {
         for (WarAgent a : getAllAgents())
-            a.killAgent(a);
+            try {
+                a.killAgent(a);
+            } catch (Exception ignored) {
+
+            }
     }
 
     public InGameTeam duplicate(String newName) {

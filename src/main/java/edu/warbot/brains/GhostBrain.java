@@ -16,7 +16,7 @@ public class GhostBrain extends WarBrainImplementation {
     private String message;
 
     public GhostBrain() {
-        this.message = "Cannot be compiled";
+        this.message = "Absent Brain";
     }
 
     public GhostBrain(String message) {

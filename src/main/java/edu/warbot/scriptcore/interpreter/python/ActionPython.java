@@ -4,12 +4,12 @@ package edu.warbot.scriptcore.interpreter.python;
  * Created by jimmy on 18/03/15.
  */
 public enum ActionPython {
-    actionBase("actionBase"),
-    actionEngineer("actionEngineer"),
-    actionExplorer("actionExplorer"),
-    actionKamikaze("actionKamikaze"),
-    actionRocketLauncher("actionRocketLauncher"),
-    actionTurret("actionTurret");
+    actionBase("actionWarBase"),
+    actionEngineer("actionWarEngineer"),
+    actionExplorer("actionWarExplorer"),
+    actionKamikaze("actionWarKamikaze"),
+    actionRocketLauncher("actionWarRocketLauncher"),
+    actionTurret("actionWarTurret");
 
     private String nameAction = "";
 

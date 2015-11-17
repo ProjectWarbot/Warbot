@@ -22,4 +22,7 @@ public interface ControllableActions extends IdlerActions {
      */
     String ACTION_EAT = "eat";
 
+
+    String ACTION_DIE = "die";
+
 }

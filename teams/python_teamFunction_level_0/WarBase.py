@@ -1,5 +1,5 @@
 
-def actionBase():
+def actionWarBase():
 
 	messages = getMessages();
 

@@ -6,4 +6,4 @@ class WarExplorer(PyWarExplorer):
     def action(self):
         global WA
         WA = self;
-        return actionExplorer();
+        return actionWarExplorer();

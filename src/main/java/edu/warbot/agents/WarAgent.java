@@ -25,12 +25,12 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
     private static final int MAP_MARGINS = 2;
 
     private Hitbox hitbox;
-    private InGameTeam InGameTeam;
+    private InGameTeam inGameTeam;
     private int _dyingStep;
 
     public WarAgent(String firstActionToDo, InGameTeam inGameTeam, Hitbox hitbox) {
         super(firstActionToDo);
-        this.InGameTeam = inGameTeam;
+        this.inGameTeam = inGameTeam;
         this.hitbox = hitbox;
         _dyingStep = 0;
     }
@@ -70,7 +70,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
     }
 
     public InGameTeam getTeam() {
-        return InGameTeam;
+        return inGameTeam;
     }
 
     @Override

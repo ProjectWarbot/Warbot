@@ -65,7 +65,7 @@ class PyWarAgent(ScriptAgent):
 
 			return self.getRetAgent().sendMessage(idAgent, message, content)
 
-		def broadcastMessageToAll(self, message, content):
+		def broadcastMessageToAll(self, message, content=""):
 			"""
 			Permet d'envoyer une message à tout les agents qui peuvent lirenr des messages
 
@@ -535,10 +535,13 @@ class PyWarAgent(ScriptAgent):
 			"""
 			return WarFood.HEALTH_GIVEN
 
-# === FUNCTION ===
+# === FONCTIONS ===
 
-def sendMessage(idAgent, message, content):
+def sendMessage(idAgent, message, content=""):
 	return WA.sendMessage(idAgent, message, content)
+
+def broadcastAll(message, content):
+	WA.broadcastMessageToAll(message,content)
 
 def broadcastMessageToAll(message, content):
 	WA.broadcastMessageToAll(message, content)
@@ -744,7 +747,7 @@ def isReloaded():
 def isReloading():
 	return WA.isReloading();
 
-def printCodeur():
+def printDevelopper():
 	print "Lopez Jimmy"
 
 def getPerceptsFood():
@@ -969,3 +972,5 @@ def createWall():
 	setNextBuildingToBuild(WarAgentType.Wall);
 	return WA.build()
 
+def face(percept):
+	setHeading(percept.getAngle())

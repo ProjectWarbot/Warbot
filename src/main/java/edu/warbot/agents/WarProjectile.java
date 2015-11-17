@@ -91,6 +91,7 @@ public abstract class WarProjectile extends WarAgent implements MovableActionsMe
                     }
                     currentStep += 1.0;
                 }
+                
                 return isInCollisionWithAtPosition(
                         WarMathTools.addTwoPoints(new CartesianCoordinates(getX(), getY()), new PolarCoordinates(getSpeed(), getHeading())),
                         a);
