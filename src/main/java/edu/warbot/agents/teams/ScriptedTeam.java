@@ -3,7 +3,6 @@ package edu.warbot.agents.teams;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.DyingBrain;
-import edu.warbot.brains.GhostBrain;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.implementations.AgentBrainImplementer;
 import edu.warbot.brains.implementations.WarBrainImplementation;
@@ -18,7 +17,9 @@ import javassist.*;
 import teams.fsm.WarExplorerBrainController;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
@@ -116,7 +117,7 @@ public class ScriptedTeam extends JavaTeam {
             StringOutputStream out = new StringOutputStream();
             e.printStackTrace(new PrintStream(out));
             WarBrainImplementation brain = new DyingBrain("Erreur à la compilation\n : ".concat(out.getString()));
-
+            e.printStackTrace();
             try {
                 out.close();
             }
