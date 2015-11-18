@@ -135,11 +135,8 @@ class PyWarAgent(ScriptAgent):
 			"""
 
 		def getMessages(self):
-			#print("messages toto")
-			__message = self.getRetAgent().getMessages()
 
-			#print("message")
-			#print(__message.size())
+			__message = self.getRetAgent().getMessages()
 
 			messagePython = []
 

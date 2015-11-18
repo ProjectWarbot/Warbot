@@ -24,6 +24,7 @@ import java.util.logging.Level;
 public class WarLauncherInterface extends JFrame {
 
     public static final String TEXT_ADDED_TO_DUPLICATE_TEAM_NAME = "_bis";
+    private final JPanel duelTeamsPanel;
 
     // Eléments de l'interface
     private HashMap<WarAgentType, WarAgentCountSlider> sliderNbAgents;
@@ -62,6 +63,7 @@ public class WarLauncherInterface extends JFrame {
 
         // TODO
         setJMenuBar(new InterfaceLauncherMenuBar(this));
+
 
 		/* *** Haut : Titre *** */
         JPanel panelTitre = new JPanel();
@@ -102,7 +104,7 @@ public class WarLauncherInterface extends JFrame {
         panelAdvanced.setLayout(new BorderLayout());
         panelAdvanced.setBorder(new TitledBorder("Avancé"));
         String comboOption[] = {"ALL", "SEVERE", "WARNING", "INFO", "CONFIG", "FINE", "FINER", "FINEST"};
-        this.cbLogLevel = new JComboBox<String>(comboOption);
+        this.cbLogLevel = new JComboBox<>(comboOption);
         cbLogLevel.setSelectedItem("WARNING");
         panelAdvanced.add(new JLabel("Niveau de détail des logs"), BorderLayout.NORTH);
         panelAdvanced.add(cbLogLevel, BorderLayout.CENTER);
@@ -148,7 +150,8 @@ public class WarLauncherInterface extends JFrame {
 
 		/* *** Centre : Choix du mode et sélection des équipes *** */
         JTabbedPane tabbedPaneMillieu = new JTabbedPane();
-        tabbedPaneMillieu.add(creerPanelModeClassic(), "Mode Duel");
+        duelTeamsPanel = creerPanelModeClassic();
+        tabbedPaneMillieu.add(duelTeamsPanel, "Mode Duel");
         tabbedPaneMillieu.add(creerPanelModeMulti(), "Mode Tournoi");
 
         mainPanel.add(tabbedPaneMillieu, BorderLayout.CENTER);
@@ -216,6 +219,17 @@ public class WarLauncherInterface extends JFrame {
         toReturn.add(new JScrollPane(pnlSelectionTeam2));
 
         return toReturn;
+    }
+
+    public void reloadTeams() {
+        duelTeamsPanel.removeAll();
+        duelTeamsPanel.setVisible(true);
+        warMain.reloadTeams(true);
+        pnlSelectionTeam1 = new TeamSelectionPanel("Choix de l'équipe 1", warMain.getAvailableTeams());
+        duelTeamsPanel.add(new JScrollPane(pnlSelectionTeam1));
+        pnlSelectionTeam2 = new TeamSelectionPanel("Choix de l'équipe 2", warMain.getAvailableTeams());
+        duelTeamsPanel.add(new JScrollPane(pnlSelectionTeam2));
+        duelTeamsPanel.repaint();
     }
 
     public JCheckBox getEnableEnhancedGraphism() {

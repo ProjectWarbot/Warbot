@@ -35,6 +35,7 @@ import java.util.*;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 
 /**
@@ -68,19 +69,24 @@ public class TeamLoader {
 
 
     @SuppressWarnings("unchecked")
-    public Map<String, Team> loadAllAvailableTeams() {
+    public Map<String, Team> loadAllAvailableTeams(boolean javaSource) {
         Map<String, Team> loadedTeams = new HashMap<>();
 
         //RAJOUTER A UNE FACTORY DE CHARGEMENT
-        loadedTeams.putAll(getTeamsFromSourceDirectory());
+        if (javaSource)
+            loadedTeams.putAll(getTeamsFromSourceDirectory());
 
-        for (Map.Entry<String, Team> currentLoadedTeam : getTeamsFromJarDirectory(loadedTeams.keySet()).entrySet()) {
+        for (Map.Entry<String, Team> currentLoadedTeam : getTeamsFromJarDirectory(loadedTeams.keySet(), javaSource).entrySet()) {
             loadedTeams.put(currentLoadedTeam.getKey(), currentLoadedTeam.getValue());
         }
         return loadedTeams;
     }
 
-    public Map<String, Team> getTeamsFromJarDirectory(Set<String> excludedTeams) {
+    public Map<String, Team> loadAllAvailableTeams() {
+        return loadAllAvailableTeams(true);
+    }
+
+    public Map<String, Team> getTeamsFromJarDirectory(Set<String> excludedTeams, boolean javaSource) {
         Map<String, Team> teamsLoaded = new HashMap<>();
 
         String jarDirectoryPath = TEAMS_DIRECTORY_NAME + File.separator;
@@ -97,10 +103,10 @@ public class TeamLoader {
 
                 //TODO METTRE UNE FACTORY DE CHARGEMENT EN FONCTION DU TYPE DE FICHIER (JAR, TAR, ZIP, DIRECTORY)
                 //Lecture depuis un jar
-                if (currentFile.getCanonicalPath().endsWith(".jar")) {
+                if (currentFile.getCanonicalPath().endsWith(".jar") && javaSource) {
                     Team currentTeam;
                     JarFile jarCurrentFile = new JarFile(currentFile);
-
+                    Logger.getGlobal().info("open jar:" + jarCurrentFile.getName());
                     // On parcours les entrées du fichier JAR à la recherche des fichiers souhaités
                     HashMap<String, JarEntry> allJarEntries = getAllJarEntry(jarCurrentFile);
 
@@ -156,7 +162,7 @@ public class TeamLoader {
                 System.err.println("Lecture des fichiers JAR : Lecture de fichier");
                 e.printStackTrace();
             } catch (NullPointerException e) {
-                System.err.println("Lecture des fichiers JAR : Pointeur nul détecté");
+                System.err.println("Lecture des fichiers : Pointeur nul détecté");
                 e.printStackTrace();
             } catch (CannotCompileException e) {
                 System.err.println("Lecture des fichiers JAR : Problème de compilation de classe");

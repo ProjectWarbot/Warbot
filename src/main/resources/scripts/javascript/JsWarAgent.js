@@ -1,4 +1,3 @@
-
 //importPackage( Packages. );
 
 importPackage( Packages.java.lang );
