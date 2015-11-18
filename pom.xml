@@ -22,12 +22,6 @@
 
     <dependencies>
 
-    <dependency>
-            <groupId>org.mozilla</groupId>
-            <artifactId>rhino</artifactId>
-            <version>1.7.6</version>
-        </dependency>
-
         <dependency>
             <groupId>org.python</groupId>
             <artifactId>jython-standalone</artifactId>

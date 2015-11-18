@@ -49,7 +49,10 @@ public interface Controllable extends Alive {
      * @param content plusieurs chaînes de caractères définissant le contenu du message
      * @return une instance ReturnCode indiquant le succès (ou l'échec) de l'opération
      */
-    ReturnCode broadcastMessage(String groupName, String roleName, String message, String... content);
+    ReturnCode broadcastMessageToRoleInGroup(String groupName, String roleName, String message, String... content);
+
+    void broadcastMessageToGroup(String groupName, String message, String... content);
+
 
     ReturnCode reply(WarMessage warMessage, String message, String... content);
 
