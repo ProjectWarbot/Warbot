@@ -140,10 +140,19 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
     }
 
     @Override
-    public ReturnCode broadcastMessage(String groupName, String roleName, String message, String... content) {
+    public ReturnCode broadcastMessageToRoleInGroup(String groupName, String roleName, String message, String... content) {
         logger.finer(this.toString() + " send message to agents from group " + groupName + " with role " + roleName);
         logger.finest("This message is : [" + message + "] " + content);
         return sendMessage(getTeam().getName(), groupName, roleName, new WarKernelMessage(this, message, content));
+    }
+
+    @Override
+    public void broadcastMessageToGroup(String groupName, String message, String... content) {
+        logger.finer(this.toString() + " send message to agents from group " + groupName);
+        logger.finest("This message is : [" + message + "] " + content);
+        for (String roleName : getExistingRoles(getTeam().getName(), groupName))
+            sendMessage(getTeam().getName(), groupName,
+                    roleName, new WarKernelMessage(this, message, content));
     }
 
     @Override
