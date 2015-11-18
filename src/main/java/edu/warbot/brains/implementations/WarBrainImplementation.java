@@ -41,8 +41,8 @@ public class WarBrainImplementation extends WarBrain implements AgentBrainImplem
     }
 
     @Override
-    public AbstractAgent.ReturnCode broadcastMessageToRoleInGroup(String groupName, String roleName, String message, String... content) {
-        return getAgent().broadcastMessageToRoleInGroup(groupName, roleName, message, content);
+    public AbstractAgent.ReturnCode broadcastMessage(String groupName, String roleName, String message, String... content) {
+        return getAgent().broadcastMessage(groupName, roleName, message, content);
     }
 
     @Override
