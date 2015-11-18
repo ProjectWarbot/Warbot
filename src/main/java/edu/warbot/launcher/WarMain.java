@@ -203,9 +203,11 @@ public class WarMain implements WarGameListener {
 
     @Override
     public void onGameOver() {
-        this.reloadTeams(false);
-        if (launcherInterface != null)
+        if (launcherInterface != null) {
             launcherInterface.displayGameResults(game);
+            launcherInterface.reloadTeams();
+
+        }
         else { // Si la simulation a été lancée depuis la ligne de commande
             String finalTeams = "";
             for (InGameTeam team : game.getPlayerTeams()) {

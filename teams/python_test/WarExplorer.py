@@ -45,5 +45,5 @@ def actionWarExplorer():
     if (isBlocked()) :
         RandomHeading()
     #setDebugString(`n`)
-    setDebugStringColor(Color.RED)
+    setDebugStringColor(Color.BLUE)
     return move();
