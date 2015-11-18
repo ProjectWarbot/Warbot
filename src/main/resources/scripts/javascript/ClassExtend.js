@@ -4,7 +4,6 @@
 *
 **/
 
-
 var Class = function() {
     this.initialize && this.initialize.apply(this, arguments);
 };

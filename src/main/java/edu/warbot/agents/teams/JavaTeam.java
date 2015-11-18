@@ -78,6 +78,8 @@ public class JavaTeam extends Team {
         try {
             logger.log(Level.FINEST, creatorAgent.toString() + " creating " + agentTypeToCreate);
             if (creatorAgent.isAbleToCreate(agentTypeToCreate)) {
+                //TODO MOVE THIS TO REDUCE COMPUTE TIME
+                //TODO LOOK FOR STATIC FIELD
                 ControllableWarAgent a = instantiateControllableWarAgent(inGameTeam, agentTypeToCreate);
                 if (a.getCost() < ((AliveWarAgent) creatorAgent).getHealth()) {
                     ((AliveWarAgent) creatorAgent).launchAgent(a);
