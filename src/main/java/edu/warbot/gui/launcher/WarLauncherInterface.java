@@ -150,7 +150,7 @@ public class WarLauncherInterface extends JFrame {
 
 		/* *** Centre : Choix du mode et sélection des équipes *** */
         JTabbedPane tabbedPaneMillieu = new JTabbedPane();
-        duelTeamsPanel = creerPanelModeClassic();
+        duelTeamsPanel = createPanelModeClassic();
         tabbedPaneMillieu.add(duelTeamsPanel, "Mode Duel");
         tabbedPaneMillieu.add(creerPanelModeMulti(), "Mode Tournoi");
 
@@ -210,7 +210,7 @@ public class WarLauncherInterface extends JFrame {
         return toReturn;
     }
 
-    private JPanel creerPanelModeClassic() {
+    private JPanel createPanelModeClassic() {
         JPanel toReturn = new JPanel(new GridLayout(1, 2));
 
         pnlSelectionTeam1 = new TeamSelectionPanel("Choix de l'équipe 1", warMain.getAvailableTeams());
@@ -221,10 +221,10 @@ public class WarLauncherInterface extends JFrame {
         return toReturn;
     }
 
-    public void reloadTeams() {
+    public void reloadTeams(boolean dialog) {
         duelTeamsPanel.removeAll();
         duelTeamsPanel.setVisible(true);
-        warMain.reloadTeams(true);
+        warMain.reloadTeams(dialog);
         pnlSelectionTeam1 = new TeamSelectionPanel("Choix de l'équipe 1", warMain.getAvailableTeams());
         duelTeamsPanel.add(new JScrollPane(pnlSelectionTeam1));
         pnlSelectionTeam2 = new TeamSelectionPanel("Choix de l'équipe 2", warMain.getAvailableTeams());

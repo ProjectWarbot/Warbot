@@ -109,25 +109,28 @@ public class ScriptedTeam extends JavaTeam {
             throws InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException,
             IllegalAccessException {
         ControllableWarAgent a = super.instantiateControllableWarAgent(inGameTeam, warAgentType);
+        return a;
+    }
+
+    @Override
+    public void associateBrain(ControllableWarAgent a) {
         try {
-            ScriptAgent sa = getInterpreter().giveScriptAgent(warAgentType);
+            ScriptAgent sa = getInterpreter().giveScriptAgent(a.getType());
             ((Scriptable) a.getBrain()).setScriptAgent(sa);
             sa.link(a.getBrain());
-        }catch (Exception e) {
+        } catch (Exception e) {
             StringOutputStream out = new StringOutputStream();
             e.printStackTrace(new PrintStream(out));
             WarBrainImplementation brain = new DyingBrain("Erreur à la compilation\n : ".concat(out.getString()));
             e.printStackTrace();
             try {
                 out.close();
-            }
-            catch (IOException e1) {
+            } catch (IOException e1) {
                 e1.printStackTrace();
             }
             a.setBrain(brain);
             brain.setAgent(a);
         }
-        return a;
     }
 
     public void initFunctionList() {
