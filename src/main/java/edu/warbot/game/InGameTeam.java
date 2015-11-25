@@ -17,10 +17,11 @@ import edu.warbot.tools.WarMathTools;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class InGameTeam {
@@ -331,5 +332,9 @@ public class InGameTeam {
     @Override
     public String toString() {
         return getName();
+    }
+
+    public Team getTeam() {
+        return team;
     }
 }

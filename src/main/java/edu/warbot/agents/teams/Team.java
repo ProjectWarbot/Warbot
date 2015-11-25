@@ -131,7 +131,7 @@ public abstract class Team {
      */
     public abstract void build(InGameTeam inGameTeam, Builder builderAgent, WarAgentType buildingTypeToBuild);
 
-
+    public abstract void associateBrain(ControllableWarAgent agent) throws IllegalAccessException, InstantiationException;
     /**
      * @param newName nouveau de l'équipe dupliquée
      * @return l'équipe dupliquée

@@ -50,8 +50,12 @@ public class JavaTeam extends Team {
         if (brainClass == null)
             brain = new GhostBrain("Not defined brain");
         else
-            brain = brainClass.newInstance();
-
+            try {
+                brain = brainClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+                brain = new GhostBrain("Erreur dans le cerveau");
+            }
         ControllableWarAgent a = (ControllableWarAgent) Class.forName(agentToCreateClassName)
                 .getConstructor(InGameTeam.class, WarBrain.class)
                 .newInstance(inGameTeam, brain);
@@ -70,6 +74,7 @@ public class JavaTeam extends Team {
     @Override
     public void createUnit(InGameTeam inGameTeam, Creator creatorAgent, WarAgentType agentTypeToCreate) {
         Logger logger = ((AliveWarAgent) creatorAgent).getLogger();
+
         //L'énumération n'est pas de la catégorie Building
         if (!(agentTypeToCreate.getCategory().equals(WarAgentCategory.Worker)
                 || agentTypeToCreate.getCategory().equals(WarAgentCategory.Soldier))) {
@@ -78,13 +83,15 @@ public class JavaTeam extends Team {
         try {
             logger.log(Level.FINEST, creatorAgent.toString() + " creating " + agentTypeToCreate);
             if (creatorAgent.isAbleToCreate(agentTypeToCreate)) {
-                //TODO MOVE THIS TO REDUCE COMPUTE TIME
-                //TODO LOOK FOR STATIC FIELD
+
                 ControllableWarAgent a = instantiateControllableWarAgent(inGameTeam, agentTypeToCreate);
+
                 if (a.getCost() < ((AliveWarAgent) creatorAgent).getHealth()) {
+                    associateBrain(a);
                     ((AliveWarAgent) creatorAgent).launchAgent(a);
                     a.setPositionAroundOtherAgent(((AliveWarAgent) creatorAgent));
                     ((AliveWarAgent) creatorAgent).damage(a.getCost());
+                    //AddBrainHere
                     logger.log(Level.FINER, creatorAgent.toString() + " create " + agentTypeToCreate);
                 } else {
                     logger.log(Level.FINER, creatorAgent.toString() + " can't create " + agentTypeToCreate + " : not enough health !");
@@ -134,6 +141,11 @@ public class JavaTeam extends Team {
             System.err.println("Erreur lors de l'instanciation du brainController de l'agent " + buildingTypeToBuild.toString());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void associateBrain(ControllableWarAgent agent) {
+
     }
 
     @Override
