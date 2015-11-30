@@ -50,8 +50,6 @@ class PyWarTurret(PyWarAgent):
 	def getSpeed(self):
 		return 0
 
-
-
 	def isReloaded(self):
 		return self.getRetAgent().isReloaded();
 

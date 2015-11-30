@@ -1,5 +1,6 @@
 package edu.warbot.launcher;
 
+import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.InGameTeam;
@@ -126,6 +127,7 @@ public class WarLauncher extends TKLauncher {
                     for (compteur = 0; compteur < game.getSettings().getNbAgentOfType(agentType); compteur++) {
                         try {
                             WarAgent agent = t.instantiateNewControllableWarAgent(agentType.toString());
+                            t.getTeam().associateBrain((ControllableWarAgent) agent);
                             launchAgent(agent);
                             agent.setRandomPositionInCircle(selectedPosition);
                         } catch (InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {

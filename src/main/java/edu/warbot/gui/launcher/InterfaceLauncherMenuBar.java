@@ -15,6 +15,31 @@ public class InterfaceLauncherMenuBar extends JMenuBar {
     public InterfaceLauncherMenuBar(final WarLauncherInterface launcherInterface) {
         super();
 
+        JMenu menuSys = new JMenu("Warbot");
+        menuSys.setMnemonic(KeyEvent.VK_W);
+
+        JMenuItem itemReloadTeam = new JMenuItem("Recharger");
+        itemReloadTeam.setToolTipText("Recharger toutes les équipes");
+        itemReloadTeam.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                launcherInterface.reloadTeams(true);
+                launcherInterface.setVisible(true);
+            }
+        });
+        menuSys.add(itemReloadTeam);
+
+        JMenuItem itemQuit = new JMenuItem("Quitter");
+        itemQuit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        menuSys.add(itemQuit);
+        add(menuSys);
+
         JMenu menuFile = new JMenu("Situation");
         menuFile.setMnemonic(KeyEvent.VK_S);
 

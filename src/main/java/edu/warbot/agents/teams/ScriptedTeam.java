@@ -3,7 +3,6 @@ package edu.warbot.agents.teams;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.DyingBrain;
-import edu.warbot.brains.GhostBrain;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.implementations.AgentBrainImplementer;
 import edu.warbot.brains.implementations.WarBrainImplementation;
@@ -11,6 +10,9 @@ import edu.warbot.game.InGameTeam;
 import edu.warbot.loader.ImplementationProducer;
 import edu.warbot.scriptcore.exceptions.NotFoundConfigurationException;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreterFactory;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
+import edu.warbot.scriptcore.script.Script;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 import edu.warbot.scriptcore.team.*;
 import edu.warbot.tools.StringOutputStream;
@@ -18,7 +20,9 @@ import javassist.*;
 import teams.fsm.WarExplorerBrainController;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
@@ -81,6 +85,11 @@ public class ScriptedTeam extends JavaTeam {
 
     private boolean initFunction = false;
 
+    private ScriptInterpreterLanguage language;
+
+    private Map<WarAgentType, Script> brainScripts = new HashMap<>();
+
+
 
     /**
      * @param teamName    Le nom d'une équipe
@@ -99,34 +108,37 @@ public class ScriptedTeam extends JavaTeam {
         return interpreter;
     }
 
-    public void setInterpreter(ScriptInterpreter scriptInterpreter) {
-        interpreter = scriptInterpreter;
-    }
 
     @Override
     public ControllableWarAgent instantiateControllableWarAgent(InGameTeam inGameTeam, WarAgentType warAgentType)
             throws InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException,
             IllegalAccessException {
         ControllableWarAgent a = super.instantiateControllableWarAgent(inGameTeam, warAgentType);
+        return a;
+    }
+
+    @Override
+    public void associateBrain(ControllableWarAgent a) {
+
+        ScriptInterpreter si = ScriptInterpreterFactory.getInstance(getLanguage()).createScriptInterpreter();
         try {
-            ScriptAgent sa = getInterpreter().giveScriptAgent(warAgentType);
+            si.addSCript(brainScripts.get(a.getType()), a.getType());
+            ScriptAgent sa = si.giveScriptAgent(a.getType());
             ((Scriptable) a.getBrain()).setScriptAgent(sa);
             sa.link(a.getBrain());
-        }catch (Exception e) {
+        } catch (Exception e) {
             StringOutputStream out = new StringOutputStream();
             e.printStackTrace(new PrintStream(out));
             WarBrainImplementation brain = new DyingBrain("Erreur à la compilation\n : ".concat(out.getString()));
-
+            e.printStackTrace();
             try {
                 out.close();
-            }
-            catch (IOException e1) {
+            } catch (IOException e1) {
                 e1.printStackTrace();
             }
             a.setBrain(brain);
             brain.setAgent(a);
         }
-        return a;
     }
 
     public void initFunctionList() {
@@ -162,9 +174,28 @@ public class ScriptedTeam extends JavaTeam {
     @Override
     public Team duplicate(String newName) {
         ScriptedTeam st = new ScriptedTeam(newName, getDescription(), getLogo());
-        st.setInterpreter(getInterpreter());
+        st.setLanguage(getLanguage());
+        st.brainScripts.putAll(brainScripts);
         return st;
     }
 
 
+    public ScriptInterpreterLanguage getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(ScriptInterpreterLanguage language) {
+        this.language = language;
+    }
+
+
+    public void addBrainScript(InputStream input, WarAgentType warAgentType) {
+        try {
+            ScriptInterpreter si = ScriptInterpreterFactory.getInstance(getLanguage()).createScriptInterpreter();
+            Script script = si.createScript(input);
+            brainScripts.put(warAgentType, script);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

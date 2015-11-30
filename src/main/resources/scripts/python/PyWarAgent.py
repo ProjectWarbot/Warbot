@@ -52,7 +52,7 @@ class PyWarAgent(ScriptAgent):
 
 		def sendMessage(self, idAgent, message, content):
 			"""
-			Permet d'envoyer une message à une autre agent qui peut lire des messages
+			Permet d'envoyer un message à une autre agent qui peut lire des messages
 
 			idAgent -- int -- l'ID de l'agent qui oit reçevoir notre message
 			message -- String -- le titre de notre message
@@ -67,7 +67,7 @@ class PyWarAgent(ScriptAgent):
 
 		def broadcastMessageToAll(self, message, content=""):
 			"""
-			Permet d'envoyer une message à tout les agents qui peuvent lirenr des messages
+			Permet d'envoyer un message à tout les agents qui peuvent lirenr des messages
 
 			message -- String -- le titre de notre message
 			content -- String -- le contenu de notre message
@@ -81,7 +81,7 @@ class PyWarAgent(ScriptAgent):
 
 		def broadcastMessageToAgentType(self, agentType, message, content) :
 			"""
-			Permet d'envoyer une message à une type d'agent en particulier
+			Permet d'envoyer un message à une type d'agent en particulier
 
 			agentType -- WarAgentType -- le type des agents voulu
 			message -- String -- le titre de notre message
@@ -95,10 +95,10 @@ class PyWarAgent(ScriptAgent):
 
 		def broadcastMessage(self, groupName,  roleName,  message,   content) :
 			"""
-			Permet d'envoyer une message à un autre d'agent en particulier
-			et qui ont un role définit
+			Permet d'envoyer un message à un autre d'agent en particulier
+			et qui ont un role défini
 
-			groupName -- String -- le groupe d'agent
+			groupName -- String -- le groupe d'agents
 			roleName -- String -- le role de ces agent
 			message -- String -- le titre de notre message
 			content -- String -- le contenu de notre message
@@ -109,6 +109,18 @@ class PyWarAgent(ScriptAgent):
 			"""
 
 			return self.getRetAgent().broadcastMessage(groupName, roleName, message, content)
+
+		def broadcastMessageToGroup(groupName,  message,   content) :
+			"""
+			Permet d'envoyer un message à un group d'agent particulier
+
+			groupName -- String -- le groupe d'agents
+			message -- String -- le titre du message
+			content -- String -- le contenu du message
+			ou
+			content -- String[] -- le contenu de message sous plusieures chaînes de caractères
+			"""
+			return self.getRetAgent().broadcastMessageToGroup(groupName, message, content)
 
 		def reply(self, warMessage,  message, content):
 			"""
@@ -135,16 +147,12 @@ class PyWarAgent(ScriptAgent):
 			"""
 
 		def getMessages(self):
-			#print("messages toto")
-			__message = self.getRetAgent().getMessages()
 
-			#print("message")
-			#print(__message.size())
+			__message = self.getRetAgent().getMessages()
 
 			messagePython = []
 
 			for i in range (0, __message.size()):
-				#print(__message.get(i).getMessage())
 				messagePython.append(__message.get(i))
 			return messagePython
 
@@ -503,6 +511,12 @@ class PyWarAgent(ScriptAgent):
 
 			return self.getRetAgent().leaveGroup(group)
 
+		def myGroups(self):
+			return self.getRetAgent().myGroups()
+
+		def myRolesIn(self,group):
+			return self.getRetAgent().myRolesIn(group)
+
 		def numberOfAgentsInRole(self, group, role):
 			"""
 			Permet de savoir combien d'agent d'un groupe d'agent on ce role
@@ -551,6 +565,9 @@ def broadcastMessageToAgentType(agentType, message, content) :
 
 def broadcastMessage(groupName,  roleName,  message,   content) :
 	return WA.broadcastMessage(groupName, roleName, message, content)
+
+def broadcastMessageToGroup(groupName,  message,   content) :
+	return WA.broadcastMessageToGroup(groupName, message, content)
 
 def reply(warMessage,  message, content):
 	return WA.reply(warMessage, message, content)
@@ -947,6 +964,7 @@ def isPossibleToGiveFood(percept):
 
 def giveToTarget(percept) :
 	setIdNextAgentToGive(percept.getID());
+	return WA.give()
 
 def createEngineer():
 	setNextAgentToCreate(WarAgentType.WarEngineer)
@@ -974,3 +992,15 @@ def createWall():
 
 def face(percept):
 	setHeading(percept.getAngle())
+
+def getGroups():
+	return WA.getGroups()
+
+def getRolesIn(group):
+	return WA.getRolesIn(group)
+
+def myGroups():
+	return WA.myGroups()
+
+def myRolesIn(group):
+	return WA.myROlesIn(group)

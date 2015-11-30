@@ -33,7 +33,21 @@ public class JsScriptInterpreter implements ScriptInterpreter {
         super();
         this.scripts = new HashMap<WarAgentType, Script>();
         ScriptEngineManager manager = new ScriptEngineManager();
-        this.engine = manager.getEngineByName("rhino");
+        this.engine = manager.getEngineByName("javascript");
+        //Nashorn/Rhino Compatibility
+        if (manager.getEngineByName("Nashorn") != null) {
+            try {
+                InputStream is = getFileJavascript("scripts/javascript/NashornCompatibility.js");
+                Script compatibility = createScript(is);
+                is.close();
+                evalClass(compatibility);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
         if (!initConfiguration) {
             InputStream jsClassExtend = getFileJavascript("scripts/javascript/ClassExtend.js");

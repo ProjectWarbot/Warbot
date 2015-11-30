@@ -46,6 +46,11 @@ public class WarBrainImplementation extends WarBrain implements AgentBrainImplem
     }
 
     @Override
+    public void broadcastMessageToGroup(String groupName, String message, String... content) {
+        getAgent().broadcastMessageToGroup(groupName, message, content);
+    }
+
+    @Override
     public AbstractAgent.ReturnCode reply(WarMessage warMessage, String message, String... content) {
         return getAgent().reply(warMessage, message, content);
     }
@@ -168,6 +173,17 @@ public class WarBrainImplementation extends WarBrain implements AgentBrainImplem
     @Override
     public PolarCoordinates getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget) {
         return getAgent().getTargetedAgentPosition(angleToAlly, distanceFromAlly, angleFromAllyToTarget, distanceBetweenAllyAndTarget);
+    }
+
+    @Override
+    public List<String> myGroups() {
+        return getAgent().myGroups();
+    }
+
+
+    @Override
+    public List<String> myRoles(String group) {
+        return getAgent().myRoles(group);
     }
 
     @Override

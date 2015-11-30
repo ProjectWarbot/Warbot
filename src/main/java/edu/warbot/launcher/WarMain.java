@@ -1,6 +1,7 @@
 package edu.warbot.launcher;
 
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.teams.ScriptedTeam;
 import edu.warbot.agents.teams.Team;
 import edu.warbot.cli.WarbotOptions;
 import edu.warbot.exceptions.WarCommandException;
@@ -15,10 +16,7 @@ import edu.warbot.loader.TeamLoader;
 import org.apache.commons.cli.*;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,6 +37,7 @@ public class WarMain implements WarGameListener {
     private Map<String, Team> availableTeams;
 
 
+
     public WarMain() {
         availableTeams = new HashMap<>();
         settings = new WarGameSettings();
@@ -50,7 +49,7 @@ public class WarMain implements WarGameListener {
         TeamLoader tl = new TeamLoader();
 
         // On initialise la liste des équipes existantes dans le dossier "teams"
-        availableTeams = tl.loadAllAvailableTeams();
+        availableTeams = tl.loadAllAvailableTeams(true);
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
             // On lance la launcher interface
@@ -74,7 +73,7 @@ public class WarMain implements WarGameListener {
 
         TeamLoader tl = new TeamLoader();
         // On initialise la liste des équipes existantes dans le dossier "teams"
-        availableTeams = tl.loadAllAvailableTeams();
+        availableTeams = tl.loadAllAvailableTeams(true);
 
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
@@ -204,8 +203,10 @@ public class WarMain implements WarGameListener {
 
     @Override
     public void onGameOver() {
-        if (launcherInterface != null)
+        if (launcherInterface != null) {
             launcherInterface.displayGameResults(game);
+
+        }
         else { // Si la simulation a été lancée depuis la ligne de commande
             String finalTeams = "";
             for (InGameTeam team : game.getPlayerTeams()) {
@@ -227,6 +228,7 @@ public class WarMain implements WarGameListener {
         for (int i = 0; i < game.getAllTeams().size(); ++i) {
             game.getAllTeams().get(i).removeAllAgents();
         }
+        launcherInterface.reloadTeams(false);
         game.getPlayerTeams().clear();
         settings.prepareForNewGame();
         logger.log(Level.INFO, "Reset settings");
@@ -239,6 +241,26 @@ public class WarMain implements WarGameListener {
     }
 
 
+    public void reloadTeams(boolean dialog) {
+        List<String> othersTeam = new ArrayList<>();
+        for (String key : availableTeams.keySet()) {
+            if (availableTeams.get(key) instanceof ScriptedTeam)
+                othersTeam.add(key);
+        }
+        for (String key : othersTeam)
+            availableTeams.remove(key);
 
 
+        LoadingDialog loadDial = new LoadingDialog("Chargement des équipes...");
+        loadDial.setVisible(dialog);
+        TeamLoader tl = new TeamLoader();
+        // On initialise la liste des équipes existantes dans le dossier "teams"
+        try {
+            availableTeams.putAll(tl.loadAllAvailableTeams(false));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        loadDial.dispose();
+
+    }
 }

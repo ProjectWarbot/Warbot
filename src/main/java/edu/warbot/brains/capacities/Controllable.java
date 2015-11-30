@@ -51,6 +51,9 @@ public interface Controllable extends Alive {
      */
     ReturnCode broadcastMessage(String groupName, String roleName, String message, String... content);
 
+    void broadcastMessageToGroup(String groupName, String message, String... content);
+
+
     ReturnCode reply(WarMessage warMessage, String message, String... content);
 
     /**
@@ -203,5 +206,10 @@ public interface Controllable extends Alive {
      * @return
      */
     PolarCoordinates getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget);
+
+
+    List<String> myGroups();
+
+    List<String> myRoles(String group);
 
 }

@@ -21,6 +21,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 
 /**
@@ -144,6 +145,15 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
         logger.finer(this.toString() + " send message to agents from group " + groupName + " with role " + roleName);
         logger.finest("This message is : [" + message + "] " + content);
         return sendMessage(getTeam().getName(), groupName, roleName, new WarKernelMessage(this, message, content));
+    }
+
+    @Override
+    public void broadcastMessageToGroup(String groupName, String message, String... content) {
+        logger.finer(this.toString() + " send message to agents from group " + groupName);
+        logger.finest("This message is : [" + message + "] " + content);
+        for (String roleName : getExistingRoles(getTeam().getName(), groupName))
+            sendMessage(getTeam().getName(), groupName,
+                    roleName, new WarKernelMessage(this, message, content));
     }
 
     @Override
@@ -380,4 +390,26 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
         kill();
         return getBrain().action();
     }
+
+
+    @Override
+    public List<String> myGroups() {
+        Set<String> groups = getMyGroups(getTeamName());
+        if (groups != null)
+            return new ArrayList<>(groups);
+        else
+            return new ArrayList<>();
+
+    }
+
+    @Override
+    public List<String> myRoles(String group) {
+        Set<String> groups = getMyRoles(getTeamName(), group);
+        if (groups != null)
+            return new ArrayList<>(groups);
+        else
+            return new ArrayList<>();
+    }
+
+
 }
