@@ -16,7 +16,6 @@ import edu.warbot.launcher.UserPreferences;
 import edu.warbot.scriptcore.exceptions.DangerousFunctionPythonException;
 import edu.warbot.scriptcore.exceptions.NotFoundScriptLanguageException;
 import edu.warbot.scriptcore.exceptions.UnrecognizedScriptLanguageException;
-import edu.warbot.scriptcore.interpreter.ScriptInterpreterFactory;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
 import edu.warbot.tools.WarIOTools;
 import javassist.CannotCompileException;
@@ -397,7 +396,7 @@ public class TeamLoader {
 
 //        team.initFunctionList();
         ScriptInterpreterLanguage language = teamConfigReader.getScriptLanguage();
-        team.setInterpreter(ScriptInterpreterFactory.getInstance(language).createScriptInterpreter());
+        team.setLanguage(language);
         final Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
 
         if (teamConfigReader.getBrainControllersClassesNameOfEachAgentType().containsKey("WarTools")) {
@@ -422,7 +421,7 @@ public class TeamLoader {
                 InputStream input = new FileInputStream(tab[0]);
 //                Script sc = Script.checkDangerousFunctions(team, input, WarAgentType.valueOf(agentName));
 //                team.getInterpreter().addSCript(sc, WarAgentType.valueOf(agentName));
-                team.getInterpreter().addScript(input, WarAgentType.valueOf(agentName));
+                team.addBrainScript(input, WarAgentType.valueOf(agentName));
                 input.close();
             }
         }

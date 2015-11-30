@@ -10,6 +10,9 @@ import edu.warbot.game.InGameTeam;
 import edu.warbot.loader.ImplementationProducer;
 import edu.warbot.scriptcore.exceptions.NotFoundConfigurationException;
 import edu.warbot.scriptcore.interpreter.ScriptInterpreter;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreterFactory;
+import edu.warbot.scriptcore.interpreter.ScriptInterpreterLanguage;
+import edu.warbot.scriptcore.script.Script;
 import edu.warbot.scriptcore.scriptagent.ScriptAgent;
 import edu.warbot.scriptcore.team.*;
 import edu.warbot.tools.StringOutputStream;
@@ -82,6 +85,11 @@ public class ScriptedTeam extends JavaTeam {
 
     private boolean initFunction = false;
 
+    private ScriptInterpreterLanguage language;
+
+    private Map<WarAgentType, Script> brainScripts = new HashMap<>();
+
+
 
     /**
      * @param teamName    Le nom d'une équipe
@@ -100,9 +108,6 @@ public class ScriptedTeam extends JavaTeam {
         return interpreter;
     }
 
-    public void setInterpreter(ScriptInterpreter scriptInterpreter) {
-        interpreter = scriptInterpreter;
-    }
 
     @Override
     public ControllableWarAgent instantiateControllableWarAgent(InGameTeam inGameTeam, WarAgentType warAgentType)
@@ -114,8 +119,11 @@ public class ScriptedTeam extends JavaTeam {
 
     @Override
     public void associateBrain(ControllableWarAgent a) {
+
+        ScriptInterpreter si = ScriptInterpreterFactory.getInstance(getLanguage()).createScriptInterpreter();
         try {
-            ScriptAgent sa = getInterpreter().giveScriptAgent(a.getType());
+            si.addSCript(brainScripts.get(a.getType()), a.getType());
+            ScriptAgent sa = si.giveScriptAgent(a.getType());
             ((Scriptable) a.getBrain()).setScriptAgent(sa);
             sa.link(a.getBrain());
         } catch (Exception e) {
@@ -166,9 +174,28 @@ public class ScriptedTeam extends JavaTeam {
     @Override
     public Team duplicate(String newName) {
         ScriptedTeam st = new ScriptedTeam(newName, getDescription(), getLogo());
-        st.setInterpreter(getInterpreter());
+        st.setLanguage(getLanguage());
+        st.brainScripts.putAll(brainScripts);
         return st;
     }
 
 
+    public ScriptInterpreterLanguage getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(ScriptInterpreterLanguage language) {
+        this.language = language;
+    }
+
+
+    public void addBrainScript(InputStream input, WarAgentType warAgentType) {
+        try {
+            ScriptInterpreter si = ScriptInterpreterFactory.getInstance(getLanguage()).createScriptInterpreter();
+            Script script = si.createScript(input);
+            brainScripts.put(warAgentType, script);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

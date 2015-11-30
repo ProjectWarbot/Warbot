@@ -1,34 +1,15 @@
 
 def actionWarRocketLauncher():
+	for m in getMessages():
+		print m.getMessage()
 
-	percepts = getPerceptsEnemiesWarRocketLauncher()
-	if percepts:
-		for percept in percepts:
-			setDebugString("Mode hunter rocket launcher")
-			followTarget(percept)
-			return shootTarget()
+	broadcastAll("broadcastAll","content")
+	broadcastMessageToAll("broadcastMessageToAll",["content1","content2"])
+	broadcastMessageToAgentType(WarAgentType.WarRocketLauncher,"broadcastMessageToAgentType",["content1","content2"])
 
-	percepts = getPerceptsEnemiesWarBase()
-	if percepts:
-		for percept in percepts:
-			broadcastMessageToAll("EnemyBase","")
-			setDebugString("Mode hunter base")
-			followTarget(percept)
-			return shootTarget()
-
-	if (haveNoTarget()):
-		setDebugString("No target")
-
-	messages = getMessages()
-	if messages:
-		for m in messages:
-			if m.getMessage() == "EnemyBase":
-				setHeading(m.getAngle())
-
-	if (haveTarget()):
-		setDebugString("Target")
-
-	if (isBlocked()):
-		RandomHeading()
+	#for g in getGroups():
+	#	broadcastMessageToGroup(g,"broadcastGroup","content")
+	#	for r in getRolesIn(g):
+	#		broadcastMessage(g,r,"broadcastToRole","content")
 
 	return move();

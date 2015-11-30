@@ -176,6 +176,17 @@ public class WarBrainImplementation extends WarBrain implements AgentBrainImplem
     }
 
     @Override
+    public List<String> myGroups() {
+        return getAgent().myGroups();
+    }
+
+
+    @Override
+    public List<String> myRoles(String group) {
+        return getAgent().myRoles(group);
+    }
+
+    @Override
     public int getHealth() {
         return getAgent().getHealth();
     }

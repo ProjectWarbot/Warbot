@@ -207,4 +207,9 @@ public interface Controllable extends Alive {
      */
     PolarCoordinates getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget);
 
+
+    List<String> myGroups();
+
+    List<String> myRoles(String group);
+
 }
