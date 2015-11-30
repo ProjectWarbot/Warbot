@@ -205,7 +205,6 @@ public class WarMain implements WarGameListener {
     public void onGameOver() {
         if (launcherInterface != null) {
             launcherInterface.displayGameResults(game);
-            launcherInterface.reloadTeams(false);
 
         }
         else { // Si la simulation a été lancée depuis la ligne de commande
@@ -229,6 +228,7 @@ public class WarMain implements WarGameListener {
         for (int i = 0; i < game.getAllTeams().size(); ++i) {
             game.getAllTeams().get(i).removeAllAgents();
         }
+        launcherInterface.reloadTeams(false);
         game.getPlayerTeams().clear();
         settings.prepareForNewGame();
         logger.log(Level.INFO, "Reset settings");
