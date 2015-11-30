@@ -57,7 +57,6 @@ public abstract class WarBaseBrainController extends WarBaseBrain {
 
     @Override
     public String action() {
-
         if (!_alreadyCreated) {
             setNextAgentToCreate(WarAgentType.WarEngineer);
             _alreadyCreated = true;

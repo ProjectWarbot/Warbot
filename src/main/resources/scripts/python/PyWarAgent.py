@@ -153,7 +153,6 @@ class PyWarAgent(ScriptAgent):
 			messagePython = []
 
 			for i in range (0, __message.size()):
-				#print(__message.get(i).getMessage())
 				messagePython.append(__message.get(i))
 			return messagePython
 
@@ -511,6 +510,12 @@ class PyWarAgent(ScriptAgent):
 			"""
 
 			return self.getRetAgent().leaveGroup(group)
+
+		def myGroups(self):
+			return self.getRetAgent().myGroups()
+
+		def myRolesIn(self,group):
+			return self.getRetAgent().myRolesIn(group)
 
 		def numberOfAgentsInRole(self, group, role):
 			"""
@@ -959,6 +964,7 @@ def isPossibleToGiveFood(percept):
 
 def giveToTarget(percept) :
 	setIdNextAgentToGive(percept.getID());
+	return WA.give()
 
 def createEngineer():
 	setNextAgentToCreate(WarAgentType.WarEngineer)
@@ -986,3 +992,15 @@ def createWall():
 
 def face(percept):
 	setHeading(percept.getAngle())
+
+def getGroups():
+	return WA.getGroups()
+
+def getRolesIn(group):
+	return WA.getRolesIn(group)
+
+def myGroups():
+	return WA.myGroups()
+
+def myRolesIn(group):
+	return WA.myROlesIn(group)
