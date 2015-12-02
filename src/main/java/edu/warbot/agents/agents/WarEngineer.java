@@ -41,9 +41,6 @@ public class WarEngineer extends MovableWarAgent implements CreatorActionsMethod
 
     public WarEngineer(InGameTeam inGameTeam, WarBrain brain) {
         super(ACTION_IDLE, inGameTeam, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarEngineer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
-
-        //brain.setAgentAdapter(new WarEngineerBrain(this));
-
         nextAgentToCreate = WarAgentType.WarTurret;
         nextBuildingToBuild = WarAgentType.Wall;
     }
