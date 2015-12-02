@@ -15,36 +15,36 @@ import java.util.logging.Level;
  */
 public abstract class WarProjectile extends WarAgent implements MovableActionsMethods, Movable {
 
-    private double _speed;
-    private double _explosionRadius;
-    private int _damage;
-    private int _autonomy;
-    private WarAgent _sender;
-    private int _currentAutonomy;
+    private double speed;
+    private double explosionRadius;
+    private int damage;
+    private int autonomy;
+    private WarAgent sender;
+    private int currentAutonomy;
 
     public WarProjectile(String firstActionToDo, InGameTeam inGameTeam, Hitbox hitbox, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
         super(firstActionToDo, inGameTeam, hitbox);
 
-        this._speed = speed;
-        this._explosionRadius = explosionRadius;
-        this._damage = damage;
-        this._autonomy = autonomy;
-        this._currentAutonomy = autonomy;
-        this._sender = sender;
+        this.speed = speed;
+        this.explosionRadius = explosionRadius;
+        this.damage = damage;
+        this.autonomy = autonomy;
+        this.currentAutonomy = autonomy;
+        this.sender = sender;
     }
 
     @Override
     protected void activate() {
         super.activate();
-        setHeading(_sender.getHeading());
-        setXY(_sender.getX(), _sender.getY());
+        setHeading(sender.getHeading());
+        setXY(sender.getX(), sender.getY());
     }
 
     @Override
     protected void doBeforeEachTick() {
         super.doBeforeEachTick();
-        _currentAutonomy--;
-        if (_currentAutonomy < 0)
+        currentAutonomy--;
+        if (currentAutonomy < 0)
             explode();
     }
 
@@ -53,8 +53,9 @@ public abstract class WarProjectile extends WarAgent implements MovableActionsMe
         logger.log(Level.FINEST, this.toString() + " moving...");
         if (!isBlocked()) {
             fd(getSpeed());
-        } else
+        } else {
             explode();
+        }
         return ACTION_MOVE;
     }
 
@@ -63,10 +64,10 @@ public abstract class WarProjectile extends WarAgent implements MovableActionsMe
 //			killAgent(this);
             kill();
             // On va infliger des dégâts à tous les agents dans le radius de l'explosion
-            List<WarAgent> touchedAgents = getTeam().getGame().getAllAgentsInRadiusOf(this, _explosionRadius);
+            List<WarAgent> touchedAgents = getTeam().getGame().getAllAgentsInRadiusOf(this, explosionRadius);
             for (WarAgent agent : touchedAgents) {
                 if (agent instanceof AliveWarAgent) {
-                    ((AliveWarAgent) agent).damage(_damage);
+                    ((AliveWarAgent) agent).damage(damage);
                 } else if (agent instanceof WarProjectile) {
                     ((WarProjectile) agent).explode();
                 }
@@ -81,7 +82,7 @@ public abstract class WarProjectile extends WarAgent implements MovableActionsMe
 
     protected boolean isGoingToCrossAnOtherAgent() {
         for (WarAgent a : getTeam().getGame().getAllAgentsInRadiusOf(this, getHitboxMaxRadius() + getSpeed())) {
-            if (a.getID() != _sender.getID() && a.getID() != getID()) {
+            if (a.getID() != sender.getID() && a.getID() != getID()) {
                 double currentStep = 0;
                 while (currentStep < getSpeed()) {
                     if (isInCollisionWithAtPosition(
@@ -106,22 +107,22 @@ public abstract class WarProjectile extends WarAgent implements MovableActionsMe
     }
 
     public double getSpeed() {
-        return _speed;
+        return speed;
     }
 
     public double getExplosionRadius() {
-        return _explosionRadius;
+        return explosionRadius;
     }
 
     public int getDamage() {
-        return _damage;
+        return damage;
     }
 
     public int getAutonomy() {
-        return _autonomy;
+        return autonomy;
     }
 
     public int getCurrentAutonomy() {
-        return _currentAutonomy;
+        return currentAutonomy;
     }
 }
