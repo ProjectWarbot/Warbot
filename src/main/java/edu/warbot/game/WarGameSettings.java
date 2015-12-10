@@ -114,11 +114,20 @@ public class WarGameSettings {
     }
 
     public void addSelectedTeam(Team team) {
+        int i = 0;
         Team t = team;
-        if (selectedInGameTeams.contains(new InGameTeam(t))) {
-            t = team.duplicate(team.getTeamName() + "_bis");
-        }
+        while (containsTeamWithName(t.getTeamName() + "." + i))
+            i++;
+        t = team.duplicate(team.getTeamName() + "." + i);
         selectedInGameTeams.add(new InGameTeam(t));
+    }
+
+    public boolean containsTeamWithName(String name) {
+        for (InGameTeam igt : selectedInGameTeams) {
+            if (igt.getName().equals(name))
+                return true;
+        }
+        return false;
     }
 
     public void prepareForNewGame() {

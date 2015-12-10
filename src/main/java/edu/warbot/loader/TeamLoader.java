@@ -432,6 +432,10 @@ public class TeamLoader {
     private Team loadTeamFromSources(Map<String, String> teamsSourcesFolders, final TeamConfigReader teamConfigReader) throws ClassNotFoundException, IOException, NotFoundException, CannotCompileException, URISyntaxException {
         Team currentTeam;
         URL url = getClass().getClassLoader().getResource(teamsSourcesFolders.get(teamConfigReader.getTeamName()));
+        System.err.println(url);
+        if(url== null) {
+            throw new IOException("Error when we try to access to value");
+        }
         File teamDirectory = new File(url.getFile());
         ImageIcon logo = loadLogo(teamDirectory, teamConfigReader);
         if (logo == null) {
