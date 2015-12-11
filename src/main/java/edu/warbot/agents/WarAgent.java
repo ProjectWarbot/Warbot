@@ -39,7 +39,18 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
     protected void activate() {
         super.activate();
         getTeam().addWarAgent(this);
-        requestRole(InGameTeam.DEFAULT_GROUP_NAME, getClass().getSimpleName());
+        boolean created = createGroupIfAbsent(getTeamName(), InGameTeam.DEFAULT_GROUP_NAME);
+        logger.fine("CreateGroupIfAbsent: <" + getTeamName() + "," + InGameTeam.DEFAULT_GROUP_NAME + "> -> " + (created));
+
+        created = createGroupIfAbsent(getTeamName(), InGameTeam.ID_GROUP_NAME);
+        logger.fine("CreateGroupIfAbsent: <" + getTeamName() + "," + InGameTeam.ID_GROUP_NAME + "> -> " + (created));
+
+        ReturnCode rc = requestRole(InGameTeam.ID_GROUP_NAME, "" + getID());
+        logger.fine("RequestRole:<" + InGameTeam.ID_GROUP_NAME + "," + getID() + "> -> " + (rc.toString()));
+
+        rc = requestRole(InGameTeam.DEFAULT_GROUP_NAME, getType().toString());
+        logger.fine("RequestRole:<" + InGameTeam.DEFAULT_GROUP_NAME + "," + getType().toString() + "> -> " + (rc.toString()));
+
     }
 
     public abstract void kill();
@@ -50,23 +61,29 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 
     @Override
     public AbstractAgent.ReturnCode requestRole(String group, String role) {
-        createGroupIfAbsent(getTeam().getName(), group);
-        return requestRole(getTeam().getName(), group, role);
+        if (InGameTeam.DEFAULT_GROUP_NAME.equals(group) || InGameTeam.ID_GROUP_NAME.equals(group))
+            return ReturnCode.ACCESS_DENIED;
+        createGroupIfAbsent(getTeamName(), group);
+        return requestRole(getTeamName(), group, role);
     }
 
     @Override
     public AbstractAgent.ReturnCode leaveRole(String group, String role) {
-        return super.leaveRole(getTeam().getName(), group, role);
+        if (InGameTeam.DEFAULT_GROUP_NAME.equals(group) || InGameTeam.ID_GROUP_NAME.equals(group))
+            return ReturnCode.ACCESS_DENIED;
+        return super.leaveRole(getTeamName(), group, role);
     }
 
     @Override
     public AbstractAgent.ReturnCode leaveGroup(String group) {
-        return super.leaveGroup(getTeam().getName(), group);
+        if (InGameTeam.DEFAULT_GROUP_NAME.equals(group) || InGameTeam.ID_GROUP_NAME.equals(group))
+            return ReturnCode.ACCESS_DENIED;
+        return super.leaveGroup(getTeamName(), group);
     }
 
     @Override
     public int getNumberOfAgentsInRole(String group, String role) {
-        return (getAgentsWithRole(getTeam().getName(), group, role).size());
+        return (getAgentsWithRole(getTeamName(), group, role).size());
     }
 
     public InGameTeam getTeam() {

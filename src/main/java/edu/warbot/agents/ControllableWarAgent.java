@@ -124,27 +124,43 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 
     @Override
     public ReturnCode sendMessage(int idAgent, String message, String... content) {
-        WarAgent agent = getTeam().getAgentWithID(idAgent);
-        if (agent != null) {
-            logger.finer(this.toString() + " send message to " + agent.toString());
-            logger.finest("This message is : [" + message + "] " + content);
-            return sendMessage(agent.getAgentAddressIn(getTeam().getName(), InGameTeam.DEFAULT_GROUP_NAME, agent.getClass().getSimpleName()), new WarKernelMessage(this, message, content));
-        }
-        return ReturnCode.INVALID_AGENT_ADDRESS;
+        logger.fine(this.toString() + " send message to id " + idAgent);
+        logger.finer("This message is : [" + message + "] " + content);
+        return sendMessage(getTeamName(), InGameTeam.ID_GROUP_NAME, "" + idAgent,
+                new WarKernelMessage(this, message, content));
+//        WarAgent agent = getTeam().getAgentWithID(idAgent);
+//
+//        if (agent != null) {
+//
+//            try {
+//                //AgentAddress aa = agent.getAgentAddressIn(getTeamName(), InGameTeam.DEFAULT_GROUP_NAME, agent.getType().toString());
+//                //System.out.println("computed aa : "+aa.toString());
+//                //ReturnCode rc = sendMessage(aa, new WarKernelMessage(this, message, content));
+//
+//
+//                System.err.println(rc.toString());
+//                return rc;
+//            }
+//            catch(Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return ReturnCode.INVALID_AGENT_ADDRESS;
     }
 
     @Override
     public ReturnCode broadcastMessageToAgentType(WarAgentType agentType, String message, String... content) {
         logger.finer(this.toString() + " send message to default role agents : " + agentType);
         logger.finest("This message is : [" + message + "] " + content);
-        return sendMessage(getTeam().getName(), InGameTeam.DEFAULT_GROUP_NAME, agentType.toString(), new WarKernelMessage(this, message, content));
+        return sendMessage(getTeamName(), InGameTeam.DEFAULT_GROUP_NAME, agentType.toString(),
+                new WarKernelMessage(this, message, content));
     }
 
     @Override
     public ReturnCode broadcastMessage(String groupName, String roleName, String message, String... content) {
         logger.finer(this.toString() + " send message to agents from group " + groupName + " with role " + roleName);
         logger.finest("This message is : [" + message + "] " + content);
-        return sendMessage(getTeam().getName(), groupName, roleName, new WarKernelMessage(this, message, content));
+        return sendMessage(getTeamName(), groupName, roleName, new WarKernelMessage(this, message, content));
     }
 
     @Override
